@@ -47,6 +47,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        temple: {
+          gold: "hsl(var(--temple-gold))",
+          bronze: "hsl(var(--temple-bronze))",
+          sunset: "hsl(var(--temple-sunset))",
+          purple: "hsl(var(--temple-purple))",
+          earth: "hsl(var(--temple-earth))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
