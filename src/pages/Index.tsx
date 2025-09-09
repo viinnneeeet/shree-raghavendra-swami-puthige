@@ -3,6 +3,8 @@ import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import ServicesSection from "@/components/ServicesSection";
 import EventsSection from "@/components/EventsSection";
+import GallerySection from "@/components/GallerySection";
+import DonateSection from "@/components/DonateSection";
 import ContactSection from "@/components/ContactSection";
 
 const Index = () => {
@@ -13,6 +15,8 @@ const Index = () => {
       <AboutSection />
       <ServicesSection />
       <EventsSection />
+      <GallerySection />
+      <DonateSection />
       <ContactSection />
       
       {/* Footer */}
@@ -40,8 +44,11 @@ const Index = () => {
                 <a href="#services" className="block text-white/80 hover:text-temple-gold transition-colors">
                   Services
                 </a>
-                <a href="#events" className="block text-white/80 hover:text-temple-gold transition-colors">
-                  Events
+                <a href="#gallery" className="block text-white/80 hover:text-temple-gold transition-colors">
+                  Gallery
+                </a>
+                <a href="#donate" className="block text-white/80 hover:text-temple-gold transition-colors">
+                  Donate
                 </a>
                 <a href="#contact" className="block text-white/80 hover:text-temple-gold transition-colors">
                   Contact
