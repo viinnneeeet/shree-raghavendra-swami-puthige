@@ -1,9 +1,11 @@
-import { Button } from "@/components/ui/button";
-import templeHero from "@/assets/temple-hero.jpg";
-
+import { Button } from '@/components/ui/button';
+import templeHero from '@/assets/temple-hero.jpg';
+import { TEMPLE_NAME } from '@/common/appConstants';
 const HeroSection = () => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
@@ -19,13 +21,12 @@ const HeroSection = () => {
         <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
           Welcome to
           <span className="block bg-gradient-to-r from-temple-gold to-temple-sunset bg-clip-text text-transparent">
-            Sacred Temple
+            {TEMPLE_NAME}
           </span>
         </h1>
-        
+
         <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
-          A place of peace, prayer, and spiritual awakening. Join our community in
-          worship, meditation, and the journey toward inner harmony.
+          A place of peace, prayer, and spiritual awakening.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

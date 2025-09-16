@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from '@/components/ui/card';
 
 const AboutSection = () => {
   return (
@@ -25,8 +25,8 @@ const AboutSection = () => {
                 Ancient Wisdom
               </h3>
               <p className="text-muted-foreground">
-                Preserving timeless teachings and spiritual practices passed down
-                through generations of devoted practitioners.
+                Preserving timeless teachings and spiritual practices passed
+                down through generations of devoted practitioners.
               </p>
             </CardContent>
           </Card>
@@ -38,8 +38,8 @@ const AboutSection = () => {
                 Inner Peace
               </h3>
               <p className="text-muted-foreground">
-                Offering meditation, prayer, and contemplative practices to
-                nurture spiritual growth and inner tranquility.
+                Offering prayer, and contemplative practices to nurture
+                spiritual growth and inner tranquility.
               </p>
             </CardContent>
           </Card>
@@ -61,11 +61,10 @@ const AboutSection = () => {
         <div className="mt-16 text-center">
           <div className="max-w-3xl mx-auto bg-card border border-temple-gold/30 rounded-lg p-8 shadow-sacred">
             <blockquote className="text-2xl md:text-3xl text-temple-earth italic mb-4">
-              "Where the mind is without fear and the head is held high, into that
-              heaven of freedom, let my spirit awake."
+              "Always keep faith in Hari (Lord Vishnu) and the Guru; by their
             </blockquote>
             <cite className="text-temple-bronze font-semibold">
-              - Ancient Temple Blessing
+              - Shree Raghavendra Swami
             </cite>
           </div>
         </div>

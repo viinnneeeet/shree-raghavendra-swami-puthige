@@ -1,18 +1,18 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
-
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Menu, X } from 'lucide-react';
+import { TEMPLE_NAME } from '@/common/appConstants';
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    { href: "#home", label: "Home" },
-    { href: "#about", label: "About" },
-    { href: "#services", label: "Services" },
-    { href: "#events", label: "Events" },
-    { href: "#gallery", label: "Gallery" },
-    { href: "#donate", label: "Donate" },
-    { href: "#contact", label: "Contact" },
+    { href: '#home', label: 'Home' },
+    { href: '#about', label: 'About' },
+    { href: '#services', label: 'Services' },
+    { href: '#events', label: 'Events' },
+    { href: '#gallery', label: 'Gallery' },
+    { href: '#donate', label: 'Donate' },
+    { href: '#contact', label: 'Contact' },
   ];
 
   return (
@@ -20,7 +20,7 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="text-2xl font-bold bg-gradient-to-r from-temple-gold to-temple-bronze bg-clip-text text-transparent">
-            Sacred Temple
+            {TEMPLE_NAME}
           </div>
 
           {/* Desktop Navigation */}
@@ -29,8 +29,7 @@ const Navigation = () => {
               <a
                 key={item.href}
                 href={item.href}
-                className="text-foreground hover:text-temple-gold transition-colors"
-              >
+                className="text-foreground hover:text-temple-gold transition-colors">
                 {item.label}
               </a>
             ))}
@@ -42,8 +41,7 @@ const Navigation = () => {
           {/* Mobile Menu Button */}
           <button
             className="md:hidden text-foreground"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
+            onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -56,8 +54,7 @@ const Navigation = () => {
                 key={item.href}
                 href={item.href}
                 className="block py-2 text-foreground hover:text-temple-gold transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
+                onClick={() => setIsMenuOpen(false)}>
                 {item.label}
               </a>
             ))}

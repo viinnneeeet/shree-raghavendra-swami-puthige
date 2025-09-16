@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 
 const ContactSection = () => {
   return (
@@ -31,8 +31,10 @@ const ContactSection = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  123 Sacred Path Lane<br />
-                  Peaceful Valley, State 12345<br />
+                  123 Sacred Path Lane
+                  <br />
+                  Peaceful Valley, State 12345
+                  <br />
                   United States
                 </p>
               </CardContent>
@@ -47,7 +49,8 @@ const ContactSection = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Main: (555) 123-4567<br />
+                  Main: (555) 123-4567
+                  <br />
                   Emergency: (555) 987-6543
                 </p>
               </CardContent>
@@ -62,7 +65,8 @@ const ContactSection = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  info@sacredtemple.org<br />
+                  info@sacredtemple.org
+                  <br />
                   events@sacredtemple.org
                 </p>
               </CardContent>
@@ -81,7 +85,7 @@ const ContactSection = () => {
                   <p>Saturday: 6:00 AM - 10:00 PM</p>
                   <p>Sunday: 5:00 AM - 10:00 PM</p>
                   <p className="text-temple-bronze font-semibold mt-2">
-                    Open daily for prayer and meditation
+                    Open daily for prayer
                   </p>
                 </div>
               </CardContent>
@@ -145,8 +149,7 @@ const ContactSection = () => {
                   <textarea
                     rows={5}
                     className="w-full px-4 py-2 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold resize-none"
-                    placeholder="How can we help you on your spiritual journey?"
-                  ></textarea>
+                    placeholder="How can we help you on your spiritual journey?"></textarea>
                 </div>
 
                 <Button variant="sacred" size="lg" className="w-full">

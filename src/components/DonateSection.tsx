@@ -1,37 +1,48 @@
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Heart, Home, BookOpen, Users, Utensils, Lightbulb } from "lucide-react";
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import {
+  Heart,
+  Home,
+  BookOpen,
+  Users,
+  Utensils,
+  Lightbulb,
+} from 'lucide-react';
 
 const DonateSection = () => {
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
-  const [customAmount, setCustomAmount] = useState("");
+  const [customAmount, setCustomAmount] = useState('');
 
   const donationCauses = [
     {
       icon: <Home className="w-8 h-8" />,
-      title: "Temple Maintenance",
-      description: "Help maintain our sacred spaces and ensure they remain beautiful for all who visit",
-      color: "text-temple-gold"
+      title: 'Temple Maintenance',
+      description:
+        'Help maintain our sacred spaces and ensure they remain beautiful for all who visit',
+      color: 'text-temple-gold',
     },
     {
       icon: <BookOpen className="w-8 h-8" />,
-      title: "Educational Programs",
-      description: "Support spiritual education and learning programs for all ages",
-      color: "text-temple-purple"
+      title: 'Educational Programs',
+      description:
+        'Support spiritual education and learning programs for all ages',
+      color: 'text-temple-purple',
     },
     {
       icon: <Users className="w-8 h-8" />,
-      title: "Community Outreach",
-      description: "Fund our community service initiatives and charitable activities",
-      color: "text-temple-bronze"
+      title: 'Community Outreach',
+      description:
+        'Fund our community service initiatives and charitable activities',
+      color: 'text-temple-bronze',
     },
     {
       icon: <Utensils className="w-8 h-8" />,
-      title: "Community Kitchen",
-      description: "Provide meals for those in need and support our free meal programs",
-      color: "text-temple-sunset"
-    }
+      title: 'Community Kitchen',
+      description:
+        'Provide meals for those in need and support our free meal programs',
+      color: 'text-temple-sunset',
+    },
   ];
 
   const suggestedAmounts = [25, 50, 100, 250, 500, 1000];
@@ -40,9 +51,11 @@ const DonateSection = () => {
     const amount = selectedAmount || parseFloat(customAmount);
     if (amount && amount > 0) {
       // Placeholder for Stripe integration
-      alert(`Thank you for your generous donation of $${amount}! Payment integration will be implemented next.`);
+      alert(
+        `Thank you for your generous donation of $${amount}! Payment integration will be implemented next.`
+      );
     } else {
-      alert("Please select or enter a donation amount.");
+      alert('Please select or enter a donation amount.');
     }
   };
 
@@ -58,7 +71,8 @@ const DonateSection = () => {
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Your generous contributions help us maintain our temple, support our
-            community, and continue sharing spiritual wisdom with all who seek it.
+            community, and continue sharing spiritual wisdom with all who seek
+            it.
           </p>
         </div>
 
@@ -67,8 +81,7 @@ const DonateSection = () => {
           {donationCauses.map((cause, index) => (
             <Card
               key={index}
-              className="text-center hover:shadow-temple transition-[var(--transition-sacred)] border-temple-gold/20"
-            >
+              className="text-center hover:shadow-temple transition-[var(--transition-sacred)] border-temple-gold/20">
               <CardHeader>
                 <div className={`mx-auto mb-4 ${cause.color}`}>
                   {cause.icon}
@@ -95,7 +108,8 @@ const DonateSection = () => {
                 Make a Donation
               </CardTitle>
               <p className="text-muted-foreground">
-                Every contribution, no matter the size, makes a meaningful difference
+                Every contribution, no matter the size, makes a meaningful
+                difference
               </p>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -108,14 +122,13 @@ const DonateSection = () => {
                   {suggestedAmounts.map((amount) => (
                     <Button
                       key={amount}
-                      variant={selectedAmount === amount ? "temple" : "outline"}
+                      variant={selectedAmount === amount ? 'temple' : 'outline'}
                       className="h-12"
                       onClick={() => {
                         setSelectedAmount(amount);
-                        setCustomAmount("");
-                      }}
-                    >
-                      ${amount}
+                        setCustomAmount('');
+                      }}>
+                      ₹ {amount}
                     </Button>
                   ))}
                 </div>
@@ -128,7 +141,7 @@ const DonateSection = () => {
                 </label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
-                    $
+                    ₹
                   </span>
                   <input
                     type="number"
@@ -198,8 +211,7 @@ const DonateSection = () => {
                 <textarea
                   rows={3}
                   placeholder="Share your thoughts or dedication..."
-                  className="w-full px-4 py-2 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold resize-none"
-                ></textarea>
+                  className="w-full px-4 py-2 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold resize-none"></textarea>
               </div>
 
               {/* Donate Button */}
@@ -207,15 +219,14 @@ const DonateSection = () => {
                 variant="sacred"
                 size="lg"
                 className="w-full text-lg py-4"
-                onClick={handleDonate}
-              >
+                onClick={handleDonate}>
                 <Heart className="w-5 h-5 mr-2" />
                 Donate Now
               </Button>
 
               <p className="text-xs text-muted-foreground text-center">
-                Your donation is secure and helps support our temple's mission of
-                spiritual growth and community service.
+                Your donation is secure and helps support our temple's mission
+                of spiritual growth and community service.
               </p>
             </CardContent>
           </Card>
@@ -229,15 +240,23 @@ const DonateSection = () => {
             </h3>
             <div className="grid md:grid-cols-3 gap-6 text-center">
               <div>
-                <div className="text-3xl font-bold text-temple-gold mb-2">1,200+</div>
-                <p className="text-muted-foreground">Community Members Served</p>
+                <div className="text-3xl font-bold text-temple-gold mb-2">
+                  1,200+
+                </div>
+                <p className="text-muted-foreground">
+                  Community Members Served
+                </p>
               </div>
               <div>
-                <div className="text-3xl font-bold text-temple-purple mb-2">500+</div>
+                <div className="text-3xl font-bold text-temple-purple mb-2">
+                  500+
+                </div>
                 <p className="text-muted-foreground">Meals Provided Monthly</p>
               </div>
               <div>
-                <div className="text-3xl font-bold text-temple-bronze mb-2">50+</div>
+                <div className="text-3xl font-bold text-temple-bronze mb-2">
+                  50+
+                </div>
                 <p className="text-muted-foreground">Educational Programs</p>
               </div>
             </div>
