@@ -31,11 +31,11 @@ const ContactSection = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  123 Sacred Path Lane
+                  Shree Raghavendra Swami Temple
                   <br />
-                  Peaceful Valley, State 12345
+                  Puttige Moodbidri,
                   <br />
-                  United States
+                  Karnataka 574227
                 </p>
               </CardContent>
             </Card>
@@ -49,9 +49,8 @@ const ContactSection = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Main: (555) 123-4567
+                  Main: (+91) 8433621215
                   <br />
-                  Emergency: (555) 987-6543
                 </p>
               </CardContent>
             </Card>
@@ -158,19 +157,17 @@ const ContactSection = () => {
               </CardContent>
             </Card>
 
-            <div className="mt-8 text-center">
+            {/* <div className="mt-8 text-center">
               <div className="bg-gradient-to-r from-temple-gold/10 to-temple-purple/10 rounded-lg p-6">
                 <h3 className="text-xl font-semibold text-temple-earth mb-2">
-                  Need Immediate Assistance?
+                  Any Queries?
                 </h3>
-                <p className="text-muted-foreground mb-4">
-                  For urgent spiritual counseling or emergency support
-                </p>
+                <p className="text-muted-foreground mb-4"></p>
                 <Button variant="temple" size="sm">
-                  Call (555) 987-6543
+                  Call (+91) 8433621215
                 </Button>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

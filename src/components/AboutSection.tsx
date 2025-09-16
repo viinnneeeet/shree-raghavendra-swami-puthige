@@ -61,7 +61,7 @@ const AboutSection = () => {
         <div className="mt-16 text-center">
           <div className="max-w-3xl mx-auto bg-card border border-temple-gold/30 rounded-lg p-8 shadow-sacred">
             <blockquote className="text-2xl md:text-3xl text-temple-earth italic mb-4">
-              "Always keep faith in Hari (Lord Vishnu) and the Guru; by their
+              Always keep faith in Hari (Lord Vishnu) and the Guru
             </blockquote>
             <cite className="text-temple-bronze font-semibold">
               - Shree Raghavendra Swami

@@ -157,7 +157,7 @@ const DonateSection = () => {
               </div>
 
               {/* Donation Type */}
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-foreground mb-3">
                   Donation frequency:
                 </label>
@@ -169,7 +169,7 @@ const DonateSection = () => {
                     Monthly
                   </Button>
                 </div>
-              </div>
+              </div> */}
 
               {/* Donor Information */}
               <div className="grid md:grid-cols-2 gap-4">
