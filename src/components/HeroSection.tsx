@@ -1,7 +1,16 @@
 import { Button } from '@/components/ui/button';
-import templeHero from '@/assets/temple-hero.jpg';
+import templeHero from '@/assets/images/temple-hero.jpg';
 import { TEMPLE_NAME } from '@/common/appConstants';
+import { useToast } from '@/hooks/use-toast';
+import { useErrorHandler } from 'react-error-boundary';
 const HeroSection = () => {
+  const { toast } = useToast();
+  const handleError = useErrorHandler();
+
+  const onClick = () => {
+    // simulate an error
+    handleError(new Error('Manual trigger: Something went wrong!'));
+  };
   return (
     <section
       id="home"
@@ -30,10 +39,25 @@ const HeroSection = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button variant="sacred" size="lg" className="text-lg px-8 py-3">
+          <Button
+            variant="sacred"
+            size="lg"
+            className="text-lg px-8 py-3"
+            onClick={onClick}>
             Join Our Community
           </Button>
-          <Button variant="blessing" size="lg" className="text-lg px-8 py-3">
+          <Button
+            variant="blessing"
+            size="lg"
+            className="text-lg px-8 py-3"
+            onClick={() =>
+              toast({
+                title: 'Scheduled: Catch up',
+                description: 'Friday, February 10, 2025 at 5:57 PM',
+                variant: 'warning',
+                position: 'bottom-left',
+              })
+            }>
             Learn More
           </Button>
         </div>
@@ -47,11 +71,11 @@ const HeroSection = () => {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      {/* <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 border-2 border-temple-gold rounded-full flex justify-center">
           <div className="w-1 h-3 bg-temple-gold rounded-full mt-2 animate-pulse"></div>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 };

@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import ContactForm from './Forms/ContactForm';
 
 const ContactSection = () => {
   return (
@@ -92,72 +93,8 @@ const ContactSection = () => {
           </div>
 
           {/* Contact Form */}
-          <div>
-            <Card className="border-temple-gold/20 shadow-sacred">
-              <CardHeader>
-                <CardTitle className="text-temple-earth text-2xl">
-                  Send Us a Message
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      First Name
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full px-4 py-2 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full px-4 py-2 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="w-full px-4 py-2 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Phone (Optional)
-                  </label>
-                  <input
-                    type="tel"
-                    className="w-full px-4 py-2 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    rows={5}
-                    className="w-full px-4 py-2 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold resize-none"
-                    placeholder="How can we help you on your spiritual journey?"></textarea>
-                </div>
-
-                <Button variant="sacred" size="lg" className="w-full">
-                  Send Message
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* <div className="mt-8 text-center">
+          <ContactForm />
+          {/* <div className="mt-8 text-center">
               <div className="bg-gradient-to-r from-temple-gold/10 to-temple-purple/10 rounded-lg p-6">
                 <h3 className="text-xl font-semibold text-temple-earth mb-2">
                   Any Queries?
@@ -168,7 +105,6 @@ const ContactSection = () => {
                 </Button>
               </div>
             </div> */}
-          </div>
         </div>
       </div>
     </section>
