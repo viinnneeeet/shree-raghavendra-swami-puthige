@@ -1,8 +1,6 @@
 import React, { Suspense } from 'react';
-import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
-import Footer from '@/components/Footer';
 import Loader from '@/components/ui/Loader';
 
 // Lazy load heavy / secondary sections
@@ -23,7 +21,7 @@ const Index = () => {
         <ServicesSection />
         <EventsSection />
         <GallerySection />
-        {/* <DonateSection /> */}
+        <DonateSection />
         <ContactSection />
       </Suspense>
     </div>

@@ -143,4 +143,22 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
     @apply font-body;
   }
+
+  /* Smooth scrolling for better UX */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom utilities for temple design */
+  .temple-gradient {
+    background: var(--gradient-sunrise);
+  }
+
+  .temple-shadow {
+    box-shadow: var(--shadow-temple);
+  }
+
+  .temple-transition {
+    transition: var(--transition-sacred);
+  }
 }
