@@ -2,17 +2,25 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, MapPin } from 'lucide-react';
 import { EVENTS_DATA } from '@/common/appConstants';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { isValidEmail } from '@/common/commonFuction';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
+import { TempleEvent } from '@/types/events';
 
 const EventsSection = () => {
-  const [events, setEvents] = useState([...EVENTS_DATA]);
+  const [events, setEvents] = useState([]);
   const [state, setState] = useState({
     subscribeEmail: '',
   });
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const upcoming = getUpcomingEvents(EVENTS_DATA);
+    setEvents(upcoming);
+  }, []);
 
   const getEventColor = (type: string) => {
     switch (type) {
@@ -29,6 +37,21 @@ const EventsSection = () => {
     }
   };
 
+  const getUpcomingEvents = (events: TempleEvent[], count = 4) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // reset time → compare only date
+
+    return events
+      .filter((event) => {
+        const eventDate = new Date(event.date);
+        eventDate.setHours(0, 0, 0, 0);
+        return eventDate >= today;
+      })
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .slice(0, count);
+  };
+
+  console.log(getUpcomingEvents(EVENTS_DATA));
   const handleChange = (key: string, value: string) => {
     setState((prev) => ({
       ...prev,
@@ -107,7 +130,12 @@ const EventsSection = () => {
                   {event.location}
                 </div>
                 <p className="text-muted-foreground">{event.description}</p>
-                <Button variant="temple" className="w-full">
+                <Button
+                  variant="temple"
+                  className="w-full"
+                  onClick={() => {
+                    navigate('/register-event');
+                  }}>
                   Register for Event
                 </Button>
               </CardContent>

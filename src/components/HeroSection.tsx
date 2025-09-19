@@ -63,11 +63,11 @@ const HeroSection = () => {
         </div>
 
         {/* Decorative elements */}
-        <div className="mt-12 flex justify-center space-x-8 text-temple-gold/60">
+        {/* <div className="mt-12 flex justify-center space-x-8 text-temple-gold/60">
           <div className="text-4xl">🕉️</div>
           <div className="text-4xl">🪷</div>
           <div className="text-4xl">☸️</div>
-        </div>
+        </div> */}
       </div>
 
       {/* Scroll indicator */}

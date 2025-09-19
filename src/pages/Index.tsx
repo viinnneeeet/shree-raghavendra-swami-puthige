@@ -17,17 +17,15 @@ const ContactSection = React.lazy(() => import('@/components/ContactSection'));
 const Index = () => {
   return (
     <div className="min-h-screen">
-      <Navigation />
       <HeroSection />
       <AboutSection />
       <Suspense fallback={<Loader isLoading={true} />}>
         <ServicesSection />
         <EventsSection />
         <GallerySection />
-        <DonateSection />
+        {/* <DonateSection /> */}
         <ContactSection />
       </Suspense>
-      <Footer />
     </div>
   );
 };

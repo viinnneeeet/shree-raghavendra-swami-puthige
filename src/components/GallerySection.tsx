@@ -10,10 +10,11 @@ import galleryPrayer from '@/assets/images/gallery-prayer.jpg';
 import galleryService from '@/assets/images/gallery-service.jpg';
 import galleryGarden from '@/assets/images/gallery-garden.jpg';
 import galleryEducation from '@/assets/images/gallery-education.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const GallerySection = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
+  const navigate = useNavigate();
   const galleryImages = [
     {
       src: galleryMeditation,
@@ -125,7 +126,12 @@ const GallerySection = () => {
               Experience the peace and spiritual energy of our temple firsthand.
               All are welcome to join our community gatherings and celebrations.
             </p>
-            <Button variant="temple" size="lg">
+            <Button
+              variant="temple"
+              size="lg"
+              onClick={() => {
+                navigate('/plan-visit');
+              }}>
               Plan Your Visit
             </Button>
           </div>

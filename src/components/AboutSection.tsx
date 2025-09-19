@@ -7,7 +7,7 @@ const AboutSection = () => {
         <div className="max-w-4xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
             Our Sacred
-            <span className="block bg-gradient-to-r from-temple-gold to-temple-purple bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-temple-gold to-temple-purple bg-clip-text text-transparent mb-6">
               Heritage
             </span>
           </h2>

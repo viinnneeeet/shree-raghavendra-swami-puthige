@@ -1,40 +1,212 @@
 export const TEMPLE_NAME = 'Shree Raghavendra Swami Temple';
 
+export const QUICK_LINKS = [
+  {
+    name: 'About Us',
+    url: '/#about',
+  },
+  {
+    name: 'Services',
+    url: '/#services',
+  },
+  {
+    name: 'Gallery',
+    url: '/gallery',
+  },
+  {
+    name: 'Donate',
+    url: '/sevas-offerings',
+  },
+  {
+    name: 'Contact',
+    url: '/#contact',
+  },
+];
+
+export const NAVIGATION_ITEMS = [
+  { href: '/', label: 'Home' },
+  { href: '/register-event', label: 'Register Event' },
+  { href: '/visit-us', label: 'Visit Us' },
+  { href: '/plan-visit', label: 'Plan Visit' },
+  { href: '/sevas-offerings', label: 'Sevas & Offerings' },
+  { href: '/events-calendar', label: 'Events Calendar' },
+  { href: '/gallery', label: 'Gallery' },
+  { href: '/join-community', label: 'Join Community' },
+];
+
 export const EVENTS_DATA = [
   {
-    title: 'Spring Equinox Celebration',
-    date: 'March 20, 2024',
-    time: '6:00 PM - 9:00 PM',
-    location: 'Main Temple Hall',
-    description:
-      'Welcome the spring season with prayers, music, and community feast',
+    date: '2024-03-15',
+    title: 'Holi Celebration',
     type: 'Festival',
-  },
-  {
-    title: 'Meditation Retreat Weekend',
-    date: 'April 5-7, 2024',
-    time: 'Friday 7 PM - Sunday 5 PM',
-    location: 'Temple Grounds',
+    time: '6:00 PM - 9:00 PM',
+    location: 'Temple Courtyard',
+    attendees: 200,
     description:
-      'Three-day intensive meditation and spiritual reflection retreat',
-    type: 'Retreat',
+      'Colorful festival of joy and unity with traditional celebrations',
   },
   {
+    date: '2024-03-20',
+    title: 'Spring Equinox Meditation',
+    type: 'Retreat',
+    time: '5:30 AM - 7:30 AM',
+    location: 'Sacred Garden',
+    attendees: 50,
+    description: 'Welcome spring with peaceful meditation and prayers',
+  },
+  {
+    date: '2024-04-02',
+    title: 'Hanuman Jayanti',
+    type: 'Festival',
+    time: '6:00 AM - 8:00 PM',
+    location: 'Main Temple',
+    attendees: 500,
+    description: 'Celebrate the birth of Lord Hanuman with special prayers',
+  },
+  {
+    date: '2024-04-10',
+    title: 'Ram Navami',
+    type: 'Festival',
+    time: '6:00 AM - 9:00 PM',
+    location: 'Main Temple',
+    attendees: 800,
+    description: "Nine-day celebration of Lord Rama's birth",
+  },
+  {
+    date: '2024-04-15',
     title: 'Community Service Day',
-    date: 'April 15, 2024',
+    type: 'Service',
     time: '9:00 AM - 4:00 PM',
     location: 'Various Locations',
-    description:
-      'Join us in serving local families and community organizations',
-    type: 'Service',
+    attendees: 100,
+    description: 'Serve the community with food distribution and help',
   },
   {
-    title: 'Full Moon Prayer Circle',
-    date: 'April 23, 2024',
-    time: '8:00 PM - 10:00 PM',
-    location: 'Sacred Garden',
+    date: '2024-05-01',
+    title: 'Akshaya Tritiya',
+    type: 'Festival',
+    time: '6:00 AM - 12:00 PM',
+    location: 'Main Temple',
+    attendees: 300,
+    description: 'Auspicious day for new beginnings and prayers',
+  },
+  {
+    date: '2024-08-19',
+    title: 'Krishna Janmashtami',
+    type: 'Festival',
+    time: '7:00 PM - 12:00 AM',
+    location: 'Main Hall & Courtyard',
+    attendees: 1000,
     description:
-      'Monthly gathering under the full moon for prayer and reflection',
-    type: 'Prayer',
+      'Night-long celebration of Lord Krishna’s birth with bhajans, plays, and dahi-handi',
+  },
+  {
+    date: '2024-09-07',
+    title: 'Ganesh Chaturthi',
+    type: 'Festival',
+    time: '6:00 AM - 10:00 PM',
+    location: 'Main Temple & Streets',
+    attendees: 1500,
+    description:
+      'Welcoming Lord Ganesha with idol installation, aartis, and cultural programs',
+  },
+  {
+    date: '2025-10-02',
+    title: 'Mahatma Gandhi Jayanti & Special Bhajans',
+    type: 'Festival',
+    time: '6:00 AM - 12:00 PM',
+    location: 'Main Temple',
+    attendees: 400,
+    description:
+      'Prayer meeting and bhajan sessions in honor of Mahatma Gandhi.',
+  },
+  {
+    date: '2025-10-12',
+    title: 'Navaratri Starts',
+    type: 'Festival',
+    time: '6:00 AM - 9:00 PM',
+    location: 'Temple Courtyard',
+    attendees: 800,
+    description:
+      'Nine nights of devotion with daily pooja, bhajans, and cultural activities.',
+  },
+  {
+    date: '2024-10-31',
+    title: 'Diwali Deepotsav',
+    type: 'Festival',
+    time: '6:00 PM - 10:00 PM',
+    location: 'Entire Temple Complex',
+    attendees: 2000,
+    description:
+      'Festival of Lights with diya lighting, Lakshmi puja, and cultural shows',
+  },
+  {
+    date: '2025-11-01',
+    title: 'Kannada Rajyotsava',
+    type: 'Festival',
+    time: '7:00 AM - 1:00 PM',
+    location: 'Main Temple',
+    attendees: 500,
+    description:
+      'Celebrating Karnataka Formation Day with cultural programs and prayers.',
+  },
+  {
+    date: '2025-11-14',
+    title: 'Children’s Day Celebration',
+    type: 'Community',
+    time: '10:00 AM - 4:00 PM',
+    location: 'Community Hall',
+    attendees: 300,
+    description: 'Fun events, games, and cultural performances by kids.',
+  },
+
+  {
+    date: '2024-11-14',
+    title: 'Kartik Purnima Ganga Aarti',
+    type: 'Ritual',
+    time: '5:30 PM - 8:00 PM',
+    location: 'Temple Riverbank',
+    attendees: 700,
+    description:
+      'Sacred aarti on the holy river with lamps and prayers on Kartik Purnima',
+  },
+  {
+    date: '2024-12-25',
+    title: 'Annadana Seva',
+    type: 'Service',
+    time: '12:00 PM - 3:00 PM',
+    location: 'Community Hall',
+    attendees: 400,
+    description: 'Free food distribution to devotees and the underprivileged',
+  },
+  {
+    date: '2025-01-14',
+    title: 'Makar Sankranti & Kite Festival',
+    type: 'Festival',
+    time: '8:00 AM - 6:00 PM',
+    location: 'Temple Grounds',
+    attendees: 900,
+    description:
+      'Harvest festival with prayers, kite flying, and prasada distribution',
+  },
+  {
+    date: '2025-01-26',
+    title: 'Republic Day Flag Hoisting & Bhajan Sandhya',
+    type: 'Cultural',
+    time: '8:00 AM - 10:00 AM & 6:00 PM - 9:00 PM',
+    location: 'Temple Courtyard',
+    attendees: 500,
+    description:
+      'Patriotic flag hoisting ceremony in the morning followed by devotional songs in the evening',
+  },
+  {
+    date: '2025-02-26',
+    title: 'Maha Shivaratri',
+    type: 'Festival',
+    time: '6:00 PM - 6:00 AM (next day)',
+    location: 'Shiva Shrine',
+    attendees: 1200,
+    description:
+      'All-night vigil, chanting, and special abhishekam for Lord Shiva',
   },
 ];

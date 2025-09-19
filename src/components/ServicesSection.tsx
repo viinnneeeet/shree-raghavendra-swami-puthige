@@ -1,7 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const ServicesSection = () => {
+  const navigate = useNavigate();
   const services = [
     {
       title: 'Daily Prayers',
@@ -92,7 +94,12 @@ const ServicesSection = () => {
               We welcome all souls seeking spiritual growth. Our doors are
               always open to those who come with sincere hearts.
             </p>
-            <Button variant="temple" size="lg">
+            <Button
+              variant="temple"
+              size="lg"
+              onClick={() => {
+                navigate('/plan-visit');
+              }}>
               Plan Your Visit
             </Button>
           </div>

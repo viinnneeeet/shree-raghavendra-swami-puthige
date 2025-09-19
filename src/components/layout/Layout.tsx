@@ -1,17 +1,17 @@
-import { ReactNode } from 'react';
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import { useScrollToTop } from '@/hooks/use-scroll-to-top';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 
-interface LayoutProps {
-  children: ReactNode;
-}
+const Layout: React.FC = () => {
+  useScrollToTop();
 
-const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navigation />
-      <main className="pt-16">
-        {children}
+      <main className="">
+        <Outlet />
       </main>
       <Footer />
     </div>

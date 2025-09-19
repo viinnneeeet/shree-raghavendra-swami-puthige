@@ -15,10 +15,11 @@ import GalleryPage from './pages/GalleryPage';
 import JoinCommunity from './pages/JoinCommunity';
 import NotFound from './pages/NotFound';
 import GlobalErrorFallback from '@/components/GlobalErrorFallback';
+import { useIsFetching } from '@tanstack/react-query';
+import Loader from '@/components/ui/Loader';
+import Layout from '@/components/layout/Layout';
 
 const queryClient = new QueryClient();
-import { useIsFetching } from '@tanstack/react-query';
-import Loader from './components/ui/Loader';
 
 function GlobalLoader() {
   const isFetching = useIsFetching(); // counts active queries
@@ -42,15 +43,17 @@ const App = () => (
           <GlobalLoader />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/register-event" element={<RegisterEvent />} />
-              <Route path="/visit-us" element={<VisitUs />} />
-              <Route path="/plan-visit" element={<PlanVisit />} />
-              <Route path="/sevas-offerings" element={<SevasOfferings />} />
-              <Route path="/events-calendar" element={<EventsCalendar />} />
-              <Route path="/gallery" element={<GalleryPage />} />
-              <Route path="/join-community" element={<JoinCommunity />} />
-              <Route path="*" element={<NotFound />} />
+              <Route element={<Layout />}>
+                <Route path="/" element={<Index />} />
+                <Route path="/register-event" element={<RegisterEvent />} />
+                <Route path="/visit-us" element={<VisitUs />} />
+                <Route path="/plan-visit" element={<PlanVisit />} />
+                <Route path="/sevas-offerings" element={<SevasOfferings />} />
+                <Route path="/events-calendar" element={<EventsCalendar />} />
+                <Route path="/gallery" element={<GalleryPage />} />
+                <Route path="/join-community" element={<JoinCommunity />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
             </Routes>
           </BrowserRouter>
         </TooltipProvider>

@@ -1,4 +1,5 @@
-import { TEMPLE_NAME } from '@/common/appConstants';
+import { TEMPLE_NAME, QUICK_LINKS } from '@/common/appConstants';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -20,31 +21,13 @@ const Footer = () => {
               Quick Links
             </h4>
             <div className="space-y-2">
-              <a
-                href="#about"
-                className="block text-white/80 hover:text-temple-gold transition-colors">
-                About Us
-              </a>
-              <a
-                href="#services"
-                className="block text-white/80 hover:text-temple-gold transition-colors">
-                Services
-              </a>
-              <a
-                href="#gallery"
-                className="block text-white/80 hover:text-temple-gold transition-colors">
-                Gallery
-              </a>
-              <a
-                href="#donate"
-                className="block text-white/80 hover:text-temple-gold transition-colors">
-                Donate
-              </a>
-              <a
-                href="#contact"
-                className="block text-white/80 hover:text-temple-gold transition-colors">
-                Contact
-              </a>
+              {QUICK_LINKS?.map((link) => (
+                <Link
+                  to={link?.url}
+                  className="block text-white/80 hover:text-temple-gold transition-colors">
+                  {link?.name}
+                </Link>
+              ))}
             </div>
           </div>
 
