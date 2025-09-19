@@ -9,7 +9,6 @@ const ServicesSection = React.lazy(
 );
 const EventsSection = React.lazy(() => import('@/components/EventsSection'));
 const GallerySection = React.lazy(() => import('@/components/GallerySection'));
-const DonateSection = React.lazy(() => import('@/components/DonateSection'));
 const ContactSection = React.lazy(() => import('@/components/ContactSection'));
 
 const Index = () => {
@@ -21,7 +20,6 @@ const Index = () => {
         <ServicesSection />
         <EventsSection />
         <GallerySection />
-        <DonateSection />
         <ContactSection />
       </Suspense>
     </div>
