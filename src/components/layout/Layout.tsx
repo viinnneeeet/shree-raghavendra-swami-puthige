@@ -10,7 +10,7 @@ const Layout: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navigation />
-      <main className="">
+      <main className="pt-16"> {/* Add top padding for fixed navbar */}
         <Outlet />
       </main>
       <Footer />

@@ -60,11 +60,11 @@ const ServicesSection = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {services.map((service, index) => (
             <Card
               key={index}
-              className="hover:shadow-temple transition-[var(--transition-sacred)] border-temple-gold/20 group">
+              className="hover:shadow-temple hover:scale-105 transition-all duration-500 border-temple-gold/20 group bg-card/50 backdrop-blur-sm">
               <CardHeader className="text-center">
                 <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">
                   {service.icon}
