@@ -58,9 +58,9 @@ const VisitUs = () => {
                   Temple Address
                 </h3>
                 <p className="text-muted-foreground">
-                  123 Divine Path, Sacred Hills
+                  Shree Raghavendra Swami Temple
                   <br />
-                  Spiritual Valley, State 560001
+                  Puttige Moodbidri, Karnataka 574227
                   <br />
                   India
                 </p>
@@ -68,7 +68,7 @@ const VisitUs = () => {
 
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-temple-gold" />
-                <span className="text-muted-foreground">+91 98765 43210</span>
+                <span className="text-muted-foreground">+91 84336 21215</span>
               </div>
 
               <div className="flex items-center space-x-3">

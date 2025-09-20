@@ -1,23 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Heart, Users, Book, Star, Clock, MapPin } from 'lucide-react';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { FormFields } from '@/components/Forms/FormFields';
+import { volunteerFormFields } from './constants';
+import { COMMUNITY_BENEFITS, TEMPLE_HISTORY } from '@/common/appConstants';
+import { VolunteerFormData } from '@/types/volunteer';
 
 const JoinCommunity = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<VolunteerFormData>({
     name: '',
     email: '',
     phone: '',
@@ -28,26 +21,6 @@ const JoinCommunity = () => {
     message: '',
   });
   const { toast } = useToast();
-
-  const interests = [
-    'Daily Prayers & Aarti',
-    'Festival Organization',
-    'Community Service',
-    'Teaching & Education',
-    'Music & Bhajans',
-    'Temple Maintenance',
-    'Event Management',
-    'Youth Programs',
-  ];
-
-  const handleInterestChange = (interest: string, checked: boolean) => {
-    setFormData((prev) => ({
-      ...prev,
-      interests: checked
-        ? [...prev.interests, interest]
-        : prev.interests.filter((i) => i !== interest),
-    }));
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,51 +41,21 @@ const JoinCommunity = () => {
     });
   };
 
-  const templeHistory = [
-    {
-      year: '1985',
-      event: 'Temple Foundation',
-      description: 'Established by devoted spiritual seekers',
-    },
-    {
-      year: '1990',
-      event: 'First Major Festival',
-      description: 'Celebrated first grand Raghavendra Jayanti',
-    },
-    {
-      year: '2000',
-      event: 'Community Expansion',
-      description: 'Built community hall and education center',
-    },
-    {
-      year: '2015',
-      event: 'Digital Outreach',
-      description: 'Launched online services and virtual programs',
-    },
-  ];
+  const isDisabled = () => {
+    let isDisable = false;
 
-  const communityBenefits = [
-    {
-      icon: Heart,
-      title: 'Spiritual Growth',
-      description: 'Regular prayers, meditation, and spiritual guidance',
-    },
-    {
-      icon: Users,
-      title: 'Community Support',
-      description: 'Strong network of like-minded spiritual seekers',
-    },
-    {
-      icon: Book,
-      title: 'Learning Opportunities',
-      description: 'Educational programs on scriptures and traditions',
-    },
-    {
-      icon: Star,
-      title: 'Service Opportunities',
-      description: 'Participate in community service and temple activities',
-    },
-  ];
+    if (
+      !formData?.name ||
+      !formData?.address ||
+      !formData?.email ||
+      !formData?.phone ||
+      !formData?.interests ||
+      !formData?.availability
+    ) {
+      isDisable = true;
+    }
+    return isDisable;
+  };
 
   return (
     <section className="py-20 bg-gradient-sacred">
@@ -131,7 +74,6 @@ const JoinCommunity = () => {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
-          {/* Temple History & Mission */}
           <div>
             <Card className="border-temple-gold/20 shadow-sacred mb-8">
               <CardHeader>
@@ -148,7 +90,7 @@ const JoinCommunity = () => {
                 </p>
 
                 <div className="space-y-4">
-                  {templeHistory.map((item, index) => (
+                  {TEMPLE_HISTORY.map((item, index) => (
                     <div key={index} className="flex items-start space-x-4">
                       <Badge
                         variant="outline"
@@ -211,128 +153,30 @@ const JoinCommunity = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full Name *</Label>
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
-                      required
-                      className="border-temple-gold/30 focus:ring-temple-gold"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email Address *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                      required
-                      className="border-temple-gold/30 focus:ring-temple-gold"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number *</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone: e.target.value })
-                    }
-                    required
-                    className="border-temple-gold/30 focus:ring-temple-gold"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="address">Address</Label>
-                  <Textarea
-                    id="address"
-                    value={formData.address}
-                    onChange={(e) =>
-                      setFormData({ ...formData, address: e.target.value })
-                    }
-                    className="border-temple-gold/30 focus:ring-temple-gold"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Areas of Interest (Select all that apply)</Label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {interests.map((interest) => (
-                      <div
-                        key={interest}
-                        className="flex items-center space-x-2">
-                        <Checkbox
-                          id={interest}
-                          checked={formData.interests.includes(interest)}
-                          onCheckedChange={(checked) =>
-                            handleInterestChange(interest, checked as boolean)
-                          }
-                        />
-                        <Label htmlFor={interest} className="text-sm">
-                          {interest}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="availability">Availability</Label>
-                  <Select
-                    value={formData.availability}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, availability: value })
-                    }>
-                    <SelectTrigger className="border-temple-gold/30">
-                      <SelectValue placeholder="Select your availability" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="weekdays">Weekdays</SelectItem>
-                      <SelectItem value="weekends">Weekends Only</SelectItem>
-                      <SelectItem value="evenings">
-                        Evenings After Work
-                      </SelectItem>
-                      <SelectItem value="flexible">
-                        Flexible Schedule
-                      </SelectItem>
-                      <SelectItem value="festivals">
-                        Festivals & Special Events
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message">
-                    Why do you want to join our community?
-                  </Label>
-                  <Textarea
-                    id="message"
-                    value={formData.message}
-                    onChange={(e) =>
-                      setFormData({ ...formData, message: e.target.value })
-                    }
-                    placeholder="Share your spiritual journey and motivations..."
-                    className="border-temple-gold/30 focus:ring-temple-gold"
-                  />
-                </div>
-
-                <Button type="submit" className="w-full" variant="sacred">
+              <FormFields
+                fields={volunteerFormFields}
+                formData={formData}
+                setFormData={setFormData}
+                handleCheckboxChange={(id, option, checked) => {
+                  setFormData({
+                    ...formData,
+                    [id]: checked
+                      ? [...(formData[id] as string[]), option]
+                      : (formData[id] as string[]).filter((i) => i !== option),
+                  });
+                }}
+                wrapperClass={'space-y-6'}
+              />
+              <div className="space-y-2 mt-4">
+                <Button
+                  type="submit"
+                  className="w-full"
+                  variant="sacred"
+                  onClick={handleSubmit}
+                  disabled={isDisabled()}>
                   Submit Application
                 </Button>
-              </form>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -343,7 +187,7 @@ const JoinCommunity = () => {
             Community Benefits
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {communityBenefits.map((benefit, index) => (
+            {COMMUNITY_BENEFITS.map((benefit, index) => (
               <Card
                 key={index}
                 className="border-temple-gold/20 shadow-sacred text-center">

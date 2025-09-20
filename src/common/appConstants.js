@@ -1,3 +1,5 @@
+import { Heart, Users, Book, Star, Clock, MapPin } from 'lucide-react';
+
 export const TEMPLE_NAME = 'Shree Raghavendra Swami Temple';
 
 export const QUICK_LINKS = [
@@ -208,5 +210,51 @@ export const EVENTS_DATA = [
     attendees: 1200,
     description:
       'All-night vigil, chanting, and special abhishekam for Lord Shiva',
+  },
+];
+
+export const COMMUNITY_BENEFITS = [
+  {
+    icon: Heart,
+    title: 'Spiritual Growth',
+    description: 'Regular prayers, meditation, and spiritual guidance',
+  },
+  {
+    icon: Users,
+    title: 'Community Support',
+    description: 'Strong network of like-minded spiritual seekers',
+  },
+  {
+    icon: Book,
+    title: 'Learning Opportunities',
+    description: 'Educational programs on scriptures and traditions',
+  },
+  {
+    icon: Star,
+    title: 'Service Opportunities',
+    description: 'Participate in community service and temple activities',
+  },
+];
+
+export const TEMPLE_HISTORY = [
+  {
+    year: '1985',
+    event: 'Temple Foundation',
+    description: 'Established by devoted spiritual seekers',
+  },
+  {
+    year: '1990',
+    event: 'First Major Festival',
+    description: 'Celebrated first grand Raghavendra Jayanti',
+  },
+  {
+    year: '2000',
+    event: 'Community Expansion',
+    description: 'Built community hall and education center',
+  },
+  {
+    year: '2015',
+    event: 'Digital Outreach',
+    description: 'Launched online services and virtual programs',
   },
 ];

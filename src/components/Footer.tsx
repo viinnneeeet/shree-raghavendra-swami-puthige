@@ -38,8 +38,8 @@ const Footer = () => {
             <div className="space-y-2 text-white/80">
               <p>Shree Raghavendra Swami Temple</p>
               <p>Puttige Moodbidri, Karnataka 574227</p>
-              <p>(+91) 8433621215</p>
-              <p>info@sacredtemple.org</p>
+              <p>(+91) 84336 21215</p>
+              <p>info@raghavendra-temple.org</p>
             </div>
           </div>
         </div>

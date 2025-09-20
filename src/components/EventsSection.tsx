@@ -51,7 +51,6 @@ const EventsSection = () => {
       .slice(0, count);
   };
 
-  console.log(getUpcomingEvents(EVENTS_DATA));
   const handleChange = (key: string, value: string) => {
     setState((prev) => ({
       ...prev,

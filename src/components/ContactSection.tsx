@@ -49,7 +49,7 @@ const ContactSection = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Main: (+91) 8433621215
+                  Main: (+91) 84336 21215
                   <br />
                 </p>
               </CardContent>
@@ -64,9 +64,9 @@ const ContactSection = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  info@sacredtemple.org
+                  info@raghavendra-temple.org
                   <br />
-                  events@sacredtemple.org
+                  events@raghavendra-temple.org
                 </p>
               </CardContent>
             </Card>
