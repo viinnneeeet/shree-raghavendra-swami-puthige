@@ -97,11 +97,11 @@ const EventsSection = () => {
           </div>
         ) : null}
 
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12">
           {events?.map((event, index) => (
             <Card
               key={index}
-              className="hover:shadow-temple transition-[var(--transition-sacred)] border-temple-gold/20">
+              className="hover:shadow-temple hover:scale-105 transition-all duration-500 border-temple-gold/20 bg-card/50 backdrop-blur-sm">
               <CardHeader>
                 <div className="flex items-center justify-between mb-4">
                   <span

@@ -26,36 +26,35 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+      <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
           Welcome to
           <span className="block bg-gradient-to-r from-temple-gold to-temple-sunset bg-clip-text text-transparent">
             {TEMPLE_NAME}
           </span>
         </h1>
 
-        <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
-          A place of peace, prayer, and spiritual awakening.
+        <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+          A sacred sanctuary of peace, prayer, and spiritual awakening where all souls find divine connection.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Button
             variant="sacred"
             size="lg"
-            className="text-lg px-8 py-3"
+            className="text-base sm:text-lg px-6 sm:px-8 py-3 hover:scale-105 transition-all duration-300 w-full sm:w-auto"
             onClick={onClick}>
             Join Our Community
           </Button>
           <Button
             variant="blessing"
             size="lg"
-            className="text-lg px-8 py-3"
+            className="text-base sm:text-lg px-6 sm:px-8 py-3 hover:scale-105 transition-all duration-300 w-full sm:w-auto"
             onClick={() =>
               toast({
-                title: 'Scheduled: Catch up',
-                description: 'Friday, February 10, 2025 at 5:57 PM',
-                variant: 'warning',
-                position: 'bottom-left',
+                title: 'Temple Information',
+                description: 'Welcome to our sacred space of devotion',
+                variant: 'default',
               })
             }>
             Learn More
