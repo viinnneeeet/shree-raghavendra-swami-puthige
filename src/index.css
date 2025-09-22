@@ -189,4 +189,26 @@ All colors MUST be HSL.
   .delay-200 { animation-delay: 200ms; }
   .delay-300 { animation-delay: 300ms; }
   .delay-400 { animation-delay: 400ms; }
+
+  /* Custom slider styles for devotional audio */
+  .slider::-webkit-slider-thumb {
+    appearance: none;
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background: hsl(var(--temple-gold));
+    cursor: pointer;
+    border: 2px solid hsl(var(--temple-earth));
+    box-shadow: 0 0 8px hsl(var(--temple-gold) / 0.5);
+  }
+
+  .slider::-moz-range-thumb {
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background: hsl(var(--temple-gold));
+    cursor: pointer;
+    border: 2px solid hsl(var(--temple-earth));
+    box-shadow: 0 0 8px hsl(var(--temple-gold) / 0.5);
+  }
 }
