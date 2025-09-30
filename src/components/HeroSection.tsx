@@ -27,13 +27,13 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto h-full flex flex-col justify-center">
+      <div className="relative z-10 text-center px-4 md:px-6 lg:px-12 max-w-7xl mx-auto h-full flex flex-col justify-center">
         {/* Mobile-first heading with better hierarchy */}
-        <div className="mb-8 sm:mb-12">
-          <p className="text-lg sm:text-xl md:text-2xl text-temple-gold/90 mb-4 sm:mb-6 font-medium tracking-wide">
+        <div className="lg:mb-8 sm:mb-12">
+          <p className="md:text-9xl lg:text-4xl text-temple-gold/90 mb-4 sm:mb-6 font-medium tracking-wide">
             Welcome to
           </p>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-6 sm:mb-8 leading-[1.1] tracking-tight">
+          <h1 className="sm:text-5xl md:text-9xl lg:text-7xl xl:text-8xl font-bold text-white mb-6 sm:mb-8 leading-[1.1] tracking-tight">
             <span className="block bg-gradient-to-r from-temple-gold via-temple-sunset to-temple-gold bg-clip-text text-transparent font-display leading-[1.05] drop-shadow-lg">
               {TEMPLE_NAME}
             </span>
@@ -42,24 +42,25 @@ const HeroSection = () => {
 
         {/* Mobile-optimized description with better contrast */}
         <div className="mb-10 sm:mb-12">
-          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/95 max-w-4xl mx-auto leading-relaxed font-light drop-shadow-md">
-            A sacred sanctuary of peace, prayer, and spiritual awakening where all souls find divine connection.
+          <p className="md:text-4xl lg:text-xl text-white/95 max-w-4xl mx-auto leading-relaxed font-light drop-shadow-md">
+            A sacred sanctuary of peace, prayer, and spiritual awakening where
+            all souls find divine connection.
           </p>
         </div>
 
         {/* Mobile-optimized buttons with better touch targets */}
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
+        <div className="flex flex-col lg:flex-row gap-4 md:gap-8 md:w-full justify-center items-center">
           <Button
             variant="sacred"
             size="lg"
-            className="text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 hover:scale-105 transition-all duration-300 w-full sm:w-auto min-w-[200px] font-semibold shadow-xl border-2 border-temple-gold/30"
+            className="text-base lg:text-lg md:text-4xl px-8 sm:px-10 py- lg:py-5 md:py-8 hover:scale-105 transition-all duration-300 w-full sm:w-auto lg:min-w-[200px] md:min-w-[400px] font-semibold shadow-xl border-2 border-temple-gold/30"
             onClick={onClick}>
             Join Our Community
           </Button>
           <Button
             variant="blessing"
             size="lg"
-            className="text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 hover:scale-105 transition-all duration-300 w-full sm:w-auto min-w-[200px] font-semibold shadow-xl"
+            className="text-base lg:text-lg md:text-4xl px-8 sm:px-10 py-4 lg:py-5 md:py-8 hover:scale-105 transition-all duration-300 w-full sm:w-auto lg:min-w-[200px] md:min-w-[400px] font-semibold shadow-xl"
             onClick={() =>
               toast({
                 title: 'Temple Information',

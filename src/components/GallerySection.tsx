@@ -64,13 +64,13 @@ const GallerySection = () => {
               Gallery
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="lg:text-xl md:text-4xl text-muted-foreground max-w-2xl mx-auto">
             Glimpses of our spiritual community, sacred ceremonies, and the
             peaceful atmosphere that fills our temple every day.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-1 md:p-16 md:gap-8 lg:grid-cols-3 gap-6">
           {galleryImages.map((image, index) => (
             <Card
               key={index}
@@ -119,10 +119,10 @@ const GallerySection = () => {
 
         <div className="text-center mt-12">
           <div className="bg-card border border-temple-gold/30 rounded-lg p-8 max-w-2xl mx-auto shadow-sacred">
-            <h3 className="text-2xl font-semibold text-temple-earth mb-4">
+            <h3 className="lg:text-2xl md:text-5xl font-semibold text-temple-earth mb-4">
               Visit Us
             </h3>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-muted-foreground mb-6 md:text-4xl lg:text-lg">
               Experience the peace and spiritual energy of our temple firsthand.
               All are welcome to join our community gatherings and celebrations.
             </p>

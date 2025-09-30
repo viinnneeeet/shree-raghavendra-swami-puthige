@@ -23,12 +23,11 @@ const Index = () => {
         <GallerySection />
         <ContactSection />
       </Suspense>
-      
+
       {/* Devotional Audio Player */}
-      <DevotionalAudio 
+      <DevotionalAudio
         audioSrc="/audio/raghavendra-jap.mp3" // You can replace this with your audio file
         title="Shree Raghavendra Swami Jap"
-        autoPlay={true}
       />
     </div>
   );

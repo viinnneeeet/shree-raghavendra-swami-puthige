@@ -7,19 +7,19 @@ const ContactSection = () => {
     <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="lg:text-4xl md:text-5xl font-bold text-foreground mb-6">
             Visit
-            <span className="bg-gradient-to-r from-temple-gold to-temple-purple bg-clip-text text-transparent ml-3">
+            <span className="bg-gradient-to-r md:text-4xl from-temple-gold to-temple-purple bg-clip-text text-transparent ml-3">
               Our Temple
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="lg:text-xl md:text-4xl text-muted-foreground max-w-2xl mx-auto">
             We invite you to join our spiritual community. Our doors are always
             open to those seeking peace, wisdom, and divine connection.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid md:grid-cols-1 md:p-16 lg:grid-cols-2 gap-12">
           {/* Contact Information */}
           <div className="space-y-8">
             <Card className="border-temple-gold/20 hover:shadow-temple transition-[var(--transition-sacred)]">

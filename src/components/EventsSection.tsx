@@ -90,14 +90,14 @@ const EventsSection = () => {
                 Events
               </span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="lg:text-xl md:text-4xl text-muted-foreground max-w-2xl mx-auto">
               Join us for these sacred gatherings, celebrations, and
               opportunities for spiritual growth and community connection.
             </p>
           </div>
         ) : null}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12">
+        <div className="grid grid-cols-1 md:p-16 lg:grid-cols-2 gap-6 lg:gap-8 mb-12">
           {events?.map((event, index) => (
             <Card
               key={index}
@@ -105,37 +105,41 @@ const EventsSection = () => {
               <CardHeader>
                 <div className="flex items-center justify-between mb-4">
                   <span
-                    className={`px-3 py-1 rounded-full text-sm font-semibold border ${getEventColor(
+                    className={`px-3 py-1 rounded-full lg:text-sm md:text-2xl font-semibold border ${getEventColor(
                       event.type
                     )}`}>
                     {event.type}
                   </span>
                 </div>
-                <CardTitle className="text-temple-earth text-xl">
+                <CardTitle className="text-temple-earth lg:text-xl md:text-5xl">
                   {event.title}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center text-muted-foreground">
-                  <Calendar className="w-4 h-4 mr-2 text-temple-gold" />
+                <div className="flex items-center text-muted-foreground lg:text-lg md:text-4xl">
+                  <Calendar className="w-4 h-4 mr-2 text-temple-gold " />
                   {event.date}
                 </div>
-                <div className="flex items-center text-muted-foreground">
+                <div className="flex items-center text-muted-foreground lg:text-lg md:text-4xl">
                   <Clock className="w-4 h-4 mr-2 text-temple-gold" />
                   {event.time}
                 </div>
-                <div className="flex items-center text-muted-foreground">
+                <div className="flex items-center text-muted-foreground lg:text-lg md:text-4xl">
                   <MapPin className="w-4 h-4 mr-2 text-temple-gold" />
                   {event.location}
                 </div>
-                <p className="text-muted-foreground">{event.description}</p>
+                <p className="text-muted-foreground lg:text-lg md:text-4xl">
+                  {event.description}
+                </p>
                 <Button
                   variant="temple"
-                  className="w-full"
+                  className="w-full md:py-8"
                   onClick={() => {
                     navigate('/register-event');
                   }}>
-                  Register for Event
+                  <span className="lg:text-lg md:text-4xl">
+                    Register for Event
+                  </span>
                 </Button>
               </CardContent>
             </Card>
@@ -144,10 +148,10 @@ const EventsSection = () => {
 
         <div className="text-center">
           <div className="bg-card border border-temple-gold/30 rounded-lg p-8 max-w-2xl mx-auto shadow-sacred">
-            <h3 className="text-2xl font-semibold text-temple-earth mb-4">
+            <h3 className="lg:text-2xl md:text-5xl font-semibold text-temple-earth mb-4">
               Stay Connected
             </h3>
-            <p className="text-muted-foreground mb-6">
+            <p className="lg:text-lg md:text-4xl text-muted-foreground mb-6">
               Subscribe to our newsletter to receive updates about upcoming
               events, spiritual teachings, and community announcements.
             </p>

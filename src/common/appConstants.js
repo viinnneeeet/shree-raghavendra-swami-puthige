@@ -258,3 +258,24 @@ export const TEMPLE_HISTORY = [
     description: 'Launched online services and virtual programs',
   },
 ];
+
+export const SPIRITUAL_CARDS = [
+  {
+    icon: '🏛️',
+    title: 'Ancient Wisdom',
+    description:
+      'Preserving timeless teachings and spiritual practices passed down through generations of devoted practitioners.',
+  },
+  {
+    icon: '🧘',
+    title: 'Inner Peace',
+    description:
+      'Offering prayer, and contemplative practices to nurture spiritual growth and inner tranquility.',
+  },
+  {
+    icon: '🤝',
+    title: 'Community Unity',
+    description:
+      'Building bridges of understanding and compassion among all peoples, fostering a spirit of universal brotherhood.',
+  },
+];
