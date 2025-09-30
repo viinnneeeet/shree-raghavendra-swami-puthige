@@ -9,7 +9,7 @@ const ContactSection = () => {
         <div className="text-center mb-16">
           <h2 className="lg:text-4xl md:text-5xl font-bold text-foreground mb-6">
             Visit
-            <span className="bg-gradient-to-r md:text-4xl from-temple-gold to-temple-purple bg-clip-text text-transparent ml-3">
+            <span className="bg-gradient-to-r md:text-5xl from-temple-gold to-temple-purple bg-clip-text text-transparent ml-3">
               Our Temple
             </span>
           </h2>
@@ -24,13 +24,13 @@ const ContactSection = () => {
           <div className="space-y-8">
             <Card className="border-temple-gold/20 hover:shadow-temple transition-[var(--transition-sacred)]">
               <CardHeader>
-                <CardTitle className="flex items-center text-temple-earth">
-                  <MapPin className="w-5 h-5 mr-2 text-temple-gold" />
+                <CardTitle className="flex items-center text-temple-earth md:text-5xl lg:text-xl">
+                  <MapPin className="lg:w-5 lg:h-5 md:w-10 md:h-10 mr-2 text-temple-gold" />
                   Location
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground md:text-4xl lg:text-base">
                   Shree Raghavendra Swami Temple
                   <br />
                   Puttige Moodbidri,
@@ -42,13 +42,13 @@ const ContactSection = () => {
 
             <Card className="border-temple-gold/20 hover:shadow-temple transition-[var(--transition-sacred)]">
               <CardHeader>
-                <CardTitle className="flex items-center text-temple-earth">
-                  <Phone className="w-5 h-5 mr-2 text-temple-gold" />
+                <CardTitle className="flex items-center text-temple-earth  md:text-5xl lg:text-xl">
+                  <Phone className="lg:w-5 lg:h-5 md:w-10 md:h-10 mr-2 text-temple-gold" />
                   Phone
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground md:text-4xl lg:text-base">
                   Main: (+91) 84336 21215
                   <br />
                 </p>
@@ -57,13 +57,13 @@ const ContactSection = () => {
 
             <Card className="border-temple-gold/20 hover:shadow-temple transition-[var(--transition-sacred)]">
               <CardHeader>
-                <CardTitle className="flex items-center text-temple-earth">
-                  <Mail className="w-5 h-5 mr-2 text-temple-gold" />
+                <CardTitle className="flex items-center text-temple-earth md:text-5xl lg:text-xl">
+                  <Mail className="lg:w-5 lg:h-5 md:w-10 md:h-10 mr-2 text-temple-gold" />
                   Email
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground md:text-4xl lg:text-base">
                   info@raghavendra-temple.org
                   <br />
                   events@raghavendra-temple.org
@@ -73,13 +73,13 @@ const ContactSection = () => {
 
             <Card className="border-temple-gold/20 hover:shadow-temple transition-[var(--transition-sacred)]">
               <CardHeader>
-                <CardTitle className="flex items-center text-temple-earth">
-                  <Clock className="w-5 h-5 mr-2 text-temple-gold" />
+                <CardTitle className="flex items-center text-temple-earth md:text-5xl lg:text-xl">
+                  <Clock className="lg:w-5 lg:h-5 md:w-10 md:h-10 mr-2 text-temple-gold" />
                   Temple Hours
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-muted-foreground space-y-1">
+                <div className="text-muted-foreground space-y-1 md:text-4xl lg:text-base">
                   <p>Monday - Friday: 5:00 AM - 9:00 PM</p>
                   <p>Saturday: 6:00 AM - 10:00 PM</p>
                   <p>Sunday: 5:00 AM - 10:00 PM</p>

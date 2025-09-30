@@ -105,7 +105,7 @@ const EventsSection = () => {
               <CardHeader>
                 <div className="flex items-center justify-between mb-4">
                   <span
-                    className={`px-3 py-1 rounded-full lg:text-sm md:text-2xl font-semibold border ${getEventColor(
+                    className={`px-3 py-1 rounded-full lg:text-sm md:text-4xl font-semibold border ${getEventColor(
                       event.type
                     )}`}>
                     {event.type}
@@ -117,15 +117,15 @@ const EventsSection = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center text-muted-foreground lg:text-lg md:text-4xl">
-                  <Calendar className="w-4 h-4 mr-2 text-temple-gold " />
+                  <Calendar className="lg:w-4 lg:h-4 md:w-10 md:h-10 mr-2 text-temple-gold " />
                   {event.date}
                 </div>
                 <div className="flex items-center text-muted-foreground lg:text-lg md:text-4xl">
-                  <Clock className="w-4 h-4 mr-2 text-temple-gold" />
+                  <Clock className="lg:w-4 lg:h-4 md:w-10 md:h-10 mr-2 text-temple-gold" />
                   {event.time}
                 </div>
                 <div className="flex items-center text-muted-foreground lg:text-lg md:text-4xl">
-                  <MapPin className="w-4 h-4 mr-2 text-temple-gold" />
+                  <MapPin className="lg:w-4 lg:h-4 md:w-10 md:h-10 mr-2 text-temple-gold" />
                   {event.location}
                 </div>
                 <p className="text-muted-foreground lg:text-lg md:text-4xl">
@@ -133,7 +133,7 @@ const EventsSection = () => {
                 </p>
                 <Button
                   variant="temple"
-                  className="w-full md:py-8"
+                  className="w-full md:py-8 lg:py-2"
                   onClick={() => {
                     navigate('/register-event');
                   }}>
@@ -159,7 +159,7 @@ const EventsSection = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-2 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold"
+                className="flex-1 lg:px-4 lg:py-2 md:py-4 md:px-4 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold"
                 value={state?.subscribeEmail || ''}
                 name="subscribeEmail"
                 onChange={(e) => {

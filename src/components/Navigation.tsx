@@ -12,10 +12,10 @@ const Navigation = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-temple-gold/20 shadow-temple">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between lg:h-16 md:h-32">
           <Link
             to="/"
-            className="lg:text-2xl md:text-4xl font-bold bg-gradient-to-r from-temple-gold to-temple-bronze bg-clip-text text-transparent hover:scale-105 transition-transform duration-300">
+            className="lg:text-2xl md:text-5xl md:ml-2 font-bold bg-gradient-to-r from-temple-gold to-temple-bronze bg-clip-text text-transparent hover:scale-105 transition-transform duration-300">
             {TEMPLE_NAME}
           </Link>
 
@@ -40,10 +40,10 @@ const Navigation = () => {
           </div>
 
           {/* Theme Toggle and Language Selector */}
-          <div className="hidden md:flex items-center space-x-3">
+          {/* <div className="hidden md:flex items-center space-x-3">
             <LanguageSelector />
             <ThemeToggle />
-          </div>
+          </div> */}
 
           {/* Mobile Menu Button */}
           <div className="flex items-center space-x-2">
@@ -54,7 +54,7 @@ const Navigation = () => {
             <button
               className="lg:hidden text-foreground hover:text-temple-gold transition-all duration-300 p-2 hover:scale-110"
               onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMenuOpen ? <X size={50} /> : <Menu size={50} />}
             </button>
           </div>
         </div>
@@ -62,7 +62,7 @@ const Navigation = () => {
         {/* Mobile Navigation with smooth animation */}
         <div
           className={`lg:hidden transition-all duration-300 ease-in-out overflow-hidden ${
-            isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            isMenuOpen ? 'max-h-100 opacity-100' : 'max-h-0 opacity-0'
           }`}>
           <div className="px-2 pt-2 pb-3 space-y-1 bg-background/95 backdrop-blur-sm border-t border-temple-gold/20">
             {NAVIGATION_ITEMS.map((item, index) => (
@@ -70,7 +70,7 @@ const Navigation = () => {
                 key={item.href}
                 to={item.href}
                 className={classNames(
-                  'block px-3 py-2 rounded-md text-base font-medium transition-all duration-300 hover:scale-105 transform',
+                  'block px-5 py-4 rounded-md md:text-4xl font-semibold transition-all duration-300 hover:scale-105 transform',
                   {
                     'text-temple-gold bg-temple-gold/10':
                       location.pathname === item.href,

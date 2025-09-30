@@ -129,6 +129,7 @@ const GallerySection = () => {
             <Button
               variant="temple"
               size="lg"
+              className="md:py-8 lg:py-2 lg:text-lg md:text-4xl"
               onClick={() => {
                 navigate('/plan-visit');
               }}>
