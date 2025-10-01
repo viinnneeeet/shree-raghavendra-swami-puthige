@@ -53,7 +53,7 @@ const RegisterEvent = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-sacred min-h-screen">
+    <section className="py-20 bg-gradient-sacred">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
@@ -62,24 +62,24 @@ const RegisterEvent = () => {
               Events
             </span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="lg:text-xl md:text-3xl text-muted-foreground max-w-2xl mx-auto">
             Join us for sacred gatherings and spiritual experiences at our
             temple.
           </p>
         </div>
 
-        <Card className="max-w-2xl mx-auto border-temple-gold/20 shadow-sacred">
+        <Card className="lg:max-w-2xl mx-auto border-temple-gold/20 shadow-sacred">
           <CardHeader>
-            <CardTitle className="text-2xl text-temple-earth text-center">
+            <CardTitle className="lg:text-2xl md:text-5xl text-temple-earth text-center">
               Event Registration Form
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="">
             <FormFields
               fields={eventFormFields(eventsOptions)}
               formData={formData}
               setFormData={setFormData}
-              wrapperClass="space-y-6"
+              wrapperClass="lg:space-y-6 md:space-y-12"
             />
 
             <Button

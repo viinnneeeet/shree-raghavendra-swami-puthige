@@ -80,7 +80,7 @@ const GallerySection = () => {
                 <img
                   src={image.src}
                   alt={image.alt}
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full lg:h-64 md:h-128 lg:object-cover md:object-fill group-hover:scale-110 transition-transform duration-500"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-temple-earth/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -110,7 +110,7 @@ const GallerySection = () => {
               <img
                 src={selectedImage}
                 alt="Enlarged gallery image"
-                className="max-w-full max-h-[80vh] object-contain rounded-lg"
+                className="max-w-full lg:max-h-[80vh] md:max-h-svh lg:object-contain md:object-cover rounded-lg"
                 onClick={() => setSelectedImage(null)}
               />
             </div>

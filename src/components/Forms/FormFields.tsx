@@ -79,6 +79,7 @@ export function FormFields<T extends Record<string, unknown>>({
                   }
                   placeholder={field.placeholder}
                   className="border-temple-gold/30 focus:ring-temple-gold"
+                  rows={field?.row}
                 />
               </div>
             );

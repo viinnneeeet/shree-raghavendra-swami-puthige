@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { Input } from '../ui/input';
 
 const ContactForm = () => {
   const initialState = {
@@ -42,11 +43,12 @@ const ContactForm = () => {
               <label className="block lg:text-sm md:text-4xl font-medium text-foreground mb-2">
                 First Name
               </label>
-              <input
+              <Input
                 type="text"
-                className="w-full px-4 lg:py-2 md:py-6 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold"
+                className="w-full px-4 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold"
                 value={state?.firstName || ''}
                 name="firstName"
+                placeholder="Enter First Name"
                 onChange={(e) => {
                   handleChange(e?.target?.name, e?.target?.value);
                 }}
@@ -56,11 +58,12 @@ const ContactForm = () => {
               <label className="block lg:text-sm md:text-4xl font-medium text-foreground mb-2">
                 Last Name
               </label>
-              <input
+              <Input
                 type="text"
                 className="w-full lg:py-2 md:py-6 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold"
                 value={state?.lastName || ''}
                 name="lastName"
+                placeholder="Enter Last Name"
                 onChange={(e) => {
                   handleChange(e?.target?.name, e?.target?.value);
                 }}
@@ -72,11 +75,12 @@ const ContactForm = () => {
             <label className="block lg:text-sm md:text-4xl font-medium md:font-extrabold text-foreground mb-2">
               Email
             </label>
-            <input
+            <Input
               type="email"
               className="w-full lg:py-2 md:py-6 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold"
               value={state?.email || ''}
               name="email"
+              placeholder="Enter Email"
               onChange={(e) => {
                 handleChange(e?.target?.name, e?.target?.value);
               }}
@@ -87,11 +91,12 @@ const ContactForm = () => {
             <label className="block lg:text-sm md:text-4xl font-medium text-foreground mb-2">
               Phone (Optional)
             </label>
-            <input
+            <Input
               type="tel"
               className="w-full lg:py-2 md:py-6 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold"
               value={state?.phone || ''}
               name="phone"
+              placeholder="Enter Phone"
               onChange={(e) => {
                 handleChange(e?.target?.name, e?.target?.value);
               }}
@@ -104,7 +109,7 @@ const ContactForm = () => {
             </label>
             <textarea
               rows={5}
-              className="w-full lg:py-2 md:py-6 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold resize-none md:placeholder:text-3xl lg:placeholder:text-sm"
+              className="w-full lg:py-2 md:py-6 md:text-4xl lg:text-base border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold resize-none md:placeholder:text-4xl lg:placeholder:text-sm"
               placeholder="How can we help you on your spiritual journey?"
               value={state?.message || ''}
               name="message"

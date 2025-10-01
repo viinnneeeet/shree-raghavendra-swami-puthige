@@ -1,4 +1,4 @@
-import { TEMPLE_NAME, QUICK_LINKS } from '@/common/appConstants';
+import { TEMPLE_NAME, QUICK_LINKS, CONTACT_INFO } from '@/common/appConstants';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -11,7 +11,7 @@ const Footer = () => {
             <h3 className="lg:text-xl md:text-5xl font-bold bg-gradient-to-r from-temple-gold to-temple-sunset bg-clip-text text-transparent mb-3 sm:mb-4">
               About {TEMPLE_NAME}
             </h3>
-            <p className="text-white/85 md:text-4xl mb-4 sm:mb-6 lg:text-sm sm:text-base leading-relaxed">
+            <p className="text-white/85 md:text-4xl mb-4 sm:mb-6 lg:text-sm sm:text-base leading-loose">
               A beacon of spiritual light, welcoming all souls seeking peace,
               wisdom, and divine connection. Our temple stands as a sacred space
               where devotion meets community.
@@ -20,10 +20,10 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="mt-4 sm:mt-0">
-            <h4 className="lg:text-lg md:text-5xl font-semibold mb-3 sm:mb-4 text-temple-gold">
+            <h4 className="lg:text-lg md:text-5xl font-semibold mb-3 lg:mb-4 md:mb-10 text-temple-gold">
               Quick Links
             </h4>
-            <div className="space-y-2 sm:space-y-3">
+            <div className="lg:space-y-2 md:space-y-10">
               {QUICK_LINKS?.map((link) => (
                 <Link
                   key={link?.name}
@@ -37,42 +37,23 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div className="mt-4 sm:mt-0">
-            <h4 className="text-lg lg:text-xl md:text-5xl font-semibold mb-3 sm:mb-4 text-temple-gold">
+            <h4 className="text-lg lg:text-xl md:text-5xl font-semibold lg:mb-3 md:mb-10 text-temple-gold">
               Contact Info
             </h4>
-            <div className="space-y-3 sm:space-y-4 text-white/80 ">
-              <div className="flex items-start space-x-3">
-                <span className="text-temple-gold text-lg mt-0.5 flex-shrink-0">
-                  📍
-                </span>
-                <p className="lg:text-sm sm:text-base leading-relaxed md:text-4xl">
-                  Puttige Moodbidri, Karnataka 574227
-                </p>
-              </div>
-              <div className="flex items-center md:space-x-3">
-                <span className="text-temple-gold text-lg flex-shrink-0">
-                  📞
-                </span>
-                <p className="lg:text-sm sm:text-base md:text-4xl">
-                  (+91) 84336 21215
-                </p>
-              </div>
-              <div className="flex items-center space-x-3">
-                <span className="text-temple-gold text-lg flex-shrink-0">
-                  ✉️
-                </span>
-                <p className="lg:text-sm sm:text-base break-all md:text-4xl">
-                  info@raghavendra-temple.org
-                </p>
-              </div>
-              <div className="flex items-center space-x-3">
-                <span className="text-temple-gold text-lg flex-shrink-0">
-                  🕐
-                </span>
-                <p className="lg:text-sm sm:text-base md:text-4xl">
-                  5:00 AM - 9:00 PM
-                </p>
-              </div>
+            <div className="sm:space-y-4 text-white/80 md:space-y-10 lg:space-y-3">
+              {CONTACT_INFO.map(({ icon, text, className = '' }, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center space-x-3 md:space-x-3">
+                  <span className="text-temple-gold lg:text-lg md:text-5xl flex-shrink-0">
+                    {icon}
+                  </span>
+                  <p
+                    className={`lg:text-sm md:text-4xl sm:text-base ${className}`}>
+                    {text}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

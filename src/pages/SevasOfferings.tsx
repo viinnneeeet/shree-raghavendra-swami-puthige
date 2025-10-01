@@ -98,13 +98,13 @@ const SevasOfferings = () => {
     <section className="py-20 bg-gradient-earth">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <h1 className="lg:text-4xl md:text-8xl font-bold text-foreground mb-6">
             Sevas &
-            <span className="bg-gradient-to-r from-temple-gold to-temple-purple bg-clip-text text-transparent ml-3">
+            <span className="bg-gradient-to-r from-temple-gold to-temple-purple bg-clip-text text-transparent ml-3 md:text-8xl">
               Offerings
             </span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="lg:text-xl md:text-4xl text-muted-foreground max-w-2xl mx-auto">
             Participate in sacred services and make offerings to receive divine
             blessings and contribute to temple activities.
           </p>
@@ -112,47 +112,47 @@ const SevasOfferings = () => {
 
         {/* Sevas Section */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8 text-temple-earth">
+          <h2 className="font-bold text-center mb-8 text-temple-earth lg:text-3xl md:text-8xl">
             Sacred Sevas
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-1 lg:px-0 md:px-8 lg:grid-cols-3 lg:gap-6 md:gap-12">
             {sevas.map((seva, index) => (
               <Card
                 key={index}
                 className="border-temple-gold/20 shadow-sacred hover:shadow-temple transition-shadow">
                 <CardHeader>
                   <div className="flex items-center justify-between mb-4">
-                    <seva.icon className="w-8 h-8 text-temple-gold" />
+                    <seva.icon className="lg:w-8 lg:h-8 md:w-14 md:h-14 text-temple-gold" />
                     <Badge
                       variant="outline"
-                      className="border-temple-gold text-temple-gold">
+                      className="border-temple-gold text-temple-gold md:text-4xl lg:text-base">
                       {seva.duration}
                     </Badge>
                   </div>
-                  <CardTitle className="text-xl text-temple-earth">
+                  <CardTitle className="lg:text-xl md:text-6xl text-temple-earth">
                     {seva.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground mb-4">
+                  <p className="text-muted-foreground mb-4 md:text-5xl lg:text-base">
                     {seva.description}
                   </p>
 
                   <div className="mb-4">
-                    <span className="text-2xl font-bold text-temple-gold">
+                    <span className="lg:text-2xl md:text-6xl font-bold text-temple-gold">
                       {seva.amount}
                     </span>
                   </div>
 
                   <div className="mb-6">
-                    <h4 className="font-semibold text-temple-earth mb-2">
+                    <h4 className="font-semibold text-temple-earth mb-2 md:text-5xl lg:text-base">
                       Benefits:
                     </h4>
                     <ul className="space-y-1">
                       {seva.benefits.map((benefit, idx) => (
                         <li
                           key={idx}
-                          className="text-sm text-muted-foreground flex items-center">
+                          className="lg:text-sm md:text-4xl text-muted-foreground flex items-center">
                           <Star className="w-3 h-3 mr-2 text-temple-gold" />
                           {benefit}
                         </li>
@@ -171,21 +171,21 @@ const SevasOfferings = () => {
 
         {/* Offerings Section */}
         <div>
-          <h2 className="text-3xl font-bold text-center mb-8 text-temple-earth">
+          <h2 className="lg:text-3xl md:text-6xl font-bold text-center mb-8 text-temple-earth">
             Temple Offerings
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid md:grid-cols-1 lg:grid-cols-4 md:px-16 lg:px-0 md:gap-16 lg:gap-4">
             {offerings.map((offering, index) => (
               <Card key={index} className="border-temple-gold/20 shadow-sacred">
                 <CardContent className="pt-6">
                   <div className="text-center">
-                    <h3 className="font-semibold text-temple-earth mb-2">
+                    <h3 className="font-semibold text-temple-earth mb-2 md:text-6xl lg:text-lg">
                       {offering.item}
                     </h3>
-                    <p className="text-sm text-muted-foreground mb-3">
+                    <p className="text-muted-foreground mb-3  md:text-4xl lg:text-sm">
                       {offering.description}
                     </p>
-                    <div className="text-lg font-bold text-temple-gold mb-4">
+                    <div className="lg:text-lg font-bold text-temple-gold mb-4 md:text-6xl">
                       {offering.price}
                     </div>
                     <Button size="sm" variant="sacred" className="w-full">
@@ -202,15 +202,15 @@ const SevasOfferings = () => {
         <Card className="mt-12 border-temple-gold/20 shadow-sacred">
           <CardContent className="pt-6">
             <div className="text-center">
-              <h3 className="text-xl font-semibold text-temple-earth mb-4">
+              <h3 className="lg:text-xl  md:text-5xl font-semibold text-temple-earth mb-4">
                 Online Payment Information
               </h3>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-muted-foreground mb-4 lg:text-sm md:text-4xl">
                 Secure online payment processing will be available once our
                 payment system is configured. For now, please visit the temple
                 directly or contact us for donation arrangements.
               </p>
-              <div className="flex justify-center space-x-4">
+              <div className="flex justify-center space-x-4 md:mt-16 lg:mt-0">
                 <Button variant="outline" className="border-temple-gold/30">
                   Contact Temple
                 </Button>

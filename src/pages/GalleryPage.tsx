@@ -11,6 +11,8 @@ import galleryService from '@/assets/images/gallery-service.jpg';
 import galleryGarden from '@/assets/images/gallery-garden.jpg';
 import galleryEducation from '@/assets/images/gallery-education.jpg';
 
+import { STATS_DATA } from '@/common/appConstants';
+
 const GalleryPage = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -114,7 +116,7 @@ const GalleryPage = () => {
               Gallery
             </span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="lg:text-xl md:text-3xl text-muted-foreground max-w-2xl mx-auto">
             Explore the beauty and spirituality of our temple through these
             sacred moments and celebrations.
           </p>
@@ -130,7 +132,7 @@ const GalleryPage = () => {
                   variant={
                     selectedCategory === category ? 'default' : 'outline'
                   }
-                  className={`cursor-pointer px-4 py-2 ${
+                  className={`cursor-pointer px-4 py-2 md:text-4xl lg:text-base ${
                     selectedCategory === category
                       ? 'bg-temple-gold text-white'
                       : 'border-temple-gold/30 hover:bg-temple-gold/10'
@@ -144,7 +146,7 @@ const GalleryPage = () => {
         </Card>
 
         {/* Gallery Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-6">
           {filteredImages.map((image, index) => (
             <Card
               key={index}
@@ -153,13 +155,13 @@ const GalleryPage = () => {
                 <img
                   src={image.src}
                   alt={image.title}
-                  className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
+                  className="w-full lg:h-64 md:h-180 object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <button
                     onClick={() => setSelectedImage(image.src)}
                     className="bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 transition-colors">
-                    <ZoomIn className="w-6 h-6 text-white" />
+                    <ZoomIn className="lg:w-6 lg:h-6 md:h-12 md:w-12 text-white" />
                   </button>
                 </div>
                 <Badge
@@ -171,10 +173,10 @@ const GalleryPage = () => {
                 </Badge>
               </div>
               <CardContent className="pt-4">
-                <h3 className="font-semibold text-temple-earth mb-2">
+                <h3 className="font-semibold text-temple-earth mb-2 md:text-4xl lg:text-base">
                   {image.title}
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground md:text-3xl lg:text-sm">
                   {image.description}
                 </p>
               </CardContent>
@@ -204,30 +206,17 @@ const GalleryPage = () => {
         <Card className="mt-12 border-temple-gold/20 shadow-sacred">
           <CardContent className="pt-6">
             <div className="grid md:grid-cols-4 gap-6 text-center">
-              <div>
-                <h3 className="text-3xl font-bold text-temple-gold mb-2">
-                  500+
-                </h3>
-                <p className="text-muted-foreground">Photos Captured</p>
-              </div>
-              <div>
-                <h3 className="text-3xl font-bold text-temple-purple mb-2">
-                  50+
-                </h3>
-                <p className="text-muted-foreground">Events Documented</p>
-              </div>
-              <div>
-                <h3 className="text-3xl font-bold text-temple-sunset mb-2">
-                  25+
-                </h3>
-                <p className="text-muted-foreground">Festivals Celebrated</p>
-              </div>
-              <div>
-                <h3 className="text-3xl font-bold text-temple-earth mb-2">
-                  1000+
-                </h3>
-                <p className="text-muted-foreground">Community Members</p>
-              </div>
+              {STATS_DATA?.map((stat) => (
+                <div>
+                  <h3
+                    className={`lg:text-3xl md:text-6xl font-bold ${stat?.color} mb-2`}>
+                    {stat?.value}
+                  </h3>
+                  <p className="text-muted-foreground md:text-3xl lg:text-base">
+                    {stat?.label}
+                  </p>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>

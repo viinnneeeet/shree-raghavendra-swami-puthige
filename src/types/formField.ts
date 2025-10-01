@@ -14,6 +14,7 @@ export type FormField =
       label: string;
       required?: boolean;
       placeholder?: string;
+      row?: number;
     }
   | {
       id: string;

@@ -279,3 +279,55 @@ export const SPIRITUAL_CARDS = [
       'Building bridges of understanding and compassion among all peoples, fostering a spirit of universal brotherhood.',
   },
 ];
+
+export const CONTACT_INFO = [
+  {
+    icon: '📍',
+    text: 'Puttige Moodbidri, Karnataka 574227',
+    className: 'leading-relaxed', // extra style for address
+  },
+  {
+    icon: '📞',
+    text: '(+91) 84336 21215',
+  },
+  {
+    icon: '✉️',
+    text: 'info@raghavendra-temple.org',
+    className: 'break-all', // email needs wrapping
+  },
+  {
+    icon: '🕐',
+    text: '5:00 AM - 9:00 PM',
+  },
+];
+
+export const STATS_DATA = [
+  { value: '500+', label: 'Photos Captured', color: 'text-temple-gold' },
+  { value: '50+', label: 'Events Documented', color: 'text-temple-purple' },
+  { value: '25+', label: 'Festivals Celebrated', color: 'text-temple-sunset' },
+  { value: '1000+', label: 'Community Members', color: 'text-temple-earth' },
+];
+
+export const EVENTS_HIGHLIGHTS = [
+  {
+    title: 'Next Festival',
+    name: 'Ram Navami',
+    date: 'April 10, 2024',
+    bg: 'bg-temple-gold/10',
+    color: 'text-temple-gold',
+  },
+  {
+    title: 'Monthly Retreat',
+    name: 'Meditation Weekend',
+    date: 'Last weekend of every month',
+    bg: 'bg-temple-purple/10',
+    color: 'text-temple-purple',
+  },
+  {
+    title: 'Community Service',
+    name: 'Monthly Service',
+    date: '15th of every month',
+    bg: 'bg-temple-sunset/10',
+    color: 'text-temple-sunset',
+  },
+];

@@ -109,6 +109,7 @@ export const eventFormFields = (
     label: 'Special Requirements (Optional)',
     placeholder:
       'Any dietary restrictions, accessibility needs, or special requests...',
-    required: true,
+    required: false,
+    row: 5,
   },
 ];
