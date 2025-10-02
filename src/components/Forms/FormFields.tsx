@@ -55,6 +55,7 @@ export function FormFields<T extends Record<string, unknown>>({
                     }))
                   }
                   className="border-temple-gold/30 focus:ring-temple-gold"
+                  placeholder={field?.placeholder}
                 />
               </div>
             );

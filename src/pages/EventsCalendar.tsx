@@ -121,10 +121,10 @@ const EventsCalendar = () => {
                         variant="outline"
                         className={`border ${getEventColor(
                           event.type
-                        )} lg:text-base md:text-3xl`}>
+                        )} lg:text-base md:text-4xl`}>
                         {event.type}
                       </Badge>
-                      <span className="lg:text-sm md:text-3xl text-muted-foreground">
+                      <span className="lg:text-sm md:text-4xl text-muted-foreground">
                         {new Date(event.date).toLocaleDateString('en-US', {
                           weekday: 'long',
                           day: 'numeric',
@@ -136,11 +136,11 @@ const EventsCalendar = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground mb-4 lg:text-base md:text-4xl">
+                    <p className="text-muted-foreground lg:mb-4 md:mb-10 lg:text-base md:text-4xl">
                       {event.description}
                     </p>
 
-                    <div className="space-y-2 mb-4">
+                    <div className="lg:space-y-2 md:space-y-6 lg:mb-4 md:mb-10">
                       <div className="flex items-center text-muted-foreground lg:text-base md:text-4xl">
                         <Clock className="lg:w-4 lg:h-4 md:w-10 md:h-10 mr-2 text-temple-gold" />
                         {event.time}
@@ -180,18 +180,18 @@ const EventsCalendar = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid lg:grid-cols-3 md:grid-cols-1 md:gap-8 lg:gap-4">
               {EVENTS_HIGHLIGHTS.map(
                 ({ title, name, date, bg, color }, idx) => (
                   <div key={idx} className={`text-center p-4 ${bg} rounded-lg`}>
-                    <h4 className="font-semibold lg:text-base md:text-4xl text-temple-earth">
+                    <h4 className="font-semibold lg:text-base md:text-5xl text-temple-earth">
                       {title}
                     </h4>
                     <p
-                      className={`${color} font-medium lg:text-sm md:text-3xl`}>
+                      className={`${color} font-medium lg:text-sm md:text-4xl`}>
                       {name}
                     </p>
-                    <p className="lg:text-sm md:text-3xl text-muted-foreground">
+                    <p className="lg:text-sm md:text-4xl text-muted-foreground">
                       {date}
                     </p>
                   </div>

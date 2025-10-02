@@ -55,13 +55,13 @@ const DevotionalAudio: React.FC<DevotionalAudioProps> = ({
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 bg-temple-earth/95 p-4 rounded-lg shadow-lg border border-temple-gold/30 max-w-xs">
+    <div className="fixed bottom-4 right-4 z-50 bg-temple-earth/95 p-4 rounded-lg shadow-lg border border-temple-gold/30 lg:max-w-xs md:max-w-md">
       <audio ref={audioRef} src={audioSrc} loop preload="auto" />
       <div className="flex items-center justify-between mb-2">
-        <h4 className="text-sm font-medium text-temple-gold truncate pr-2">
+        <h4 className="lg:text-sm md:text-2xl font-medium text-temple-gold truncate pr-2">
           {title}
         </h4>
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center lg:space-x-1 md:space-x-4">
           <Button onClick={togglePlay}>
             {isPlaying ? <Pause /> : <Play />}
           </Button>

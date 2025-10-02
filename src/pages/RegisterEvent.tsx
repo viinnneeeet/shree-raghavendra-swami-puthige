@@ -62,7 +62,7 @@ const RegisterEvent = () => {
               Events
             </span>
           </h1>
-          <p className="lg:text-xl md:text-3xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="lg:text-xl md:text-4xl text-muted-foreground max-w-2xl mx-auto">
             Join us for sacred gatherings and spiritual experiences at our
             temple.
           </p>

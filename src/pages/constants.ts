@@ -65,6 +65,7 @@ export const volunteerFormFields: FormField[] = [
     type: 'textarea',
     label: 'Why do you want to join our community?',
     placeholder: 'Share your spiritual journey and motivations...',
+    row: 6,
   },
 ];
 
@@ -93,7 +94,7 @@ export const eventFormFields = (
     label: 'Phone Number',
     inputType: 'tel',
     required: true,
-    placeholder: '9876543210',
+    placeholder: 'Enter your phone number',
   },
   {
     id: 'event',

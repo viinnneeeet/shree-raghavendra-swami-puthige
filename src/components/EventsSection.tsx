@@ -8,6 +8,7 @@ import { isValidEmail } from '@/common/commonFuction';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { TempleEvent } from '@/types/events';
+import { Input } from './ui/input';
 
 const EventsSection = () => {
   const [events, setEvents] = useState([]);
@@ -97,13 +98,13 @@ const EventsSection = () => {
           </div>
         ) : null}
 
-        <div className="grid grid-cols-1 md:p-16 lg:grid-cols-2 gap-6 lg:gap-8 mb-12">
+        <div className="grid md:grid-cols-1 md:p-16 lg:grid-cols-2 md:gap-16 lg:gap-8 mb-12">
           {events?.map((event, index) => (
             <Card
               key={index}
               className="hover:shadow-temple hover:scale-105 transition-all duration-500 border-temple-gold/20 bg-card/50 backdrop-blur-sm">
               <CardHeader>
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between lg:mb-4 md:mb-8">
                   <span
                     className={`px-3 py-1 rounded-full lg:text-sm md:text-4xl font-semibold border ${getEventColor(
                       event.type
@@ -115,7 +116,7 @@ const EventsSection = () => {
                   {event.title}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="lg:space-y-4 md:space-y-8">
                 <div className="flex items-center text-muted-foreground lg:text-lg md:text-4xl">
                   <Calendar className="lg:w-4 lg:h-4 md:w-10 md:h-10 mr-2 text-temple-gold " />
                   {event.date}
@@ -133,13 +134,11 @@ const EventsSection = () => {
                 </p>
                 <Button
                   variant="temple"
-                  className="w-full md:py-8 lg:py-2"
+                  className="w-full"
                   onClick={() => {
                     navigate('/register-event');
                   }}>
-                  <span className="lg:text-lg md:text-4xl">
-                    Register for Event
-                  </span>
+                  Register for Event
                 </Button>
               </CardContent>
             </Card>
@@ -155,8 +154,8 @@ const EventsSection = () => {
               Subscribe to our newsletter to receive updates about upcoming
               events, spiritual teachings, and community announcements.
             </p>
-            <div className="flex gap-2 max-w-md mx-auto">
-              <input
+            <div className="flex gap-2 lg:max-w-md md:max-w-5xl mx-auto">
+              <Input
                 type="email"
                 placeholder="Enter your email"
                 className="flex-1 lg:px-4 lg:py-2 md:py-4 md:px-4 border border-temple-gold/30 rounded-md focus:outline-none focus:ring-2 focus:ring-temple-gold"
@@ -170,6 +169,7 @@ const EventsSection = () => {
               <Button
                 variant="sacred"
                 disabled={!state?.subscribeEmail}
+                className=""
                 onClick={handleSubmit}>
                 Subscribe
               </Button>

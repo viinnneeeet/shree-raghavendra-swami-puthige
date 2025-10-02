@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, Info, Heart, Clock } from 'lucide-react';
-
+import { SPECIAL_NOTES } from '@/common/appConstants';
 const PlanVisit = () => {
   const guidelines = [
     'Dress modestly - Traditional Indian attire preferred',
@@ -31,13 +31,13 @@ const PlanVisit = () => {
     <section className="py-20 bg-gradient-sacred">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <h1 className="text-4xl md:text-7xl font-bold text-foreground mb-6">
             Plan Your
             <span className="bg-gradient-to-r from-temple-gold to-temple-purple bg-clip-text text-transparent ml-3">
               Visit
             </span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="lg:text-xl md:text-4xl text-muted-foreground max-w-2xl mx-auto">
             Guidelines and information for first-time visitors to ensure a
             peaceful and meaningful temple experience.
           </p>
@@ -47,8 +47,8 @@ const PlanVisit = () => {
           {/* Guidelines */}
           <Card className="border-temple-gold/20 shadow-sacred">
             <CardHeader>
-              <CardTitle className="text-2xl text-temple-earth flex items-center">
-                <Info className="w-6 h-6 mr-3 text-temple-gold" />
+              <CardTitle className="lg:text-2xl md:text-5xl text-temple-earth flex items-center">
+                <Info className="lg:w-6 lg:h-6 md:w-14 md:h-14 mr-3 text-temple-gold" />
                 Temple Guidelines
               </CardTitle>
             </CardHeader>
@@ -56,8 +56,10 @@ const PlanVisit = () => {
               <div className="space-y-3">
                 {guidelines.map((guideline, index) => (
                   <div key={index} className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-temple-gold mt-0.5 flex-shrink-0" />
-                    <span className="text-muted-foreground">{guideline}</span>
+                    <CheckCircle className="lg:w-5 lg:h-5 md:h-12 md:w-12  text-temple-gold mt-0.5 flex-shrink-0" />
+                    <span className="text-muted-foreground lg:text-base md:text-4xl">
+                      {guideline}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -67,8 +69,8 @@ const PlanVisit = () => {
           {/* What to Bring */}
           <Card className="border-temple-gold/20 shadow-sacred">
             <CardHeader>
-              <CardTitle className="text-2xl text-temple-earth flex items-center">
-                <Heart className="w-6 h-6 mr-3 text-temple-gold" />
+              <CardTitle className="lg:text-2xl md:text-5xl text-temple-earth flex items-center">
+                <Heart className="lg:w-6 lg:h-6 md:h-12 md:w-12 mr-3 text-temple-gold" />
                 What to Bring
               </CardTitle>
             </CardHeader>
@@ -76,13 +78,15 @@ const PlanVisit = () => {
               <div className="space-y-3">
                 {whatToBring.map((item, index) => (
                   <div key={index} className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-temple-gold mt-0.5 flex-shrink-0" />
-                    <span className="text-muted-foreground">{item}</span>
+                    <CheckCircle className="lg:w-5 lg:h-5 md:h-10 md:w-10 text-temple-gold mt-0.5 flex-shrink-0" />
+                    <span className="text-muted-foreground lg:text-base md:text-4xl">
+                      {item}
+                    </span>
                   </div>
                 ))}
               </div>
               <div className="mt-4 p-3 bg-temple-gold/10 rounded-lg">
-                <p className="text-sm text-muted-foreground">
+                <p className="lg:text-sm md:text-3xl text-muted-foreground">
                   <strong>Tip:</strong> Temple shop is available for purchasing
                   offerings and souvenirs
                 </p>
@@ -94,8 +98,8 @@ const PlanVisit = () => {
         {/* Visit Flow */}
         <Card className="border-temple-gold/20 shadow-sacred mb-12">
           <CardHeader>
-            <CardTitle className="text-2xl text-temple-earth flex items-center">
-              <Clock className="w-6 h-6 mr-3 text-temple-gold" />
+            <CardTitle className="lg:text-2xl md:text-5xl text-temple-earth flex items-center">
+              <Clock className="lg:w-6 lg:h-6 md:h-12 md:w-12 mr-3 text-temple-gold" />
               Typical Visit Flow (30 minutes)
             </CardTitle>
           </CardHeader>
@@ -105,13 +109,15 @@ const PlanVisit = () => {
                 <div
                   key={index}
                   className="flex items-center space-x-4 p-3 rounded-lg bg-gradient-to-r from-temple-gold/5 to-temple-purple/5">
-                  <div className="w-16 h-16 bg-temple-gold/20 rounded-full flex items-center justify-center">
-                    <span className="font-semibold text-temple-earth text-sm">
+                  <div className="lg:w-16 lg:h-16 md:h-36 md:w-36 bg-temple-gold/20 rounded-full flex items-center justify-center">
+                    <span className="font-semibold text-temple-earth lg:text-sm md:text-4xl">
                       {step.time}
                     </span>
                   </div>
                   <div className="flex-1">
-                    <p className="text-muted-foreground">{step.activity}</p>
+                    <p className="text-muted-foreground lg:text-sm md:text-4xl">
+                      {step.activity}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -120,38 +126,23 @@ const PlanVisit = () => {
         </Card>
 
         {/* Special Notes */}
-        <div className="grid md:grid-cols-2 gap-6">
-          <Card className="border-temple-gold/20 shadow-sacred">
-            <CardHeader>
-              <CardTitle className="text-xl text-temple-earth">
-                For Families
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>• Baby changing facilities available</li>
-                <li>• Family rest areas with seating</li>
-                <li>• Kids-friendly timings: 6 PM - 7 PM</li>
-                <li>• Special programs for children during festivals</li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card className="border-temple-gold/20 shadow-sacred">
-            <CardHeader>
-              <CardTitle className="text-xl text-temple-earth">
-                Accessibility
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>• Wheelchair accessible entrances</li>
-                <li>• Reserved parking for disabled visitors</li>
-                <li>• Volunteer assistance available</li>
-                <li>• Audio announcements during ceremonies</li>
-              </ul>
-            </CardContent>
-          </Card>
+        <div className="grid lg:grid-cols-2 md:grid-cols-1 lg:gap-6 md:gap-12">
+          {SPECIAL_NOTES?.map((note) => (
+            <Card className="border-temple-gold/20 shadow-sacred">
+              <CardHeader>
+                <CardTitle className="lg:text-xl md:text-5xl text-temple-earth">
+                  {note?.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="lg:space-y-2 md:space-y-4 text-muted-foreground lg:text-base md:text-4xl">
+                  {note?.items?.map((item) => (
+                    <li>• {item}</li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
     </section>

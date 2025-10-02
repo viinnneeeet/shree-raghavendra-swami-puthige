@@ -116,7 +116,7 @@ const GalleryPage = () => {
               Gallery
             </span>
           </h1>
-          <p className="lg:text-xl md:text-3xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="lg:text-xl md:text-4xl text-muted-foreground max-w-2xl mx-auto">
             Explore the beauty and spirituality of our temple through these
             sacred moments and celebrations.
           </p>
@@ -205,7 +205,7 @@ const GalleryPage = () => {
         {/* Statistics */}
         <Card className="mt-12 border-temple-gold/20 shadow-sacred">
           <CardContent className="pt-6">
-            <div className="grid md:grid-cols-4 gap-6 text-center">
+            <div className="grid lg:grid-cols-4 md:grid-cols-2 md:gap-12 lg:gap-6 text-center">
               {STATS_DATA?.map((stat) => (
                 <div>
                   <h3

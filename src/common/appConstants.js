@@ -331,3 +331,31 @@ export const EVENTS_HIGHLIGHTS = [
     color: 'text-temple-sunset',
   },
 ];
+
+export const SPECIAL_NOTES = [
+  {
+    title: 'For Families',
+    items: [
+      'Baby changing facilities available',
+      'Family rest areas with seating',
+      'Kids-friendly timings: 6 PM - 7 PM',
+      'Special programs for children during festivals',
+    ],
+  },
+  {
+    title: 'Accessibility',
+    items: [
+      'Wheelchair accessible entrances',
+      'Reserved parking for disabled visitors',
+      'Volunteer assistance available',
+      'Audio announcements during ceremonies',
+    ],
+  },
+];
+
+export const MISSION_POINTS = [
+  'Preserve and share spiritual traditions',
+  'Foster community unity and support',
+  'Provide spiritual guidance and education',
+  'Serve humanity through selfless service',
+];

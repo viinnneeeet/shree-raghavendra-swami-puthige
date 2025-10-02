@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Heart, Utensils, Flower, Gift, Star, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const SevasOfferings = () => {
   const sevas = [
@@ -94,6 +95,8 @@ const SevasOfferings = () => {
     },
   ];
 
+  const navigate = useNavigate();
+
   return (
     <section className="py-20 bg-gradient-earth">
       <div className="container mx-auto px-4">
@@ -121,7 +124,7 @@ const SevasOfferings = () => {
                 key={index}
                 className="border-temple-gold/20 shadow-sacred hover:shadow-temple transition-shadow">
                 <CardHeader>
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center justify-between lg:mb-4 md:mb-8">
                     <seva.icon className="lg:w-8 lg:h-8 md:w-14 md:h-14 text-temple-gold" />
                     <Badge
                       variant="outline"
@@ -134,26 +137,26 @@ const SevasOfferings = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground mb-4 md:text-5xl lg:text-base">
+                  <p className="text-muted-foreground mb-4 md:text-4xl lg:text-base">
                     {seva.description}
                   </p>
 
-                  <div className="mb-4">
-                    <span className="lg:text-2xl md:text-6xl font-bold text-temple-gold">
+                  <div className="lg:mb-4 md:mb-8">
+                    <span className="lg:text-2xl md:text-5xl font-bold text-temple-gold">
                       {seva.amount}
                     </span>
                   </div>
 
-                  <div className="mb-6">
-                    <h4 className="font-semibold text-temple-earth mb-2 md:text-5xl lg:text-base">
+                  <div className="lg:mb-6 md:mb-12">
+                    <h4 className="font-semibold text-temple-earth lg:mb-2 md:mb-6 md:text-5xl lg:text-base">
                       Benefits:
                     </h4>
-                    <ul className="space-y-1">
+                    <ul className="lg:space-y-1 md:space-y-4">
                       {seva.benefits.map((benefit, idx) => (
                         <li
                           key={idx}
                           className="lg:text-sm md:text-4xl text-muted-foreground flex items-center">
-                          <Star className="w-3 h-3 mr-2 text-temple-gold" />
+                          <Star className="lg:w-3 lg:h-3 md:w-8 md:h-8 mr-2 text-temple-gold" />
                           {benefit}
                         </li>
                       ))}
@@ -179,13 +182,13 @@ const SevasOfferings = () => {
               <Card key={index} className="border-temple-gold/20 shadow-sacred">
                 <CardContent className="pt-6">
                   <div className="text-center">
-                    <h3 className="font-semibold text-temple-earth mb-2 md:text-6xl lg:text-lg">
+                    <h3 className="font-semibold text-temple-earth mb-2 md:text-5xl lg:text-lg">
                       {offering.item}
                     </h3>
                     <p className="text-muted-foreground mb-3  md:text-4xl lg:text-sm">
                       {offering.description}
                     </p>
-                    <div className="lg:text-lg font-bold text-temple-gold mb-4 md:text-6xl">
+                    <div className="lg:text-lg font-bold text-temple-gold mb-4 md:text-5xl">
                       {offering.price}
                     </div>
                     <Button size="sm" variant="sacred" className="w-full">
@@ -211,10 +214,15 @@ const SevasOfferings = () => {
                 directly or contact us for donation arrangements.
               </p>
               <div className="flex justify-center space-x-4 md:mt-16 lg:mt-0">
-                <Button variant="outline" className="border-temple-gold/30">
+                <Button
+                  variant="outline"
+                  className="border-temple-gold/30"
+                  onClick={() => navigate('/#contact')}>
                   Contact Temple
                 </Button>
-                <Button variant="temple">Visit Temple</Button>
+                <Button variant="temple" onClick={() => navigate('/visit-us')}>
+                  Visit Temple
+                </Button>
               </div>
             </div>
           </CardContent>

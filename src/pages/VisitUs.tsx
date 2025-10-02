@@ -144,7 +144,7 @@ const VisitUs = () => {
           <h2 className="lg:text-3xl md:text-5xl font-bold text-center mb-8 text-temple-earth">
             Temple Facilities
           </h2>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid lg:grid-cols-3 md:grid-cols-1 md:gap-12 lg:gap-6">
             {facilities.map((facility, index) => (
               <Card
                 key={index}

@@ -8,6 +8,7 @@ import { FormFields } from '@/components/Forms/FormFields';
 import { volunteerFormFields } from './constants';
 import { COMMUNITY_BENEFITS, TEMPLE_HISTORY } from '@/common/appConstants';
 import { VolunteerFormData } from '@/types/volunteer';
+import { MISSION_POINTS } from '@/common/appConstants';
 
 const JoinCommunity = () => {
   const [formData, setFormData] = useState<VolunteerFormData>({
@@ -67,7 +68,7 @@ const JoinCommunity = () => {
               Community
             </span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="lg:text-xl md:text-4xl text-muted-foreground max-w-2xl mx-auto">
             Become part of our spiritual family and contribute to the temple's
             mission of spreading divine grace and community service.
           </p>
@@ -77,31 +78,33 @@ const JoinCommunity = () => {
           <div>
             <Card className="border-temple-gold/20 shadow-sacred mb-8">
               <CardHeader>
-                <CardTitle className="text-2xl text-temple-earth">
+                <CardTitle className="lg:text-2xl md:text-5xl text-temple-earth">
                   Our Temple History
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-6">
+                <p className="text-muted-foreground mb-6 lg:text-xl md:text-4xl">
                   Shree Raghavendra Swami Temple has been a beacon of spiritual
                   light for nearly four decades, serving devotees and the
                   community with unwavering dedication to spiritual growth and
                   social service.
                 </p>
 
-                <div className="space-y-4">
+                <div className="lg:space-y-4 md:space-y-8">
                   {TEMPLE_HISTORY.map((item, index) => (
-                    <div key={index} className="flex items-start space-x-4">
+                    <div
+                      key={index}
+                      className="flex items-start lg:space-x-4 md:space-x-8">
                       <Badge
                         variant="outline"
-                        className="border-temple-gold text-temple-gold min-w-fit">
+                        className="border-temple-gold text-temple-gold min-w-fit lg:text-sm md:text-4xl">
                         {item.year}
                       </Badge>
                       <div>
-                        <h4 className="font-semibold text-temple-earth">
+                        <h4 className="font-semibold lg:text-sm md:text-4xl text-temple-earth">
                           {item.event}
                         </h4>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="lg:text-sm md:text-4xl text-muted-foreground">
                           {item.description}
                         </p>
                       </div>
@@ -113,33 +116,23 @@ const JoinCommunity = () => {
 
             <Card className="border-temple-gold/20 shadow-sacred">
               <CardHeader>
-                <CardTitle className="text-2xl text-temple-earth">
+                <CardTitle className="lg:text-2xl md:text-5xl text-temple-earth">
                   Our Mission
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-muted-foreground mb-4 lg:text-base md:text-4xl">
                   To create a sacred space where individuals can connect with
                   the divine, learn ancient wisdom, and serve the community with
                   love and compassion.
                 </p>
                 <ul className="space-y-2 text-muted-foreground">
-                  <li className="flex items-center">
-                    <Star className="w-4 h-4 mr-2 text-temple-gold" />
-                    Preserve and share spiritual traditions
-                  </li>
-                  <li className="flex items-center">
-                    <Star className="w-4 h-4 mr-2 text-temple-gold" />
-                    Foster community unity and support
-                  </li>
-                  <li className="flex items-center">
-                    <Star className="w-4 h-4 mr-2 text-temple-gold" />
-                    Provide spiritual guidance and education
-                  </li>
-                  <li className="flex items-center">
-                    <Star className="w-4 h-4 mr-2 text-temple-gold" />
-                    Serve humanity through selfless service
-                  </li>
+                  {MISSION_POINTS?.map((point) => (
+                    <li className="flex items-center md:text-4xl lg:text-lg">
+                      <Star className="lg:w-4 lg:h-4 md:w-8 md:h-8 mr-2 text-temple-gold " />
+                      {point}
+                    </li>
+                  ))}
                 </ul>
               </CardContent>
             </Card>
@@ -148,7 +141,7 @@ const JoinCommunity = () => {
           {/* Membership Form */}
           <Card className="border-temple-gold/20 shadow-sacred">
             <CardHeader>
-              <CardTitle className="text-2xl text-temple-earth">
+              <CardTitle className="lg:text-2xl md:text-5xl text-temple-earth">
                 Community Membership Form
               </CardTitle>
             </CardHeader>
@@ -183,20 +176,20 @@ const JoinCommunity = () => {
 
         {/* Community Benefits */}
         <div>
-          <h2 className="text-3xl font-bold text-center mb-8 text-temple-earth">
+          <h2 className="lg:text-3xl md:text-5xl font-bold text-center mb-8 text-temple-earth">
             Community Benefits
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 md:gap-12 lg:gap-6">
             {COMMUNITY_BENEFITS.map((benefit, index) => (
               <Card
                 key={index}
                 className="border-temple-gold/20 shadow-sacred text-center">
                 <CardContent className="pt-6">
-                  <benefit.icon className="w-12 h-12 mx-auto mb-4 text-temple-gold" />
-                  <h3 className="font-semibold text-temple-earth mb-2">
+                  <benefit.icon className="lg:w-12 lg:h-12 md:h-24 md:w-24 mx-auto mb-4 text-temple-gold" />
+                  <h3 className="font-semibold text-temple-earth mb-2 lg:text-lg md:text-4xl">
                     {benefit.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground lg:text-base md:text-3xl">
                     {benefit.description}
                   </p>
                 </CardContent>
@@ -208,32 +201,36 @@ const JoinCommunity = () => {
         {/* Contact Information */}
         <Card className="mt-12 border-temple-gold/20 shadow-sacred">
           <CardHeader>
-            <CardTitle className="text-2xl text-temple-earth text-center">
+            <CardTitle className="lg:text-2xl md:text-5xl text-temple-earth text-center">
               Contact Us
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-3 gap-6 text-center">
+            <div className="grid lg:grid-cols-3 gap-6 text-center">
               <div className="flex flex-col items-center space-y-2">
-                <MapPin className="w-8 h-8 text-temple-gold" />
-                <h4 className="font-semibold text-temple-earth">Visit Us</h4>
-                <p className="text-sm text-muted-foreground">
+                <MapPin className="lg:w-8 lg:h-8 md:h-16 md:w-16 text-temple-gold" />
+                <h4 className="font-semibold text-temple-earth lg:text-base md:text-5xl">
+                  Visit Us
+                </h4>
+                <p className="lg:text-sm md:text-4xl text-muted-foreground">
                   123 Divine Path, Sacred Hills
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-2">
-                <Clock className="w-8 h-8 text-temple-gold" />
-                <h4 className="font-semibold text-temple-earth">
+                <Clock className="lg:w-8 lg:h-8 md:h-16 md:w-16 text-temple-gold" />
+                <h4 className="font-semibold text-temple-earth lg:text-base md:text-5xl">
                   Office Hours
                 </h4>
-                <p className="text-sm text-muted-foreground">
+                <p className="lg:text-sm md:text-4xl text-muted-foreground">
                   Mon-Fri: 9 AM - 6 PM
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-2">
-                <Users className="w-8 h-8 text-temple-gold" />
-                <h4 className="font-semibold text-temple-earth">Community</h4>
-                <p className="text-sm text-muted-foreground">
+                <Users className="lg:w-8 lg:h-8 md:h-16 md:w-16 text-temple-gold" />
+                <h4 className="font-semibold text-temple-earth lg:text-base md:text-5xl">
+                  Community
+                </h4>
+                <p className="lg:text-sm md:text-4xl text-muted-foreground">
                   1000+ Active Members
                 </p>
               </div>
