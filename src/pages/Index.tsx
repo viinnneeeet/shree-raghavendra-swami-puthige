@@ -3,7 +3,7 @@ import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
 import Loader from '@/components/ui/Loader';
 import DevotionalAudio from '@/components/DevotionalAudio';
-import audio from '../../public/audio/raghavendra-jap.mp3.mp3';
+import audio from '@/assets/audio/raghavendra-jap.mp3.mp3';
 // Lazy load heavy / secondary sections
 const ServicesSection = React.lazy(
   () => import('@/components/ServicesSection')

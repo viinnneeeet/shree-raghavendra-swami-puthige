@@ -6,29 +6,34 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AdminProvider } from '@/contexts/AdminContext';
-import Index from './pages/Index';
-import RegisterEvent from './pages/RegisterEvent';
-import VisitUs from './pages/VisitUs';
-import PlanVisit from './pages/PlanVisit';
-import SevasOfferings from './pages/SevasOfferings';
-import EventsCalendar from './pages/EventsCalendar';
-import GalleryPage from './pages/GalleryPage';
-import JoinCommunity from './pages/JoinCommunity';
-import NotFound from './pages/NotFound';
+import { Suspense, lazy } from 'react';
 import GlobalErrorFallback from '@/components/GlobalErrorFallback';
 import { useIsFetching } from '@tanstack/react-query';
 import Loader from '@/components/ui/Loader';
-import Layout from '@/components/layout/Layout';
+
+// Public Pages
+const Index = lazy(() => import('./pages/Index'));
+const RegisterEvent = lazy(() => import('./pages/RegisterEvent'));
+const VisitUs = lazy(() => import('./pages/VisitUs'));
+const PlanVisit = lazy(() => import('./pages/PlanVisit'));
+const SevasOfferings = lazy(() => import('./pages/SevasOfferings'));
+const EventsCalendar = lazy(() => import('./pages/EventsCalendar'));
+const GalleryPage = lazy(() => import('./pages/GalleryPage'));
+const JoinCommunity = lazy(() => import('./pages/JoinCommunity'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Admin Pages
-import AdminLogin from '@/pages/admin/AdminLogin';
-import Dashboard from '@/pages/admin/Dashboard';
-import Members from '@/pages/admin/Members';
-import Events from '@/pages/admin/Events';
-import Contacts from '@/pages/admin/Contacts';
-import Sevas from '@/pages/admin/Sevas';
-import Gallery from '@/pages/admin/Gallery';
-import AdminLayout from '@/components/admin/AdminLayout';
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const Dashboard = lazy(() => import('./pages/admin/Dashboard'));
+const Members = lazy(() => import('./pages/admin/Members'));
+const Events = lazy(() => import('./pages/admin/Events'));
+const Contacts = lazy(() => import('./pages/admin/Contacts'));
+const Sevas = lazy(() => import('./pages/admin/Sevas'));
+const Gallery = lazy(() => import('./pages/admin/Gallery'));
+
+// Layouts
+const Layout = lazy(() => import('@/components/layout/Layout'));
+const AdminLayout = lazy(() => import('@/components/admin/AdminLayout'));
 
 const queryClient = new QueryClient();
 
@@ -53,33 +58,41 @@ const App = () => (
             <Toaster />
             <Sonner />
             <GlobalLoader />
-            <BrowserRouter>
-              <Routes>
-                {/* Public Routes */}
-                <Route element={<Layout />}>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/register-event" element={<RegisterEvent />} />
-                  <Route path="/visit-us" element={<VisitUs />} />
-                  <Route path="/plan-visit" element={<PlanVisit />} />
-                  <Route path="/sevas-offerings" element={<SevasOfferings />} />
-                  <Route path="/events-calendar" element={<EventsCalendar />} />
-                  <Route path="/gallery" element={<GalleryPage />} />
-                  <Route path="/join-community" element={<JoinCommunity />} />
-                  <Route path="*" element={<NotFound />} />
-                </Route>
-                
-                {/* Admin Routes */}
-                <Route path="/admin/login" element={<AdminLogin />} />
-                <Route path="/admin" element={<AdminLayout />}>
-                  <Route path="dashboard" element={<Dashboard />} />
-                  <Route path="members" element={<Members />} />
-                  <Route path="events" element={<Events />} />
-                  <Route path="contacts" element={<Contacts />} />
-                  <Route path="sevas" element={<Sevas />} />
-                  <Route path="gallery" element={<Gallery />} />
-                </Route>
-              </Routes>
-            </BrowserRouter>
+            <Suspense fallback={<Loader isLoading={true} />}>
+              <BrowserRouter>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route element={<Layout />}>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/register-event" element={<RegisterEvent />} />
+                    <Route path="/visit-us" element={<VisitUs />} />
+                    <Route path="/plan-visit" element={<PlanVisit />} />
+                    <Route
+                      path="/sevas-offerings"
+                      element={<SevasOfferings />}
+                    />
+                    <Route
+                      path="/events-calendar"
+                      element={<EventsCalendar />}
+                    />
+                    <Route path="/gallery" element={<GalleryPage />} />
+                    <Route path="/join-community" element={<JoinCommunity />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Route>
+
+                  {/* Admin Routes */}
+                  <Route path="/admin/login" element={<AdminLogin />} />
+                  <Route path="/admin" element={<AdminLayout />}>
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="members" element={<Members />} />
+                    <Route path="events" element={<Events />} />
+                    <Route path="contacts" element={<Contacts />} />
+                    <Route path="sevas" element={<Sevas />} />
+                    <Route path="gallery" element={<Gallery />} />
+                  </Route>
+                </Routes>
+              </BrowserRouter>
+            </Suspense>
           </TooltipProvider>
         </AdminProvider>
       </ThemeProvider>
