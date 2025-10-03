@@ -206,8 +206,8 @@ const GalleryPage = () => {
         <Card className="mt-12 border-temple-gold/20 shadow-sacred">
           <CardContent className="pt-6">
             <div className="grid lg:grid-cols-4 md:grid-cols-2 md:gap-12 lg:gap-6 text-center">
-              {STATS_DATA?.map((stat) => (
-                <div>
+              {STATS_DATA?.map((stat, index) => (
+                <div key={index}>
                   <h3
                     className={`lg:text-3xl md:text-6xl font-bold ${stat?.color} mb-2`}>
                     {stat?.value}

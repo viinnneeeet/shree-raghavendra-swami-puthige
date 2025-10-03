@@ -1,18 +1,25 @@
-import { Toaster } from '@/components/ui/toaster';
-import { Toaster as Sonner } from '@/components/ui/sonner';
-import { TooltipProvider } from '@/components/ui/tooltip';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ErrorBoundary } from 'react-error-boundary';
+import { Suspense, lazy } from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AdminProvider } from '@/contexts/AdminContext';
-import { Suspense, lazy } from 'react';
-import GlobalErrorFallback from '@/components/GlobalErrorFallback';
-import { useIsFetching } from '@tanstack/react-query';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { Toaster } from '@/components/ui/toaster';
+import { Toaster as Sonner } from '@/components/ui/sonner';
+import { ErrorBoundary } from 'react-error-boundary';
+
 import Loader from '@/components/ui/Loader';
+import GlobalErrorFallback from '@/components/GlobalErrorFallback';
+import { queryClient } from './lib/react-query-client';
+import './lib/react-query-persister';
+import GlobalLoader from './components/GlobalLoader';
+
+// Layouts
+import Layout from './components/layout/Layout';
+const AdminLayout = lazy(() => import('@/components/admin/AdminLayout'));
 
 // Public Pages
-const Index = lazy(() => import('./pages/Index'));
+import Index from './pages/Index';
 const RegisterEvent = lazy(() => import('./pages/RegisterEvent'));
 const VisitUs = lazy(() => import('./pages/VisitUs'));
 const PlanVisit = lazy(() => import('./pages/PlanVisit'));
@@ -31,19 +38,6 @@ const Contacts = lazy(() => import('./pages/admin/Contacts'));
 const Sevas = lazy(() => import('./pages/admin/Sevas'));
 const Gallery = lazy(() => import('./pages/admin/Gallery'));
 
-// Layouts
-const Layout = lazy(() => import('@/components/layout/Layout'));
-const AdminLayout = lazy(() => import('@/components/admin/AdminLayout'));
-
-const queryClient = new QueryClient();
-
-function GlobalLoader() {
-  const isFetching = useIsFetching(); // counts active queries
-
-  if (!isFetching) return null;
-
-  return <Loader isLoading={true} />; // your overlay loader
-}
 const App = () => (
   <ErrorBoundary
     FallbackComponent={GlobalErrorFallback}

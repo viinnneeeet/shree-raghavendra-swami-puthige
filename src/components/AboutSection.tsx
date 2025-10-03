@@ -18,8 +18,10 @@ const AboutSection = () => {
         </div>
 
         <div className="grid md:grid-cols-1 md:p-16 lg:grid-cols-3 gap-8">
-          {SPIRITUAL_CARDS?.map((item) => (
-            <Card className="text-center p-8 hover:shadow-temple transition-[var(--transition-sacred)] border-temple-gold/20">
+          {SPIRITUAL_CARDS?.map((item, idx) => (
+            <Card
+              className="text-center p-8 hover:shadow-temple transition-[var(--transition-sacred)] border-temple-gold/20"
+              key={idx}>
               <CardContent className="pt-6">
                 <div className="text-6xl mb-4">{item?.icon}</div>
                 <h3 className="lg:text-2xl md:text-6xl font-semibold text-temple-earth mb-4">

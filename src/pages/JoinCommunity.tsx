@@ -127,8 +127,10 @@ const JoinCommunity = () => {
                   love and compassion.
                 </p>
                 <ul className="space-y-2 text-muted-foreground">
-                  {MISSION_POINTS?.map((point) => (
-                    <li className="flex items-center md:text-4xl lg:text-lg">
+                  {MISSION_POINTS?.map((point, index) => (
+                    <li
+                      className="flex items-center md:text-4xl lg:text-lg"
+                      key={index}>
                       <Star className="lg:w-4 lg:h-4 md:w-8 md:h-8 mr-2 text-temple-gold " />
                       {point}
                     </li>

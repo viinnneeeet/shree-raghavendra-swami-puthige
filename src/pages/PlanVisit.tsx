@@ -127,8 +127,8 @@ const PlanVisit = () => {
 
         {/* Special Notes */}
         <div className="grid lg:grid-cols-2 md:grid-cols-1 lg:gap-6 md:gap-12">
-          {SPECIAL_NOTES?.map((note) => (
-            <Card className="border-temple-gold/20 shadow-sacred">
+          {SPECIAL_NOTES?.map((note, index) => (
+            <Card className="border-temple-gold/20 shadow-sacred" key={index}>
               <CardHeader>
                 <CardTitle className="lg:text-xl md:text-5xl text-temple-earth">
                   {note?.title}
@@ -137,7 +137,7 @@ const PlanVisit = () => {
               <CardContent>
                 <ul className="lg:space-y-2 md:space-y-4 text-muted-foreground lg:text-base md:text-4xl">
                   {note?.items?.map((item) => (
-                    <li>• {item}</li>
+                    <li key={item}>• {item}</li>
                   ))}
                 </ul>
               </CardContent>
