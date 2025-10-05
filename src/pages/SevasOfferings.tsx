@@ -103,7 +103,7 @@ const SevasOfferings = () => {
         <div className="text-center mb-12">
           <h1 className="lg:text-4xl md:text-8xl font-bold text-foreground mb-6">
             Sevas &
-            <span className="bg-gradient-to-r from-temple-gold to-temple-purple bg-clip-text text-transparent ml-3 md:text-8xl">
+            <span className="bg-gradient-to-r from-temple-gold to-temple-purple bg-clip-text text-transparent ml-3 lg:text-4xl md:text-8xl">
               Offerings
             </span>
           </h1>

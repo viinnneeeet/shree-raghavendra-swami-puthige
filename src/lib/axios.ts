@@ -1,9 +1,10 @@
 import axios from 'axios';
-
+const RENDER_BASE_URL = 'https://rest-shop.onrender.com';
+const LOCAL_HOST_BASE_URL = ' http://localhost:8626';
 // Base API instance
 const api = axios.create({
-  baseURL: 'https://jsonplaceholder.typicode.com',
-  timeout: 10000, // 10s timeout
+  baseURL: RENDER_BASE_URL,
+  timeout: 30000, // 30s timeout
   headers: {
     'Content-Type': 'application/json',
   },

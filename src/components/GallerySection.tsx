@@ -2,98 +2,70 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
-
-// Import gallery images
-import galleryMeditation from '@/assets/images/gallery-meditation.jpg';
-import galleryFestival from '@/assets/images/gallery-festival.jpg';
-import galleryPrayer from '@/assets/images/gallery-prayer.jpg';
-import galleryService from '@/assets/images/gallery-service.jpg';
-import galleryGarden from '@/assets/images/gallery-garden.jpg';
-import galleryEducation from '@/assets/images/gallery-education.jpg';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { fetchGallery } from '@/api/gallery';
 
 const GallerySection = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const navigate = useNavigate();
-  const galleryImages = [
-    {
-      src: galleryMeditation,
-      alt: 'Temple meditation hall with devotees in peaceful meditation',
-      title: 'Meditation & Prayer',
-      description: 'Daily meditation sessions in our serene temple hall',
-    },
-    {
-      src: galleryFestival,
-      alt: 'Temple festival celebration with colorful decorations and community gathering',
-      title: 'Festival Celebrations',
-      description: 'Joyful community celebrations throughout the year',
-    },
-    {
-      src: galleryPrayer,
-      alt: 'Temple prayer ceremony with sacred fire and traditional rituals',
-      title: 'Sacred Ceremonies',
-      description: 'Traditional prayer ceremonies and spiritual rituals',
-    },
-    {
-      src: galleryService,
-      alt: 'Temple community service with volunteers helping families',
-      title: 'Community Service',
-      description: 'Serving our community with love and compassion',
-    },
-    {
-      src: galleryGarden,
-      alt: 'Beautiful temple gardens with sacred lotus pond and peaceful paths',
-      title: 'Sacred Gardens',
-      description: 'Peaceful gardens for reflection and contemplation',
-    },
-    {
-      src: galleryEducation,
-      alt: "Temple children's learning class studying sacred texts",
-      title: 'Spiritual Education',
-      description: 'Learning and growing together in wisdom',
-    },
-  ];
-
+  const {
+    data: galleryImages,
+    isLoading: fetchLoading,
+    isError: fetchIsError,
+    error: fetchError,
+  } = useQuery({
+    queryKey: ['gallery'],
+    queryFn: fetchGallery,
+    staleTime: 1000 * 60 * 0.1, // 5 minutes
+    refetchOnWindowFocus: true, // refetch on window focus
+  });
   return (
     <section id="gallery" className="py-20 bg-gradient-earth">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Sacred
-            <span className="bg-gradient-to-r from-temple-gold to-temple-purple bg-clip-text text-transparent ml-3">
-              Gallery
-            </span>
-          </h2>
-          <p className="lg:text-xl md:text-4xl text-muted-foreground max-w-2xl mx-auto">
-            Glimpses of our spiritual community, sacred ceremonies, and the
-            peaceful atmosphere that fills our temple every day.
-          </p>
-        </div>
+        {galleryImages?.length ? (
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+              Sacred
+              <span className="bg-gradient-to-r from-temple-gold to-temple-purple bg-clip-text text-transparent ml-3">
+                Gallery
+              </span>
+            </h2>
+            <p className="lg:text-xl md:text-4xl text-muted-foreground max-w-2xl mx-auto">
+              Glimpses of our spiritual community, sacred ceremonies, and the
+              peaceful atmosphere that fills our temple every day.
+            </p>
+          </div>
+        ) : null}
 
         <div className="grid md:grid-cols-1 md:p-16 md:gap-8 lg:grid-cols-3 gap-6">
-          {galleryImages.map((image, index) => (
-            <Card
-              key={index}
-              className="group cursor-pointer overflow-hidden border-temple-gold/20 hover:shadow-temple transition-[var(--transition-sacred)]"
-              onClick={() => setSelectedImage(image.src)}>
-              <div className="relative overflow-hidden">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full lg:h-64 md:h-128 lg:object-cover md:object-fill group-hover:scale-110 transition-transform duration-500"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-temple-earth/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <h3 className="text-lg font-semibold mb-2">
-                      {image.title}
-                    </h3>
-                    <p className="text-sm text-white/90">{image.description}</p>
+          {galleryImages?.length
+            ? galleryImages?.map((image, index) => (
+                <Card
+                  key={index}
+                  className="group cursor-pointer overflow-hidden border-temple-gold/20 hover:shadow-temple transition-[var(--transition-sacred)]"
+                  onClick={() => setSelectedImage(image.src)}>
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={image.image_url}
+                      alt={image.alt}
+                      className="w-full lg:h-64 md:h-128 lg:object-cover md:object-fill group-hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-temple-earth/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-4 left-4 right-4 text-white">
+                        <h3 className="text-lg font-semibold mb-2">
+                          {image?.title}
+                        </h3>
+                        <p className="text-sm text-white/90">
+                          {image?.description}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </Card>
-          ))}
+                </Card>
+              ))
+            : null}
         </div>
 
         {/* Modal for enlarged image */}

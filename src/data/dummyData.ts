@@ -1,17 +1,4 @@
-import {
-  Member,
-  Event,
-  ContactSubmission,
-  Seva,
-  GalleryImage,
-} from '@/types/admin';
-
-import templeHero from '@/assets/images/temple-hero.jpg';
-import galleryPrayer from '@/assets/images/gallery-prayer.jpg';
-import galleryFestival from '@/assets/images/gallery-festival.jpg';
-import galleryMeditation from '@/assets/images/gallery-meditation.jpg';
-import galleryService from '@/assets/images/gallery-service.jpg';
-import galleryGarden from '@/assets/images/gallery-garden.jpg';
+import { Member, ContactSubmission, Seva } from '@/types/admin';
 
 export const dummyMembers: Member[] = [
   {
@@ -49,57 +36,6 @@ export const dummyMembers: Member[] = [
     interest: 'Spiritual Learning',
     joinedDate: '2024-01-25',
     status: 'inactive',
-  },
-];
-
-export const dummyEvents: Event[] = [
-  {
-    id: '1',
-    title: 'Guru Raghavendra Aradhana',
-    description:
-      'Annual commemoration of Guru Raghavendra Swami with special pooja and cultural programs.',
-    date: '2024-08-22',
-    time: '06:00',
-    image: templeHero,
-    category: 'festival',
-    status: 'upcoming',
-    participants: 150,
-  },
-  {
-    id: '2',
-    title: 'Monday Evening Suprabhatam',
-    description:
-      'Weekly devotional singing and prayer session for peace and prosperity.',
-    date: '2024-01-29',
-    time: '18:00',
-    image: galleryPrayer,
-    category: 'pooja',
-    status: 'upcoming',
-    participants: 45,
-  },
-  {
-    id: '3',
-    title: 'Diwali Celebration',
-    description:
-      'Grand Diwali festivities with traditional rangoli, prayers, and community feast.',
-    date: '2023-11-12',
-    time: '17:00',
-    image: galleryFestival,
-    category: 'festival',
-    status: 'completed',
-    participants: 300,
-  },
-  {
-    id: '4',
-    title: 'Yoga and Meditation Session',
-    description:
-      'Weekly yoga and meditation classes for spiritual and physical well-being.',
-    date: '2024-02-03',
-    time: '07:00',
-    image: galleryMeditation,
-    category: 'education',
-    status: 'upcoming',
-    participants: 25,
   },
 ];
 
@@ -183,57 +119,5 @@ export const dummySevas: Seva[] = [
     amount: 25000,
     category: 'pooja',
     availability: 'limited',
-  },
-];
-
-export const dummyGalleryImages: GalleryImage[] = [
-  {
-    id: '1',
-    title: 'Temple Main Sanctum',
-    url: templeHero,
-    category: 'temple',
-    uploadedAt: '2024-01-01T00:00:00Z',
-    description:
-      'Beautiful view of the main sanctum with Lord Raghavendra Swami',
-  },
-  {
-    id: '2',
-    title: 'Festival Celebration',
-    url: galleryFestival,
-    category: 'festivals',
-    uploadedAt: '2024-01-02T00:00:00Z',
-    description: 'Grand festival celebration with devotees',
-  },
-  {
-    id: '3',
-    title: 'Prayer Session',
-    url: galleryPrayer,
-    category: 'rituals',
-    uploadedAt: '2024-01-03T00:00:00Z',
-    description: 'Devotees engaged in prayer and meditation',
-  },
-  {
-    id: '4',
-    title: 'Community Service',
-    url: galleryService,
-    category: 'community',
-    uploadedAt: '2024-01-04T00:00:00Z',
-    description: 'Volunteers serving food to the community',
-  },
-  {
-    id: '5',
-    title: 'Meditation Session',
-    url: galleryMeditation,
-    category: 'rituals',
-    uploadedAt: '2024-01-05T00:00:00Z',
-    description: 'Peaceful meditation and yoga session',
-  },
-  {
-    id: '6',
-    title: 'Temple Garden',
-    url: galleryGarden,
-    category: 'temple',
-    uploadedAt: '2024-01-06T00:00:00Z',
-    description: 'Serene temple garden for quiet contemplation',
   },
 ];

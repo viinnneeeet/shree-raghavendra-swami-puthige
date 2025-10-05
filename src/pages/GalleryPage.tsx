@@ -3,77 +3,25 @@ import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
 import { X, ZoomIn } from 'lucide-react';
 
-// Import images
-import galleryMeditation from '@/assets/images/gallery-meditation.jpg';
-import galleryFestival from '@/assets/images/gallery-festival.jpg';
-import galleryPrayer from '@/assets/images/gallery-prayer.jpg';
-import galleryService from '@/assets/images/gallery-service.jpg';
-import galleryGarden from '@/assets/images/gallery-garden.jpg';
-import galleryEducation from '@/assets/images/gallery-education.jpg';
-
 import { STATS_DATA } from '@/common/appConstants';
+import { useQuery } from '@tanstack/react-query';
+import { fetchGallery } from '@/api/gallery';
 
 const GalleryPage = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-  const galleryImages = [
-    {
-      src: galleryMeditation,
-      title: 'Meditation Sessions',
-      category: 'Spiritual',
-      description: 'Peaceful meditation in the sacred garden',
-    },
-    {
-      src: galleryFestival,
-      title: 'Festival Celebrations',
-      category: 'Festivals',
-      description: 'Vibrant festivals bringing community together',
-    },
-    {
-      src: galleryPrayer,
-      title: 'Prayer Gatherings',
-      category: 'Spiritual',
-      description: 'Devotees in deep prayer and contemplation',
-    },
-    {
-      src: galleryService,
-      title: 'Community Service',
-      category: 'Service',
-      description: 'Serving the community with love and dedication',
-    },
-    {
-      src: galleryGarden,
-      title: 'Sacred Gardens',
-      category: 'Temple',
-      description: 'Beautiful temple gardens for peaceful reflection',
-    },
-    {
-      src: galleryEducation,
-      title: 'Educational Programs',
-      category: 'Education',
-      description: 'Teaching spiritual wisdom to all ages',
-    },
-    // Add more images as needed - using same images with different contexts
-    {
-      src: galleryMeditation,
-      title: 'Morning Aarti',
-      category: 'Spiritual',
-      description: 'Daily morning prayers and aarti ceremony',
-    },
-    {
-      src: galleryFestival,
-      title: 'Diwali Celebration',
-      category: 'Festivals',
-      description: 'Festival of lights celebrated with joy',
-    },
-    {
-      src: galleryPrayer,
-      title: 'Evening Prayers',
-      category: 'Spiritual',
-      description: 'Serene evening prayer sessions',
-    },
-  ];
+  const {
+    data: galleryImages,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['gallery'],
+    queryFn: fetchGallery,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true, // refetch on window focus
+  });
 
   const categories = [
     'All',
@@ -87,7 +35,10 @@ const GalleryPage = () => {
   const filteredImages =
     selectedCategory === 'All'
       ? galleryImages
-      : galleryImages.filter((img) => img.category === selectedCategory);
+      : galleryImages?.filter(
+          (img) =>
+            img.category?.toLowerCase() === selectedCategory?.toLowerCase()
+        );
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -147,41 +98,43 @@ const GalleryPage = () => {
 
         {/* Gallery Grid */}
         <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-6">
-          {filteredImages.map((image, index) => (
-            <Card
-              key={index}
-              className="group border-temple-gold/20 shadow-sacred hover:shadow-temple transition-all duration-300 overflow-hidden">
-              <div className="relative overflow-hidden">
-                <img
-                  src={image.src}
-                  alt={image.title}
-                  className="w-full lg:h-64 md:h-180 object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <button
-                    onClick={() => setSelectedImage(image.src)}
-                    className="bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 transition-colors">
-                    <ZoomIn className="lg:w-6 lg:h-6 md:h-12 md:w-12 text-white" />
-                  </button>
-                </div>
-                <Badge
-                  variant="outline"
-                  className={`absolute top-3 right-3 border ${getCategoryColor(
-                    image.category
-                  )}`}>
-                  {image.category}
-                </Badge>
-              </div>
-              <CardContent className="pt-4">
-                <h3 className="font-semibold text-temple-earth mb-2 md:text-4xl lg:text-base">
-                  {image.title}
-                </h3>
-                <p className="text-sm text-muted-foreground md:text-3xl lg:text-sm">
-                  {image.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+          {filteredImages?.length
+            ? filteredImages?.map((image, index) => (
+                <Card
+                  key={index}
+                  className="group border-temple-gold/20 shadow-sacred hover:shadow-temple transition-all duration-300 overflow-hidden">
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={image.image_url}
+                      alt={image.title}
+                      className="w-full lg:h-64 md:h-180 object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <button
+                        onClick={() => setSelectedImage(image.src)}
+                        className="bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 transition-colors">
+                        <ZoomIn className="lg:w-6 lg:h-6 md:h-12 md:w-12 text-white" />
+                      </button>
+                    </div>
+                    <Badge
+                      variant="outline"
+                      className={`absolute top-3 right-3 border ${getCategoryColor(
+                        image.category
+                      )}`}>
+                      {image.category}
+                    </Badge>
+                  </div>
+                  <CardContent className="pt-4">
+                    <h3 className="font-semibold text-temple-earth mb-2 md:text-4xl lg:text-base">
+                      {image.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground md:text-3xl lg:text-sm">
+                      {image.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))
+            : null}
         </div>
 
         {/* Image Modal */}

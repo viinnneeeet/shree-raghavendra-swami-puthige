@@ -10,6 +10,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { FormField } from '@/types/formField';
+import UploadFile from '../ui/UploadFile';
+import { DateField, TimeField } from '../ui/DateTimeField';
+import { twMerge } from 'tailwind-merge';
 
 interface FormFieldsProps<T extends Record<string, unknown>> {
   fields: FormField[];
@@ -36,7 +39,9 @@ export function FormFields<T extends Record<string, unknown>>({
         switch (field.type) {
           case 'input':
             return (
-              <div key={field.id} className="space-y-2">
+              <div
+                key={field.id}
+                className={twMerge('space-y-2', field?.className)}>
                 <Label htmlFor={field.id}>
                   {field.label}
                   {field.required ? (
@@ -62,7 +67,9 @@ export function FormFields<T extends Record<string, unknown>>({
 
           case 'textarea':
             return (
-              <div key={field.id} className="space-y-2">
+              <div
+                key={field.id}
+                className={twMerge('space-y-2', field?.className)}>
                 <Label htmlFor={field.id}>
                   {field.label}
                   {field.required ? (
@@ -87,7 +94,9 @@ export function FormFields<T extends Record<string, unknown>>({
 
           case 'checkbox-group':
             return (
-              <div key={field.id} className="space-y-2">
+              <div
+                key={field.id}
+                className={twMerge('space-y-2', field?.className)}>
                 <Label>
                   {field.label}
                   {field.required ? (
@@ -123,7 +132,9 @@ export function FormFields<T extends Record<string, unknown>>({
 
           case 'select':
             return (
-              <div key={field.id} className="space-y-2">
+              <div
+                key={field.id}
+                className={twMerge('space-y-2', field?.className)}>
                 <Label htmlFor={field.id}>
                   {field.label}
                   {field.required ? (
@@ -152,6 +163,91 @@ export function FormFields<T extends Record<string, unknown>>({
               </div>
             );
 
+          case 'file':
+            return (
+              <div
+                key={field.id}
+                className={twMerge('space-y-2', field?.className)}>
+                <Label htmlFor={field.id}>
+                  {field.label}
+                  {field.required ? (
+                    <span className="text-red-700">*</span>
+                  ) : null}
+                </Label>
+                <UploadFile
+                  accept={field?.accept}
+                  handleFile={(file) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      [field.id]: file,
+                    }));
+                  }}
+                  state={formData[field?.name] || ''}
+                  handleRemove={() => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      [field.name]: '',
+                    }));
+                  }}
+                />
+              </div>
+            );
+          case 'date':
+            return (
+              <div
+                key={field.id}
+                className={twMerge('space-y-2', field?.className)}>
+                <Label htmlFor={field.id}>
+                  {field.label}
+                  {field.required ? (
+                    <span className="text-red-700">*</span>
+                  ) : null}
+                </Label>
+                <DateField
+                  onChange={(value) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      [field.id]: value,
+                    }))
+                  }
+                  className=""
+                  key={field?.id}
+                  max=""
+                  min=""
+                  name={''}
+                  required={true}
+                  value={(formData[field?.id] as string) || ''}
+                />
+              </div>
+            );
+          case 'time':
+            return (
+              <div
+                key={field.id}
+                className={twMerge('space-y-2', field?.className)}>
+                <Label htmlFor={field.id}>
+                  {field.label}
+                  {field.required ? (
+                    <span className="text-red-700">*</span>
+                  ) : null}
+                </Label>
+                <TimeField
+                  onChange={(value) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      [field.id]: value,
+                    }))
+                  }
+                  className=""
+                  key={field?.id}
+                  // max=""
+                  // min=""
+                  name={''}
+                  required={true}
+                  value={(formData[field?.id] as string) || ''}
+                />
+              </div>
+            );
           default:
             return null;
         }

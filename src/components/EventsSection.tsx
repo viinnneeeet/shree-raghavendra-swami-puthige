@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, MapPin } from 'lucide-react';
-import { EVENTS_DATA } from '@/common/appConstants';
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { isValidEmail } from '@/common/commonFuction';
@@ -9,6 +8,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { TempleEvent } from '@/types/events';
 import { Input } from './ui/input';
+import { useQuery } from '@tanstack/react-query';
+import { fetchEvents } from '@/api/events';
 
 const EventsSection = () => {
   const [events, setEvents] = useState([]);
@@ -17,9 +18,19 @@ const EventsSection = () => {
   });
   const { toast } = useToast();
   const navigate = useNavigate();
-
+  const {
+    data: eventsData,
+    isLoading: eventsIsLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['events'],
+    queryFn: fetchEvents,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true, // refetch on window focus
+  });
   useEffect(() => {
-    const upcoming = getUpcomingEvents(EVENTS_DATA);
+    const upcoming = getUpcomingEvents(eventsData);
     setEvents(upcoming);
   }, []);
 

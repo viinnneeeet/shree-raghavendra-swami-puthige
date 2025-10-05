@@ -5,11 +5,24 @@ import { Calendar, Clock, MapPin, Users } from 'lucide-react';
 import { useState } from 'react';
 import { EVENTS_DATA, EVENTS_HIGHLIGHTS } from '@/common/appConstants';
 import { TempleEvent } from '@/types/events';
+import { fetchEvents } from '@/api/events';
+import { useQuery } from '@tanstack/react-query';
 
 const EventsCalendar = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear] = useState(new Date().getFullYear());
   const [events, setEvents] = useState(EVENTS_DATA);
+  const {
+    data: eventsData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['events'],
+    queryFn: fetchEvents,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true, // refetch on window focus
+  });
 
   const months = [
     'January',
@@ -40,10 +53,12 @@ const EventsCalendar = () => {
   };
 
   const getEventsForMonth = (month: number) => {
-    return events.filter((event: TempleEvent) => {
-      const eventDate = new Date(event.date);
-      return eventDate.getMonth() === month;
-    });
+    return eventsData?.length
+      ? eventsData?.filter((event: TempleEvent) => {
+          const eventDate = new Date(event.date);
+          return eventDate.getMonth() === month;
+        })
+      : [];
   };
 
   return (
@@ -111,7 +126,7 @@ const EventsCalendar = () => {
             </Card>
           ) : (
             <div className="grid lg:grid-cols-2 gap-6">
-              {getEventsForMonth(selectedMonth).map((event, index) => (
+              {getEventsForMonth(selectedMonth)?.map((event, index) => (
                 <Card
                   key={index}
                   className="border-temple-gold/20 shadow-sacred hover:shadow-temple transition-shadow md:mb-8">
@@ -151,7 +166,7 @@ const EventsCalendar = () => {
                       </div>
                       <div className="flex items-center text-muted-foreground lg:text-base md:text-4xl">
                         <Users className="lg:w-4 lg:h-4 md:w-10 md:h-10 mr-2 text-temple-gold" />
-                        Expected: {event.attendees} devotees
+                        Expected: {event?.participants} devotees
                       </div>
                     </div>
 
