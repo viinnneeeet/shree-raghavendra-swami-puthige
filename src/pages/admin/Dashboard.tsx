@@ -1,21 +1,52 @@
-import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, Calendar, MessageSquare, Heart, TrendingUp, Eye } from 'lucide-react';
-import { dummyMembers, dummyEvents, dummyContactSubmissions, dummySevas } from '@/data/dummyData';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Users,
+  Calendar,
+  MessageSquare,
+  Heart,
+  TrendingUp,
+  Eye,
+} from 'lucide-react';
+import {
+  dummyMembers,
+  dummyContactSubmissions,
+  dummySevas,
+} from '@/data/dummyData';
+import { fetchEvents } from '@/api/events';
+import { useQuery } from '@tanstack/react-query';
 
 const Dashboard = () => {
+  const {
+    data: eventsData,
+    isLoading: eventsIsLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['events'],
+    queryFn: fetchEvents,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true, // refetch on window focus
+  });
   const stats = [
     {
       title: 'Community Members',
       value: dummyMembers.length,
-      description: `${dummyMembers.filter(m => m.status === 'active').length} active members`,
+      description: `${
+        dummyMembers.filter((m) => m.status === 'active').length
+      } active members`,
       icon: Users,
       color: 'text-blue-600',
       bgColor: 'bg-blue-50 dark:bg-blue-900/20',
     },
     {
       title: 'Upcoming Events',
-      value: dummyEvents.filter(e => e.status === 'upcoming').length,
+      value: eventsData?.filter((e) => e.status === 'upcoming')?.length,
       description: 'Events this month',
       icon: Calendar,
       color: 'text-green-600',
@@ -23,7 +54,7 @@ const Dashboard = () => {
     },
     {
       title: 'Contact Submissions',
-      value: dummyContactSubmissions.filter(c => c.status === 'new').length,
+      value: dummyContactSubmissions.filter((c) => c.status === 'new').length,
       description: 'New inquiries',
       icon: MessageSquare,
       color: 'text-orange-600',
@@ -31,7 +62,7 @@ const Dashboard = () => {
     },
     {
       title: 'Available Sevas',
-      value: dummySevas.filter(s => s.availability === 'available').length,
+      value: dummySevas.filter((s) => s.availability === 'available').length,
       description: 'Ready for booking',
       icon: Heart,
       color: 'text-purple-600',
@@ -42,7 +73,11 @@ const Dashboard = () => {
   const recentActivities = [
     { action: 'New member joined', user: 'Priya Sharma', time: '2 hours ago' },
     { action: 'Event registered', user: 'Yoga Session', time: '4 hours ago' },
-    { action: 'Contact form submitted', user: 'Sita Reddy', time: '6 hours ago' },
+    {
+      action: 'Contact form submitted',
+      user: 'Sita Reddy',
+      time: '6 hours ago',
+    },
     { action: 'Seva booked', user: 'Annadana Service', time: '1 day ago' },
   ];
 
@@ -54,7 +89,8 @@ const Dashboard = () => {
           Welcome to Temple Admin Dashboard
         </h1>
         <p className="text-muted-foreground">
-          Manage your temple community, events, and services from this central hub.
+          Manage your temple community, events, and services from this central
+          hub.
         </p>
       </div>
 
@@ -63,14 +99,18 @@ const Dashboard = () => {
         {stats.map((stat, index) => (
           <Card key={index} className="relative overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {stat.title}
+              </CardTitle>
               <div className={`p-2 rounded-lg ${stat.bgColor}`}>
                 <stat.icon className={`w-4 h-4 ${stat.color}`} />
               </div>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">{stat.description}</p>
+              <p className="text-xs text-muted-foreground">
+                {stat.description}
+              </p>
             </CardContent>
           </Card>
         ))}
@@ -85,7 +125,9 @@ const Dashboard = () => {
               <TrendingUp className="w-5 h-5" />
               Recent Activity
             </CardTitle>
-            <CardDescription>Latest updates from your temple management</CardDescription>
+            <CardDescription>
+              Latest updates from your temple management
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -121,23 +163,31 @@ const Dashboard = () => {
           <CardContent>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Total Donations This Month</span>
+                <span className="text-sm text-muted-foreground">
+                  Total Donations This Month
+                </span>
                 <span className="font-semibold text-foreground">₹1,25,000</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Events Completed</span>
+                <span className="text-sm text-muted-foreground">
+                  Events Completed
+                </span>
                 <span className="font-semibold text-foreground">
-                  {dummyEvents.filter(e => e.status === 'completed').length}
+                  {eventsData?.filter((e) => e.status === 'completed')?.length}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Active Members</span>
+                <span className="text-sm text-muted-foreground">
+                  Active Members
+                </span>
                 <span className="font-semibold text-foreground">
-                  {dummyMembers.filter(m => m.status === 'active').length}
+                  {dummyMembers.filter((m) => m.status === 'active').length}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Gallery Images</span>
+                <span className="text-sm text-muted-foreground">
+                  Gallery Images
+                </span>
                 <span className="font-semibold text-foreground">6</span>
               </div>
             </div>
