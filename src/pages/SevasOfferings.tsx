@@ -1,96 +1,44 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Heart, Utensils, Flower, Gift, Star, Users } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
+import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { fetchSevaDetails } from '@/api/sevas';
+import SevaCard from './components/SevaCard';
+import { formatAmount } from '@/utils/common-function';
 const SevasOfferings = () => {
-  const sevas = [
-    {
-      icon: Utensils,
-      title: 'Annadana Seva',
-      description: 'Sponsor meals for devotees and serve the community',
-      amount: '₹2,100',
-      duration: 'Daily',
-      benefits: [
-        'Community service',
-        'Blessed food distribution',
-        'Karma yoga',
-      ],
-    },
-    {
-      icon: Flower,
-      title: 'Daily Pooja Seva',
-      description: 'Sponsor daily prayers and rituals for spiritual blessings',
-      amount: '₹501',
-      duration: 'One day',
-      benefits: ['Personal prayers', 'Divine blessings', 'Spiritual merit'],
-    },
-    {
-      icon: Star,
-      title: 'Temple Decoration',
-      description: 'Beautify the temple with flowers and decorative items',
-      amount: '₹1,008',
-      duration: 'Weekly',
-      benefits: [
-        'Aesthetic enhancement',
-        'Festival preparation',
-        'Divine atmosphere',
-      ],
-    },
-    {
-      icon: Gift,
-      title: 'Prasada Seva',
-      description: 'Sponsor sacred food offerings for all devotees',
-      amount: '₹751',
-      duration: 'One day',
-      benefits: ['Blessed food', 'Community sharing', 'Divine grace'],
-    },
-    {
-      icon: Heart,
-      title: 'Special Abhisheka',
-      description: 'Sacred bath ceremony for the deity with holy materials',
-      amount: '₹3,008',
-      duration: 'Monthly',
-      benefits: [
-        'Spiritual purification',
-        'Personal prayers',
-        'Divine connection',
-      ],
-    },
-    {
-      icon: Users,
-      title: 'Festival Sponsorship',
-      description: 'Support major temple festivals and celebrations',
-      amount: '₹5,100',
-      duration: 'Annual',
-      benefits: [
-        'Festival organization',
-        'Community celebration',
-        'Cultural preservation',
-      ],
-    },
-  ];
+  const {
+    data: sevaDetails,
+    isLoading: eventsIsLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['sevas'],
+    queryFn: fetchSevaDetails,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true, // refetch on window focus
+  });
 
   const offerings = [
     {
       item: 'Fresh Fruits',
-      price: '₹101',
+      price: '101',
       description: 'Seasonal fruits offering',
     },
     {
       item: 'Coconut & Flowers',
-      price: '₹51',
+      price: '51',
       description: 'Traditional temple offering',
     },
     {
       item: 'Incense & Camphor',
-      price: '₹31',
+      price: '31',
       description: 'Aromatic worship materials',
     },
     {
       item: 'Sacred Thread',
-      price: '₹21',
+      price: '21',
       description: 'Blessed protection thread',
     },
   ];
@@ -119,56 +67,9 @@ const SevasOfferings = () => {
             Sacred Sevas
           </h2>
           <div className="grid md:grid-cols-1 lg:px-0 md:px-8 lg:grid-cols-3 lg:gap-6 md:gap-12">
-            {sevas.map((seva, index) => (
-              <Card
-                key={index}
-                className="border-temple-gold/20 shadow-sacred hover:shadow-temple transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center justify-between lg:mb-4 md:mb-8">
-                    <seva.icon className="lg:w-8 lg:h-8 md:w-14 md:h-14 text-temple-gold" />
-                    <Badge
-                      variant="outline"
-                      className="border-temple-gold text-temple-gold md:text-4xl lg:text-base">
-                      {seva.duration}
-                    </Badge>
-                  </div>
-                  <CardTitle className="lg:text-xl md:text-6xl text-temple-earth">
-                    {seva.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4 md:text-4xl lg:text-base">
-                    {seva.description}
-                  </p>
-
-                  <div className="lg:mb-4 md:mb-8">
-                    <span className="lg:text-2xl md:text-5xl font-bold text-temple-gold">
-                      {seva.amount}
-                    </span>
-                  </div>
-
-                  <div className="lg:mb-6 md:mb-12">
-                    <h4 className="font-semibold text-temple-earth lg:mb-2 md:mb-6 md:text-5xl lg:text-base">
-                      Benefits:
-                    </h4>
-                    <ul className="lg:space-y-1 md:space-y-4">
-                      {seva.benefits.map((benefit, idx) => (
-                        <li
-                          key={idx}
-                          className="lg:text-sm md:text-4xl text-muted-foreground flex items-center">
-                          <Star className="lg:w-3 lg:h-3 md:w-8 md:h-8 mr-2 text-temple-gold" />
-                          {benefit}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <Button className="w-full" variant="temple">
-                    Book This Seva
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+            {sevaDetails?.length
+              ? sevaDetails?.map((seva, index) => <SevaCard seva={seva} />)
+              : null}
           </div>
         </div>
 
@@ -189,7 +90,7 @@ const SevasOfferings = () => {
                       {offering.description}
                     </p>
                     <div className="lg:text-lg font-bold text-temple-gold mb-4 md:text-5xl">
-                      {offering.price}
+                      {offering.price ? formatAmount(+offering.price) : '-'}
                     </div>
                     <Button size="sm" variant="sacred" className="w-full">
                       Add to Cart

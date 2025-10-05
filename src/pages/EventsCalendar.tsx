@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, MapPin, Users } from 'lucide-react';
 import { useState } from 'react';
-import { EVENTS_DATA, EVENTS_HIGHLIGHTS } from '@/common/appConstants';
+import { EVENTS_HIGHLIGHTS } from '@/common/appConstants';
 import { TempleEvent } from '@/types/events';
 import { fetchEvents } from '@/api/events';
 import { useQuery } from '@tanstack/react-query';
@@ -11,7 +11,6 @@ import { useQuery } from '@tanstack/react-query';
 const EventsCalendar = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear] = useState(new Date().getFullYear());
-  const [events, setEvents] = useState(EVENTS_DATA);
   const {
     data: eventsData,
     isLoading,

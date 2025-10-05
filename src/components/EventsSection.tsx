@@ -30,9 +30,11 @@ const EventsSection = () => {
     refetchOnWindowFocus: true, // refetch on window focus
   });
   useEffect(() => {
-    const upcoming = getUpcomingEvents(eventsData);
-    setEvents(upcoming);
-  }, []);
+    if (events?.length) {
+      const upcoming = getUpcomingEvents(eventsData);
+      setEvents(upcoming);
+    }
+  }, [eventsData?.length]);
 
   const getEventColor = (type: string) => {
     switch (type) {
@@ -52,10 +54,10 @@ const EventsSection = () => {
   const getUpcomingEvents = (events: TempleEvent[], count = 4) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // reset time → compare only date
-
+    console.log(events);
     return events
       .filter((event) => {
-        const eventDate = new Date(event.date);
+        const eventDate = new Date(event?.date);
         eventDate.setHours(0, 0, 0, 0);
         return eventDate >= today;
       })

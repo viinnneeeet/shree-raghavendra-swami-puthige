@@ -13,23 +13,21 @@ import {
   TrendingUp,
   Eye,
 } from 'lucide-react';
-import {
-  dummyMembers,
-  dummyContactSubmissions,
-  dummySevas,
-} from '@/data/dummyData';
+import { dummyMembers, dummyContactSubmissions } from '@/data/dummyData';
 import { fetchEvents } from '@/api/events';
 import { useQuery } from '@tanstack/react-query';
+import { fetchSevaDetails } from '@/api/sevas';
 
 const Dashboard = () => {
-  const {
-    data: eventsData,
-    isLoading: eventsIsLoading,
-    isError,
-    error,
-  } = useQuery({
+  const { data: eventsData } = useQuery({
     queryKey: ['events'],
     queryFn: fetchEvents,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true, // refetch on window focus
+  });
+  const { data: sevaDetails } = useQuery({
+    queryKey: ['sevas'],
+    queryFn: fetchSevaDetails,
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
@@ -46,7 +44,9 @@ const Dashboard = () => {
     },
     {
       title: 'Upcoming Events',
-      value: eventsData?.filter((e) => e.status === 'upcoming')?.length,
+      value: eventsData?.length
+        ? eventsData?.filter((e) => e?.status === 'upcoming')?.length
+        : [],
       description: 'Events this month',
       icon: Calendar,
       color: 'text-green-600',
@@ -62,7 +62,9 @@ const Dashboard = () => {
     },
     {
       title: 'Available Sevas',
-      value: dummySevas.filter((s) => s.availability === 'available').length,
+      value: sevaDetails?.length
+        ? sevaDetails?.filter((s) => s.availability === 'available').length
+        : [],
       description: 'Ready for booking',
       icon: Heart,
       color: 'text-purple-600',
@@ -96,20 +98,20 @@ const Dashboard = () => {
 
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, index) => (
+        {stats?.map((stat, index) => (
           <Card key={index} className="relative overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                {stat.title}
+                {stat?.title}
               </CardTitle>
-              <div className={`p-2 rounded-lg ${stat.bgColor}`}>
-                <stat.icon className={`w-4 h-4 ${stat.color}`} />
+              <div className={`p-2 rounded-lg ${stat?.bgColor}`}>
+                <stat.icon className={`w-4 h-4 ${stat?.color}`} />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
+              <div className="text-2xl font-bold">{stat?.value}</div>
               <p className="text-xs text-muted-foreground">
-                {stat.description}
+                {stat?.description}
               </p>
             </CardContent>
           </Card>
@@ -131,19 +133,19 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {recentActivities.map((activity, index) => (
+              {recentActivities?.map((activity, index) => (
                 <div key={index} className="flex items-center space-x-4">
                   <div className="w-2 h-2 bg-primary rounded-full"></div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground">
-                      {activity.action}
+                      {activity?.action}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      {activity.user}
+                      {activity?.user}
                     </p>
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    {activity.time}
+                    {activity?.time}
                   </div>
                 </div>
               ))}

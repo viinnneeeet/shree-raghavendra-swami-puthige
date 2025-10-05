@@ -6,6 +6,8 @@ import { EVENTS_DATA } from '@/common/appConstants';
 import { FormFields } from '@/components/Forms/FormFields';
 import { eventFormFields } from './constants';
 import { EventRegistrationFormData } from '@/types/eventRegistration';
+import { fetchEvents } from '@/api/events';
+import { useQuery } from '@tanstack/react-query';
 
 const RegisterEvent = () => {
   const [formData, setFormData] = useState<EventRegistrationFormData>({
@@ -16,18 +18,30 @@ const RegisterEvent = () => {
     message: '',
   });
   const { toast } = useToast();
-
+  const {
+    data: eventsData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['events'],
+    queryFn: fetchEvents,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true, // refetch on window focus
+  });
   const [eventsOptions, setEvetsOptions] = useState([]);
 
   useEffect(() => {
-    const options = EVENTS_DATA?.map((item) => {
-      return {
-        label: item?.title,
-        value: item?.title,
-      };
-    });
+    const options = eventsData?.length
+      ? eventsData?.map((item) => {
+          return {
+            label: item?.title,
+            value: item?.title,
+          };
+        })
+      : [];
     setEvetsOptions(options);
-  }, []);
+  }, [eventsData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

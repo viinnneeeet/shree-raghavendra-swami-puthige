@@ -16,7 +16,6 @@ export interface EventState {
   type: EventType | null;
   time: string;
   location: string;
-  attendees: string;
   description: string;
   image_url: string;
   src: File | null;
@@ -30,7 +29,6 @@ export interface EventPayload {
   type: EventType | null;
   time: string;
   location: string;
-  attendees: string;
   description: string;
   image_url: string;
   participants: string;

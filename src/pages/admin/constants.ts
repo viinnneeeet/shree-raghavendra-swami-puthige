@@ -126,3 +126,67 @@ export const eventFields: FormField[] = [
     className: '',
   },
 ];
+
+export const sevaFields: FormField[] = [
+  {
+    id: 'title',
+    label: 'Title',
+    type: 'input',
+    placeholder: 'Enter title',
+    required: true,
+  },
+  {
+    id: 'description',
+    label: 'Description',
+    type: 'textarea',
+    placeholder: 'Enter description',
+    required: true,
+  },
+  {
+    id: 'amount',
+    label: 'Amount',
+    type: 'input',
+    placeholder: 'Enter amount',
+    required: true,
+  },
+  {
+    id: 'duration',
+    label: 'Duration',
+    type: 'input',
+    placeholder: 'Enter duration (e.g., 3 months)',
+    required: true,
+  },
+  {
+    id: 'category',
+    label: 'Category',
+    type: 'select',
+    placeholder: 'Select category',
+    options: [
+      { label: 'Basic', value: 'basic' },
+      { label: 'Premium', value: 'premium' },
+      { label: 'Exclusive', value: 'exclusive' },
+      { label: 'Pooja', value: 'pooja' },
+      { label: 'Maintenance', value: 'maintenance' },
+      { label: 'Decoration', value: 'decoration' },
+      { label: 'Annadana', value: 'annadana' },
+    ], // sample values
+    required: true,
+  },
+  {
+    id: 'availability',
+    label: 'Availability',
+    type: 'select',
+    placeholder: 'Select availability',
+    options: [
+      { label: 'Available', value: 'available' },
+      { label: 'Unavailable', value: 'unavailable' },
+      { label: 'Upcoming', value: 'upcoming' },
+    ],
+  },
+  {
+    id: 'benefitsValue',
+    label: 'Benefits Value',
+    type: 'textarea',
+    placeholder: 'Enter value or perks summary',
+  },
+];

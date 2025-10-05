@@ -31,6 +31,7 @@ import { handlePresignedUrl } from '@/api/presigned-url';
 import { GalleryDetails, GalleryPayload } from '@/types/gallery';
 import Loader from '@/components/ui/Loader';
 import { toast } from '@/hooks/use-toast';
+import axios, { AxiosError } from 'axios';
 
 const Gallery = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -83,7 +84,7 @@ const Gallery = () => {
       });
     },
   });
-  const updateMutation = useMutation<unknown, Error, GalleryPayload>({
+  const updateMutation = useMutation<unknown, AxiosError, GalleryPayload>({
     mutationFn: updateGalleryDetails,
     onSuccess: () => {
       toast({
@@ -96,12 +97,26 @@ const Gallery = () => {
       setIsEdit(false);
       setIsUploadOpen(false);
     },
-    onError: (error) => {
-      toast({
-        title: 'Update failed',
-        description: error.message,
-        variant: 'danger',
-      });
+    onError: (error: unknown) => {
+      if (axios.isAxiosError(error)) {
+        toast({
+          title: 'Update failed',
+          description: error.response?.data?.message ?? error.message,
+          variant: 'danger',
+        });
+      } else if (error instanceof Error) {
+        toast({
+          title: 'Update failed',
+          description: error.message,
+          variant: 'danger',
+        });
+      } else {
+        toast({
+          title: 'Update failed',
+          description: 'Something went wrong.',
+          variant: 'danger',
+        });
+      }
     },
   });
 

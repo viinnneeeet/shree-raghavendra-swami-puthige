@@ -40,6 +40,7 @@ import Loader from '@/components/ui/Loader';
 import { eventFields } from './constants';
 import { isFormValid } from '@/utils/common-function';
 import { queryClient } from '@/lib/react-query-client';
+import axios from 'axios';
 
 const Events = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -47,7 +48,6 @@ const Events = () => {
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [isEventAddOpen, setIsEventAddOpen] = useState(false);
   const [formData, setFormData] = useState<EventState>({
-    attendees: '',
     date: '',
     src: null,
     description: '',
@@ -111,12 +111,26 @@ const Events = () => {
       setIsEdit(false);
       setIsEventAddOpen(false);
     },
-    onError: (error) => {
-      toast({
-        title: 'Update failed',
-        description: error.message,
-        variant: 'danger',
-      });
+    onError: (error: unknown) => {
+      if (axios.isAxiosError(error)) {
+        toast({
+          title: 'Update failed',
+          description: error.response?.data?.message ?? error.message,
+          variant: 'danger',
+        });
+      } else if (error instanceof Error) {
+        toast({
+          title: 'Update failed',
+          description: error.message,
+          variant: 'danger',
+        });
+      } else {
+        toast({
+          title: 'Update failed',
+          description: 'Something went wrong.',
+          variant: 'danger',
+        });
+      }
     },
   });
 
@@ -132,9 +146,11 @@ const Events = () => {
           event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           event.description.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesStatus =
-          filterStatus === 'all' || event.status === filterStatus;
+          filterStatus === 'all' ||
+          event.status?.toLowerCase() === filterStatus?.toLowerCase();
         const matchesCategory =
-          filterCategory === 'all' || event.category === filterCategory;
+          filterCategory === 'all' ||
+          event.category?.toLowerCase() === filterCategory?.toLowerCase();
 
         return matchesSearch && matchesStatus && matchesCategory;
       })
@@ -239,7 +255,6 @@ const Events = () => {
 
   const handleReset = () => {
     setFormData({
-      attendees: '',
       date: '',
       src: null,
       description: '',
@@ -262,7 +277,6 @@ const Events = () => {
       type: formData?.type,
       participants: formData?.participants,
       location: formData?.location,
-      attendees: formData?.attendees,
       status: formData?.status,
     };
     saveEventMutation.mutate(payload);
@@ -285,7 +299,6 @@ const Events = () => {
       type: formData?.type,
       participants: formData?.participants,
       location: formData?.location,
-      attendees: formData?.attendees,
       status: formData?.status,
       isActive: true,
     };
@@ -298,19 +311,19 @@ const Events = () => {
     <div className="space-y-6">
       <Loader isLoading={isLoading} />
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="lg:flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-heading font-bold text-foreground">
+          <h1 className="lg:text-3xl md:text-5xl font-heading font-bold text-foreground">
             Events Management
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground lg:text-base md:text-4xl">
             Create and manage temple events, festivals, and community activities
           </p>
         </div>
         <Button
-          className="bg-primary hover:bg-primary/90"
+          className="bg-primary hover:bg-primary/90 lg:mt-0  md:mt-8 md:w-full lg:w-auto"
           onClick={() => setIsEventAddOpen(true)}>
-          <CalendarPlus className="w-4 h-4 mr-2" />
+          <CalendarPlus className="lg:!w-4 lg:!h-4 md:!h-8 md:!w-8 mr-2" />
           Add Event
         </Button>
       </div>
@@ -362,7 +375,7 @@ const Events = () => {
       </Card>
 
       {/* Events Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid lg:gap-6 md:gap-12 md:grid-cols-1 lg:grid-cols-3">
         {filteredEvents?.map((event) => (
           <Card key={event.id} className="overflow-hidden">
             <div className="aspect-video bg-muted relative">
@@ -378,38 +391,39 @@ const Events = () => {
             </div>
 
             <CardHeader>
-              <CardTitle className="line-clamp-2">{event.title}</CardTitle>
-              <CardDescription className="line-clamp-3">
+              <CardTitle className="line-clamp-2 md:text-5xl lg:text-xl">
+                {event.title}
+              </CardTitle>
+              <CardDescription className="line-clamp-3 md:text-4xl lg:text-base">
                 {event.description}
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="space-y-3">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Calendar className="w-4 h-4" />
+            <CardContent className="lg:space-y-3 md:space-y-6">
+              <div className="flex items-center gap-2 lg:text-sm md:text-4xl text-muted-foreground">
+                <Calendar className="lg:w-4 lg:h-4 md:w-8 md:h-8" />
                 {formatDate(event.date)}
               </div>
 
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Clock className="w-4 h-4" />
+              <div className="flex items-center gap-2 lg:text-sm md:text-4xl text-muted-foreground">
+                <Clock className="lg:w-4 lg:h-4 md:w-8 md:h-8" />
                 {event.time}
               </div>
 
               {event.participants && (
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Users className="w-4 h-4" />
+                <div className="flex items-center gap-2 lg:text-sm md:text-4xl text-muted-foreground">
+                  <Users className="lg:w-4 lg:h-4 md:w-8 md:h-8" />
                   {event.participants} participants
                 </div>
               )}
 
               <div className="flex gap-2 pt-3">
-                <Button variant="outline" size="sm" className="flex-1">
-                  <Eye className="w-4 h-4 mr-1" />
+                <Button variant="outline" className="flex-1">
+                  <Eye className="lg:w-4 lg:h-4 md:w-8 md:h-8 mr-1" />
                   View
                 </Button>
                 <Button
                   variant="outline"
-                  size="sm"
                   className="flex-1"
                   onClick={() => handleEdit(event)}>
                   <Edit className="w-4 h-4 mr-1" />
@@ -444,7 +458,9 @@ const Events = () => {
               fields={eventFields}
               formData={formData}
               setFormData={setFormData}
-              wrapperClass={'grid grid-cols-2 gap-6'}
+              wrapperClass={
+                'grid lg:grid-cols-2 md:grid-cols-1 lg:gap-6 md:gap-12'
+              }
             />
           </div>
           <div className="mt-4 flex justify-between">

@@ -6,4 +6,7 @@ export const route = {
   updateGalleryDetails: '/api/v1/gallery/update-gallery',
   saveEventsData: '/api/v1/events/create-event',
   updateEventDetails: '/api/v1/events/update-event',
+  getSevaDetails: '/api/v1/sevas/get-sevas',
+  createSevaDetails: '/api/v1/sevas/create-seva',
+  updateSevaDetails: '/api/v1/sevas/update-seva',
 };

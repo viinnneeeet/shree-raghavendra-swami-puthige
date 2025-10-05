@@ -47,7 +47,7 @@ const UploadFile = ({
       ) : (
         <>
           <Upload
-            className="w-12 h-12 text-muted-foreground mx-auto mb-4 cursor-pointer "
+            className="lg:w-12 lg:h-12 md:w-24 md:h-24 text-muted-foreground mx-auto mb-4 cursor-pointer "
             onClick={handleClick}
           />
           <Input
@@ -58,8 +58,10 @@ const UploadFile = ({
             multiple={false} // optional: allow multiple files
             accept={accept}
           />
-          <h3 className="text-lg font-semibold mb-2">Upload New Images</h3>
-          <p className="text-muted-foreground mb-4">
+          <h3 className="lg:text-lg md:text-4xl font-semibold mb-2">
+            Upload New Images
+          </h3>
+          <p className="text-muted-foreground mb-4 lg:text-base md:text-3xl">
             Drag and drop images here or click to browse your files
           </p>
         </>
