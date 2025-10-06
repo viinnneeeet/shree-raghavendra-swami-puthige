@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { showToast } from '@/components/showToast';
+import { showToast } from '../components/ShowToast';
 
 export function isFormValid(fields, formData) {
   return fields.every((field) => {
