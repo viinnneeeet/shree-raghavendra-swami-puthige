@@ -140,6 +140,14 @@ type ToastActionElement = React.ReactElement<typeof ToastAction>;
 
 type ToastPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 
+export type ToastVariant =
+  | 'info'
+  | 'default'
+  | 'destructive'
+  | 'success'
+  | 'warning'
+  | 'danger';
+
 export {
   type ToastProps,
   type ToastActionElement,

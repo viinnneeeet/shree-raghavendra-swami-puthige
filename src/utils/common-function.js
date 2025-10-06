@@ -1,3 +1,6 @@
+import axios from 'axios';
+import { showToast } from '@/components/showToast';
+
 export function isFormValid(fields, formData) {
   return fields.every((field) => {
     if (!field.required) return true; // only check required ones
@@ -21,4 +24,18 @@ export const formatAmount = (amount) => {
     style: 'currency',
     currency: 'INR',
   }).format(amount);
+};
+
+export const formatDate = (dateString) =>
+  new Date(dateString).toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+
+export const handleApiError = (error, fallbackMessage) => {
+  const msg = axios.isAxiosError(error)
+    ? error.response?.data?.message ?? error.message
+    : error.message || fallbackMessage;
+  showToast('Error', msg, 'danger');
 };

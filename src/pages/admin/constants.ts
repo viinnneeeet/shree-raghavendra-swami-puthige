@@ -1,4 +1,6 @@
 import { FormField } from '@/types/formField';
+import { BadgeProps } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/badge';
 
 export const galleryFields: FormField[] = [
   {
@@ -25,10 +27,15 @@ export const galleryFields: FormField[] = [
     required: true,
     options: [
       { value: 'all', label: 'All Categories' },
-      { value: 'festivals', label: 'Festivals' },
-      { value: 'rituals', label: 'Rituals' },
-      { value: 'temple', label: 'Temple' },
-      { value: 'community', label: 'Community' },
+      { label: 'Spiritual', value: 'spiritual' },
+      { label: 'Festivals', value: 'festival' },
+      { label: 'Service', value: 'service' },
+      { label: 'Temple', value: 'temple' },
+      { label: 'Education', value: 'education' },
+      { label: 'Ritual', value: 'ritual' },
+      { label: 'Ceremony', value: 'ceremony' },
+      { label: 'Community Gathering', value: 'community' },
+      { label: 'Temple Event', value: 'temple-event' },
     ],
   },
   {
@@ -63,7 +70,7 @@ export const eventFields: FormField[] = [
       { value: 'community', label: 'Community Gathering' },
       { value: 'temple', label: 'Temple Event' },
     ],
-    className: 'space-y-2',
+    className: '',
   },
   {
     id: 'date',
@@ -89,7 +96,7 @@ export const eventFields: FormField[] = [
   {
     id: 'participants',
     type: 'input',
-    label: 'participants',
+    label: 'Participants',
     placeholder: 'Enter expected participants',
     required: true,
   },
@@ -152,9 +159,19 @@ export const sevaFields: FormField[] = [
   {
     id: 'duration',
     label: 'Duration',
-    type: 'input',
-    placeholder: 'Enter duration (e.g., 3 months)',
+    type: 'select',
+    placeholder: 'Select duration (e.g., 3 months)',
     required: true,
+    options: [
+      { label: 'One Day', value: 'One Day' },
+      { label: 'Daily', value: 'Daily' },
+      { label: 'Weekly', value: 'Weekly' },
+      { label: 'Monthly', value: 'Monthly' },
+      { label: 'Quarterly', value: 'Quarterly' },
+      { label: 'Half-Yearly', value: 'Half Yearly' },
+      { label: 'Yearly', value: 'Yearly' },
+      { label: 'Lifetime', value: 'Lifetime' },
+    ],
   },
   {
     id: 'category',
@@ -190,3 +207,45 @@ export const sevaFields: FormField[] = [
     placeholder: 'Enter value or perks summary',
   },
 ];
+
+export type BadgeConfig = {
+  label: string;
+  variant?: BadgeProps['variant'];
+  className?: string;
+};
+
+export const BADGE_MAP: Record<string, BadgeConfig> = {
+  upcoming: {
+    label: 'Upcoming',
+    className: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+  },
+  completed: {
+    label: 'Completed',
+    className:
+      'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+  },
+  cancelled: { label: 'Cancelled', variant: 'destructive' },
+};
+
+export const CATEGORY_MAP: Record<string, BadgeConfig> = {
+  pooja: {
+    label: 'Pooja',
+    variant: 'outline',
+    className: 'text-purple-600 border-purple-200',
+  },
+  festival: {
+    label: 'Festival',
+    variant: 'outline',
+    className: 'text-orange-600 border-orange-200',
+  },
+  community: {
+    label: 'Community',
+    variant: 'outline',
+    className: 'text-green-600 border-green-200',
+  },
+  education: {
+    label: 'Education',
+    variant: 'outline',
+    className: 'text-blue-600 border-blue-200',
+  },
+};

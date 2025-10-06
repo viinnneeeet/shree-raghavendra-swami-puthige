@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -25,7 +25,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Search, Heart, Plus, Edit, Eye, IndianRupee } from 'lucide-react';
-import { Seva } from '@/types/admin';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   fetchSevaDetails,
@@ -37,9 +36,65 @@ import { queryClient } from '@/lib/react-query-client';
 import { SevaPayload, SevaState } from '@/types/seva';
 import Modal from '@/components/ui/Modal';
 import { FormFields } from '@/components/Forms/FormFields';
-import { isFormValid } from '@/utils/common-function';
+import {
+  isFormValid,
+  formatAmount,
+  handleApiError,
+} from '@/utils/common-function';
 import { sevaFields } from './constants';
-import axios from 'axios';
+import { showToast } from '@/components/ShowToast';
+import SevaTable from '../components/SevaTable';
+
+const getAvailabilityBadge = (availability: string) => {
+  const badgeMap = {
+    available: (
+      <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+        Available
+      </Badge>
+    ),
+    limited: (
+      <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+        Limited
+      </Badge>
+    ),
+    unavailable: <Badge variant="destructive">Unavailable</Badge>,
+  };
+  return (
+    badgeMap[availability as keyof typeof badgeMap] || (
+      <Badge variant="secondary">{availability}</Badge>
+    )
+  );
+};
+
+const getCategoryBadge = (category: string) => {
+  const categoryMap = {
+    pooja: (
+      <Badge variant="outline" className="text-purple-600 border-purple-200">
+        Pooja
+      </Badge>
+    ),
+    annadana: (
+      <Badge variant="outline" className="text-orange-600 border-orange-200">
+        Annadana
+      </Badge>
+    ),
+    decoration: (
+      <Badge variant="outline" className="text-pink-600 border-pink-200">
+        Decoration
+      </Badge>
+    ),
+    maintenance: (
+      <Badge variant="outline" className="text-blue-600 border-blue-200">
+        Maintenance
+      </Badge>
+    ),
+  };
+  return (
+    categoryMap[category as keyof typeof categoryMap] || (
+      <Badge variant="outline">{category}</Badge>
+    )
+  );
+};
 
 const Sevas = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -59,12 +114,7 @@ const Sevas = () => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // tweak per your layout
-  const {
-    data: sevaDetails,
-    isLoading: eventsIsLoading,
-    isError,
-    error,
-  } = useQuery({
+  const { data: sevaDetails } = useQuery({
     queryKey: ['sevas'],
     queryFn: fetchSevaDetails,
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -81,140 +131,47 @@ const Sevas = () => {
     }
   }, [formData?.benefits]);
 
-  const saveSevaMutation = useMutation<
-    unknown, // return type of mutationFn
-    Error, // error type
-    SevaPayload // argument type
-  >({
+  const saveSevaMutation = useMutation({
     mutationFn: saveSevaDetails,
-    onSuccess: (res) => {
-      console.log(res);
-      toast({
-        title: 'Success!',
-        description: 'Gallery details saved successfully.',
-        variant: 'success',
-      });
+    onSuccess: () => {
+      showToast('Success!', 'Seva details saved successfully.', 'success');
       setIsSevaAddOpen(false);
-      queryClient.invalidateQueries({ queryKey: ['sevas'] });
       handleReset();
+      queryClient.invalidateQueries({ queryKey: ['sevas'] });
     },
-    onError: (error) => {
-      toast({
-        title: 'Something went wrong',
-        description: error.message,
-        variant: 'danger',
-      });
-    },
+    onError: (error) => handleApiError(error, 'Failed to save seva details'),
   });
 
-  const updateSevaMutation = useMutation<unknown, Error, SevaPayload>({
+  const updateSevaMutation = useMutation({
     mutationFn: updateSevaDetails,
     onSuccess: () => {
-      toast({
-        title: 'Updated!',
-        description: 'Gallery updated.',
-        variant: 'success',
-      });
+      showToast('Updated!', 'Seva details updated successfully.', 'success');
       queryClient.invalidateQueries({ queryKey: ['sevas'] });
       handleReset();
       setIsEdit(false);
       setIsSevaAddOpen(false);
     },
-    onError: (error: unknown) => {
-      if (axios.isAxiosError(error)) {
-        toast({
-          title: 'Update failed',
-          description: error.response?.data?.message ?? error.message,
-          variant: 'danger',
-        });
-      } else if (error instanceof Error) {
-        toast({
-          title: 'Update failed',
-          description: error.message,
-          variant: 'danger',
-        });
-      } else {
-        toast({
-          title: 'Update failed',
-          description: 'Something went wrong.',
-          variant: 'danger',
-        });
-      }
-    },
+    onError: (error) => handleApiError(error, 'Failed to update seva details'),
   });
 
-  const filteredSevas = sevaDetails?.length
-    ? sevaDetails?.filter((seva) => {
-        const matchesSearch =
-          seva?.title?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
-          seva?.description.toLowerCase()?.includes(searchTerm?.toLowerCase());
-        const matchesCategory =
-          filterCategory === 'all' || seva?.category === filterCategory;
-        const matchesAvailability =
-          filterAvailability === 'all' ||
-          seva.availability === filterAvailability;
+  const filteredSevas = useMemo(() => {
+    return sevaDetails?.length
+      ? sevaDetails?.filter((seva) => {
+          const matchesSearch =
+            seva?.title?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
+            seva?.description
+              .toLowerCase()
+              ?.includes(searchTerm?.toLowerCase());
+          const matchesCategory =
+            filterCategory === 'all' || seva?.category === filterCategory;
+          const matchesAvailability =
+            filterAvailability === 'all' ||
+            seva.availability === filterAvailability;
 
-        return matchesSearch && matchesCategory && matchesAvailability;
-      })
-    : [];
-
-  const getAvailabilityBadge = (availability: string) => {
-    const badgeMap = {
-      available: (
-        <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-          Available
-        </Badge>
-      ),
-      limited: (
-        <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-          Limited
-        </Badge>
-      ),
-      unavailable: <Badge variant="destructive">Unavailable</Badge>,
-    };
-    return (
-      badgeMap[availability as keyof typeof badgeMap] || (
-        <Badge variant="secondary">{availability}</Badge>
-      )
-    );
-  };
-
-  const getCategoryBadge = (category: string) => {
-    const categoryMap = {
-      pooja: (
-        <Badge variant="outline" className="text-purple-600 border-purple-200">
-          Pooja
-        </Badge>
-      ),
-      annadana: (
-        <Badge variant="outline" className="text-orange-600 border-orange-200">
-          Annadana
-        </Badge>
-      ),
-      decoration: (
-        <Badge variant="outline" className="text-pink-600 border-pink-200">
-          Decoration
-        </Badge>
-      ),
-      maintenance: (
-        <Badge variant="outline" className="text-blue-600 border-blue-200">
-          Maintenance
-        </Badge>
-      ),
-    };
-    return (
-      categoryMap[category as keyof typeof categoryMap] || (
-        <Badge variant="outline">{category}</Badge>
-      )
-    );
-  };
-
-  const formatAmount = (amount: number) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-    }).format(amount);
-  };
+          return matchesSearch && matchesCategory && matchesAvailability;
+        })
+      : [];
+  }, [filterAvailability, filterCategory, searchTerm, sevaDetails]);
 
   const getAvailabilityCounts = () => {
     return {
@@ -355,9 +312,11 @@ const Sevas = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">
-              {formatAmount(
-                sevaDetails.reduce((sum, seva) => sum + +seva?.amount, 0)
-              )}
+              {sevaDetails?.length
+                ? formatAmount(
+                    sevaDetails?.reduce((sum, seva) => sum + +seva?.amount, 0)
+                  )
+                : ''}
             </div>
             <p className="text-sm text-muted-foreground">
               All offerings combined
@@ -424,58 +383,7 @@ const Sevas = () => {
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Service Name</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Availability</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredSevas.map((seva) => (
-                  <TableRow key={seva.id}>
-                    <TableCell>
-                      <div className="font-medium">{seva.title}</div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="max-w-sm">
-                        <p className="text-sm line-clamp-2">
-                          {seva.description}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell>{getCategoryBadge(seva.category)}</TableCell>
-                    <TableCell>
-                      <div className="font-semibold text-primary">
-                        {seva?.amount ? formatAmount(+seva?.amount) : '-'}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {getAvailabilityBadge(seva.availability)}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm">
-                          <Eye className="w-4 h-4 mr-1" />
-                          View
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleEdit(seva)}>
-                          <Edit className="w-4 h-4 mr-1" />
-                          Edit
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <SevaTable filteredSevas={filteredSevas} handleEdit={handleEdit} />
           </div>
 
           {filteredSevas.length === 0 && (

@@ -30,7 +30,7 @@ const HeroSection = () => {
       <div className="relative z-10 text-center px-4 md:px-6 lg:px-12 max-w-7xl mx-auto h-full flex flex-col justify-center">
         {/* Mobile-first heading with better hierarchy */}
         <div className="lg:mb-8 sm:mb-12">
-          <p className="md:text-9xl lg:text-4xl text-temple-gold/90 mb-4 sm:mb-6 font-medium tracking-wide">
+          <p className="md:text-9xl lg:text-6xl text-temple-gold/90 mb-4 sm:mb-6 font-medium tracking-wide">
             Welcome to
           </p>
           <h1 className="sm:text-5xl md:text-9xl lg:text-7xl xl:text-8xl font-bold text-white mb-6 sm:mb-8 leading-[1.1] tracking-tight">
@@ -49,7 +49,7 @@ const HeroSection = () => {
         </div>
 
         {/* Mobile-optimized buttons with better touch targets */}
-        <div className="flex flex-col lg:flex-row gap-4 md:gap-8 md:w-full justify-center items-center">
+        {/* <div className="flex flex-col lg:flex-row gap-4 md:gap-8 md:w-full justify-center items-center">
           <Button
             variant="sacred"
             size="lg"
@@ -70,7 +70,7 @@ const HeroSection = () => {
             }>
             Learn More
           </Button>
-        </div>
+        </div> */}
 
         {/* Decorative elements */}
         {/* <div className="mt-12 flex justify-center space-x-8 text-temple-gold/60">
