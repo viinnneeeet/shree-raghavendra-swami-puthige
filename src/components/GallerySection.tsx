@@ -5,19 +5,15 @@ import { X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchGallery } from '@/api/gallery';
+import SkeletonCard from './ui/SkeletonCard';
 
 const GallerySection = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const navigate = useNavigate();
-  const {
-    data: galleryImages,
-    isLoading: fetchLoading,
-    isError: fetchIsError,
-    error: fetchError,
-  } = useQuery({
+  const { data: galleryImages, isFetching: galleryIsFetching } = useQuery({
     queryKey: ['gallery'],
     queryFn: fetchGallery,
-    staleTime: 1000 * 60 * 0.1, // 5 minutes
+    staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
   return (
@@ -39,7 +35,9 @@ const GallerySection = () => {
         ) : null}
 
         <div className="grid md:grid-cols-1 md:p-16 md:gap-8 lg:grid-cols-3 gap-6">
-          {galleryImages?.length
+          {galleryIsFetching
+            ? Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
+            : galleryImages?.length
             ? galleryImages?.map((image, index) => (
                 <Card
                   key={index}

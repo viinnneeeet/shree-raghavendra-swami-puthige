@@ -7,19 +7,16 @@ import { EVENTS_HIGHLIGHTS } from '@/common/appConstants';
 import { TempleEvent } from '@/types/events';
 import { fetchEvents } from '@/api/events';
 import { useQuery } from '@tanstack/react-query';
+import EventsCard from './components/EventsCard';
+import SkeletonCard from '@/components/ui/SkeletonCard';
 
 const EventsCalendar = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear] = useState(new Date().getFullYear());
-  const {
-    data: eventsData,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
+  const { data: eventsData, isFetching: eventsIsFetching } = useQuery({
     queryKey: ['events'],
     queryFn: fetchEvents,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 0.2, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
 
@@ -37,19 +34,6 @@ const EventsCalendar = () => {
     'November',
     'December',
   ];
-
-  const getEventColor = (type: string) => {
-    switch (type) {
-      case 'Festival':
-        return 'bg-temple-sunset/20 text-temple-sunset border-temple-sunset/30';
-      case 'Retreat':
-        return 'bg-temple-purple/20 text-temple-purple border-temple-purple/30';
-      case 'Service':
-        return 'bg-temple-gold/20 text-temple-gold border-temple-gold/30';
-      default:
-        return 'bg-primary/20 text-primary border-primary/30';
-    }
-  };
 
   const getEventsForMonth = (month: number) => {
     return eventsData?.length
@@ -110,7 +94,13 @@ const EventsCalendar = () => {
             {months[selectedMonth]} {selectedYear} Events
           </h2>
 
-          {getEventsForMonth(selectedMonth).length === 0 ? (
+          {eventsIsFetching ? (
+            <div className="grid lg:grid-cols-2 gap-6">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <SkeletonCard key={i} />
+              ))}
+            </div>
+          ) : getEventsForMonth(selectedMonth).length === 0 ? (
             <Card className="border-temple-gold/20 shadow-sacred">
               <CardContent className="text-center py-12">
                 <Calendar className="w-16 h-16 mx-auto mb-4 text-temple-gold/50" />
@@ -126,61 +116,7 @@ const EventsCalendar = () => {
           ) : (
             <div className="grid lg:grid-cols-2 gap-6">
               {getEventsForMonth(selectedMonth)?.map((event, index) => (
-                <Card
-                  key={index}
-                  className="border-temple-gold/20 shadow-sacred hover:shadow-temple transition-shadow md:mb-8">
-                  <CardHeader>
-                    <div className="flex items-center justify-between mb-4">
-                      <Badge
-                        variant="outline"
-                        className={`border ${getEventColor(
-                          event.type
-                        )} lg:text-base md:text-4xl`}>
-                        {event.type}
-                      </Badge>
-                      <span className="lg:text-sm md:text-4xl text-muted-foreground">
-                        {new Date(event.date).toLocaleDateString('en-US', {
-                          weekday: 'long',
-                          day: 'numeric',
-                        })}
-                      </span>
-                    </div>
-                    <CardTitle className="lg:text-xl md:text-5xl text-temple-earth">
-                      {event.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground lg:mb-4 md:mb-10 lg:text-base md:text-4xl">
-                      {event.description}
-                    </p>
-
-                    <div className="lg:space-y-2 md:space-y-6 lg:mb-4 md:mb-10">
-                      <div className="flex items-center text-muted-foreground lg:text-base md:text-4xl">
-                        <Clock className="lg:w-4 lg:h-4 md:w-10 md:h-10 mr-2 text-temple-gold" />
-                        {event.time}
-                      </div>
-                      <div className="flex items-center text-muted-foreground lg:text-base md:text-4xl">
-                        <MapPin className="lg:w-4 lg:h-4 md:w-10 md:h-10 mr-2 text-temple-gold" />
-                        {event.location}
-                      </div>
-                      <div className="flex items-center text-muted-foreground lg:text-base md:text-4xl">
-                        <Users className="lg:w-4 lg:h-4 md:w-10 md:h-10 mr-2 text-temple-gold" />
-                        Expected: {event?.participants} devotees
-                      </div>
-                    </div>
-
-                    <div className="flex lg:space-x-2 md:space-x-6">
-                      <Button variant="temple" className="flex-1">
-                        Register
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="border-temple-gold/30">
-                        Learn More
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                <EventsCard event={event} index={index} key={index} />
               ))}
             </div>
           )}

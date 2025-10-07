@@ -1,16 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchSevaDetails } from '@/api/sevas';
 import SevaCard from './components/SevaCard';
 import { formatAmount } from '@/utils/common-function';
+import SkeletonCard from '@/components/ui/SkeletonCard';
+
 const SevasOfferings = () => {
   const {
     data: sevaDetails,
-    isLoading: eventsIsLoading,
+    isFetching: sevaIsFetching,
     isError,
     error,
   } = useQuery({
@@ -67,9 +68,17 @@ const SevasOfferings = () => {
             Sacred Sevas
           </h2>
           <div className="grid md:grid-cols-1 lg:px-0 md:px-8 lg:grid-cols-3 lg:gap-6 md:gap-12">
-            {sevaDetails?.length
-              ? sevaDetails?.map((seva, index) => <SevaCard seva={seva} />)
-              : null}
+            {sevaIsFetching ? (
+              Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
+            ) : sevaDetails?.length ? (
+              sevaDetails?.map((seva, index) => (
+                <SevaCard seva={seva} key={index} />
+              ))
+            ) : (
+              <p className="text-center text-muted-foreground col-span-full">
+                No sevas available.
+              </p>
+            )}
           </div>
         </div>
 
