@@ -37,6 +37,7 @@ const Events = lazy(() => import('./pages/admin/Events'));
 const Contacts = lazy(() => import('./pages/admin/Contacts'));
 const Sevas = lazy(() => import('./pages/admin/Sevas'));
 const Gallery = lazy(() => import('./pages/admin/Gallery'));
+const Donations = lazy(() => import('./pages/admin/Donations'));
 
 const App = () => (
   <ErrorBoundary
@@ -83,6 +84,7 @@ const App = () => (
                     <Route path="contacts" element={<Contacts />} />
                     <Route path="sevas" element={<Sevas />} />
                     <Route path="gallery" element={<Gallery />} />
+                    <Route path="donations" element={<Donations />} />
                   </Route>
                 </Routes>
               </BrowserRouter>

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import React from 'react';
 import { Heart, Utensils, Flower, Gift, Star, Users } from 'lucide-react';
 import { formatAmount } from '@/utils/common-function';
-const SevaCard = ({ seva }) => {
+const SevaCard = ({ seva, handleBook }) => {
   const icons = [Heart, Utensils, Flower, Gift, Star, Users];
 
   const getRandomIcon = () => {
@@ -61,7 +61,10 @@ const SevaCard = ({ seva }) => {
           </ul>
         </div>
 
-        <Button className="w-full" variant="temple">
+        <Button
+          className="w-full"
+          variant="temple"
+          onClick={() => handleBook(seva)}>
           Book This Seva
         </Button>
       </CardContent>

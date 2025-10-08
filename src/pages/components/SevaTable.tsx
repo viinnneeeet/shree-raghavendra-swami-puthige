@@ -55,7 +55,13 @@ const getCategoryBadge = (category: string) => {
   );
 };
 
-export default function SevaTable({ filteredSevas, handleEdit }) {
+export default function SevaTable({
+  filteredSevas,
+  handleEdit,
+  isLoading,
+  pagination,
+  onPageChange,
+}) {
   const columns = [
     {
       key: 'title',
@@ -106,7 +112,9 @@ export default function SevaTable({ filteredSevas, handleEdit }) {
       columns={columns}
       data={filteredSevas}
       actions={renderActions}
-      rowsPerPage={5}
+      pagination={pagination}
+      isLoading={isLoading}
+      onPageChange={onPageChange}
     />
   );
 }

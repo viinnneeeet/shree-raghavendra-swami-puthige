@@ -19,18 +19,22 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchSevaDetails } from '@/api/sevas';
 
 const Dashboard = () => {
-  const { data: eventsData } = useQuery({
+  const { data: eventData = {} } = useQuery({
     queryKey: ['events'],
     queryFn: fetchEvents,
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
-  const { data: sevaDetails } = useQuery({
+  const { data: sevaData = {} } = useQuery({
     queryKey: ['sevas'],
     queryFn: fetchSevaDetails,
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
+
+  const { eventsList = [], paginationEvent = {} } = eventData;
+  const { sevasList = [], paginationSeva = {} } = sevaData;
+
   const stats = [
     {
       title: 'Community Members',
@@ -44,8 +48,8 @@ const Dashboard = () => {
     },
     {
       title: 'Upcoming Events',
-      value: eventsData?.length
-        ? eventsData?.filter((e) => e?.status === 'upcoming')?.length
+      value: eventsList?.length
+        ? eventsList?.filter((e) => e?.status === 'upcoming')?.length
         : [],
       description: 'Events this month',
       icon: Calendar,
@@ -62,8 +66,8 @@ const Dashboard = () => {
     },
     {
       title: 'Available Sevas',
-      value: sevaDetails?.length
-        ? sevaDetails?.filter((s) => s.availability === 'available').length
+      value: sevasList?.length
+        ? sevasList?.filter((s) => s.availability === 'available').length
         : [],
       description: 'Ready for booking',
       icon: Heart,
@@ -175,7 +179,10 @@ const Dashboard = () => {
                   Events Completed
                 </span>
                 <span className="font-semibold text-foreground">
-                  {eventsData?.filter((e) => e.status === 'completed')?.length}
+                  {eventsList?.length
+                    ? eventsList?.filter((e) => e?.status === 'completed')
+                        ?.length
+                    : '0'}
                 </span>
               </div>
               <div className="flex justify-between items-center">

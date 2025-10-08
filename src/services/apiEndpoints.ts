@@ -9,4 +9,5 @@ export const route = {
   getSevaDetails: '/api/v1/sevas/get-sevas',
   createSevaDetails: '/api/v1/sevas/create-seva',
   updateSevaDetails: '/api/v1/sevas/update-seva',
+  login: '/api/v1/auth/login',
 };

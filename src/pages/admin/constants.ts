@@ -155,6 +155,7 @@ export const sevaFields: FormField[] = [
     type: 'input',
     placeholder: 'Enter amount',
     required: true,
+    isNumberAllowed: true,
   },
   {
     id: 'duration',

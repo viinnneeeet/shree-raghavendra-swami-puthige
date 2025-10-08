@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clock, MapPin, Users } from 'lucide-react';
+import { formatTime } from '@/utils/common-function';
 
 const getEventColor = (type: string) => {
   switch (type) {
@@ -25,7 +26,7 @@ const EventsCard = ({ event, index }) => {
         <div className="flex items-center justify-between mb-4">
           <Badge
             variant="outline"
-            className={`border ${getEventColor(
+            className={`border capitalize ${getEventColor(
               event.type
             )} lg:text-base md:text-4xl`}>
             {event.type}
@@ -49,7 +50,7 @@ const EventsCard = ({ event, index }) => {
         <div className="lg:space-y-2 md:space-y-6 lg:mb-4 md:mb-10">
           <div className="flex items-center text-muted-foreground lg:text-base md:text-4xl">
             <Clock className="lg:w-4 lg:h-4 md:w-10 md:h-10 mr-2 text-temple-gold" />
-            {event.time}
+            {event.time ? formatTime(event.time) : ''}
           </div>
           <div className="flex items-center text-muted-foreground lg:text-base md:text-4xl">
             <MapPin className="lg:w-4 lg:h-4 md:w-10 md:h-10 mr-2 text-temple-gold" />

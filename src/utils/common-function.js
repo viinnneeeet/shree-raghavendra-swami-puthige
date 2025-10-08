@@ -39,3 +39,26 @@ export const handleApiError = (error, fallbackMessage) => {
     : error.message || fallbackMessage;
   showToast('Error', msg, 'danger');
 };
+
+export function isOnlyNumber(value, allowDecimal = false) {
+  if (value === '') return true; // allow empty input (so user can delete all)
+  if (value === '.') return allowDecimal; // allow just "." while typing
+  if (allowDecimal) {
+    return /^(\d+(\.\d{0,2})?|\.\d{0,2})$/.test(value);
+  } else {
+    return /^\d+$/.test(value);
+  }
+}
+
+export function formatTime(time24) {
+  if (!time24) return '';
+
+  const [hoursStr, minutes] = time24.split(':');
+  let hours = parseInt(hoursStr, 10);
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+
+  hours = hours % 12 || 12; // convert 0 -> 12 for midnight
+  const formattedHours = String(hours).padStart(2, '0');
+
+  return `${formattedHours}:${minutes} ${ampm}`;
+}

@@ -39,7 +39,7 @@ const GalleryCard = ({ image, index, setSelectedImage }) => {
         </div>
         <Badge
           variant="outline"
-          className={`absolute top-3 right-3 border ${getCategoryColor(
+          className={`absolute capitalize top-3 right-3 border ${getCategoryColor(
             image.category
           )}`}>
           {image.category}

@@ -13,6 +13,7 @@ import { FormField } from '@/types/formField';
 import UploadFile from '../ui/UploadFile';
 import { DateField, TimeField } from '../ui/DateTimeField';
 import { twMerge } from 'tailwind-merge';
+import { isOnlyNumber } from '@/utils/common-function';
 
 interface FormFieldsProps<T extends Record<string, unknown>> {
   fields: FormField[];
@@ -53,14 +54,20 @@ export function FormFields<T extends Record<string, unknown>>({
                   type={field.inputType || 'text'}
                   required={field.required}
                   value={(formData[field.id as keyof T] as string) || ''}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const value = e?.target?.value?.trimStart();
+                    if (field?.isNumberAllowed) {
+                      // check if value passes the validation
+                      if (!isOnlyNumber(value, field.allowDecimal)) return;
+                    }
                     setFormData((prev) => ({
                       ...prev,
-                      [field.id]: e.target.value,
-                    }))
-                  }
+                      [field.id]: value,
+                    }));
+                  }}
                   className="border-temple-gold/30 focus:ring-temple-gold"
                   placeholder={field?.placeholder}
+                  disabled={field?.isDisabled}
                 />
               </div>
             );
@@ -79,12 +86,13 @@ export function FormFields<T extends Record<string, unknown>>({
                 <Textarea
                   id={field.id}
                   value={(formData[field.id as keyof T] as string) || ''}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const value = e.target.value?.trimStart();
                     setFormData((prev) => ({
                       ...prev,
-                      [field.id]: e.target.value,
-                    }))
-                  }
+                      [field.id]: value,
+                    }));
+                  }}
                   placeholder={field.placeholder}
                   className="border-temple-gold/30 focus:ring-temple-gold"
                   rows={field?.row}
@@ -148,7 +156,8 @@ export function FormFields<T extends Record<string, unknown>>({
                       ...prev,
                       [field.id]: value,
                     }))
-                  }>
+                  }
+                  disabled={field?.isDisabled}>
                   <SelectTrigger className="border-temple-gold/30">
                     <SelectValue placeholder={`Select ${field.label}`} />
                   </SelectTrigger>

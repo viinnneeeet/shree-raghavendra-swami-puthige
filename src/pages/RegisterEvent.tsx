@@ -18,22 +18,18 @@ const RegisterEvent = () => {
     message: '',
   });
   const { toast } = useToast();
-  const {
-    data: eventsData,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
+  const { data = {} } = useQuery({
     queryKey: ['events'],
     queryFn: fetchEvents,
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
+  const { eventsList = [], pagination = {} } = data;
   const [eventsOptions, setEvetsOptions] = useState([]);
 
   useEffect(() => {
-    const options = eventsData?.length
-      ? eventsData?.map((item) => {
+    const options = eventsList?.length
+      ? eventsList?.map((item) => {
           return {
             label: item?.title,
             value: item?.title,
@@ -41,7 +37,7 @@ const RegisterEvent = () => {
         })
       : [];
     setEvetsOptions(options);
-  }, [eventsData]);
+  }, [eventsList]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

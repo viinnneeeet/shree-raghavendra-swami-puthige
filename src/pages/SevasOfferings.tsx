@@ -5,47 +5,42 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchSevaDetails } from '@/api/sevas';
 import SevaCard from './components/SevaCard';
-import { formatAmount } from '@/utils/common-function';
+import { formatAmount, isFormValid } from '@/utils/common-function';
 import SkeletonCard from '@/components/ui/SkeletonCard';
+import Modal from '@/components/ui/Modal';
+import { FormFields } from '@/components/Forms/FormFields';
+import { useState } from 'react';
+import { donationFormFields } from './constants';
 
 const SevasOfferings = () => {
-  const {
-    data: sevaDetails,
-    isFetching: sevaIsFetching,
-    isError,
-    error,
-  } = useQuery({
+  const { data = {}, isFetching: sevaIsFetching } = useQuery({
     queryKey: ['sevas'],
     queryFn: fetchSevaDetails,
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
 
-  const offerings = [
-    {
-      item: 'Fresh Fruits',
-      price: '101',
-      description: 'Seasonal fruits offering',
-    },
-    {
-      item: 'Coconut & Flowers',
-      price: '51',
-      description: 'Traditional temple offering',
-    },
-    {
-      item: 'Incense & Camphor',
-      price: '31',
-      description: 'Aromatic worship materials',
-    },
-    {
-      item: 'Sacred Thread',
-      price: '21',
-      description: 'Blessed protection thread',
-    },
-  ];
-
+  const { sevasList = [], pagination = {} } = data;
+  const [isDonateOpen, setIsDonateOpen] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [selectedSeva, setSelectedSeva] = useState<Record<string, string>>({});
   const navigate = useNavigate();
 
+  const handleClose = () => {
+    setIsDonateOpen(!isDonateOpen);
+  };
+
+  const handleBook = (seva) => {
+    setIsDonateOpen(true);
+    setSelectedSeva(seva);
+    setFormData((prev) => ({
+      ...prev,
+      seva: seva?.title,
+      amount: formatAmount(seva?.amount),
+    }));
+  };
+
+  const isPayDisabled = !isFormValid(donationFormFields, formData);
   return (
     <section className="py-20 bg-gradient-earth">
       <div className="container mx-auto px-4">
@@ -70,9 +65,9 @@ const SevasOfferings = () => {
           <div className="grid md:grid-cols-1 lg:px-0 md:px-8 lg:grid-cols-3 lg:gap-6 md:gap-12">
             {sevaIsFetching ? (
               Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
-            ) : sevaDetails?.length ? (
-              sevaDetails?.map((seva, index) => (
-                <SevaCard seva={seva} key={index} />
+            ) : sevasList?.length ? (
+              sevasList?.map((seva, index) => (
+                <SevaCard seva={seva} key={index} handleBook={handleBook} />
               ))
             ) : (
               <p className="text-center text-muted-foreground col-span-full">
@@ -85,30 +80,9 @@ const SevasOfferings = () => {
         {/* Offerings Section */}
         <div>
           <h2 className="lg:text-3xl md:text-6xl font-bold text-center mb-8 text-temple-earth">
-            Temple Offerings
+            {/* Donate Now */}
           </h2>
-          <div className="grid md:grid-cols-1 lg:grid-cols-4 md:px-16 lg:px-0 md:gap-16 lg:gap-4">
-            {offerings.map((offering, index) => (
-              <Card key={index} className="border-temple-gold/20 shadow-sacred">
-                <CardContent className="pt-6">
-                  <div className="text-center">
-                    <h3 className="font-semibold text-temple-earth mb-2 md:text-5xl lg:text-lg">
-                      {offering.item}
-                    </h3>
-                    <p className="text-muted-foreground mb-3  md:text-4xl lg:text-sm">
-                      {offering.description}
-                    </p>
-                    <div className="lg:text-lg font-bold text-temple-gold mb-4 md:text-5xl">
-                      {offering.price ? formatAmount(+offering.price) : '-'}
-                    </div>
-                    <Button size="sm" variant="sacred" className="w-full">
-                      Add to Cart
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <div className="grid md:grid-cols-1 lg:grid-cols-4 md:px-16 lg:px-0 md:gap-16 lg:gap-4"></div>
         </div>
 
         {/* Note about payments */}
@@ -138,6 +112,31 @@ const SevasOfferings = () => {
           </CardContent>
         </Card>
       </div>
+      {isDonateOpen ? (
+        <Modal
+          open={isDonateOpen}
+          onOpenChange={handleClose}
+          title={`Donate for ${selectedSeva?.title}`}>
+          <FormFields
+            fields={donationFormFields}
+            formData={formData}
+            setFormData={setFormData}
+            wrapperClass="space-y-6"
+          />
+          <div className="mt-4 flex justify-between">
+            <Button variant="secondary" onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button
+              variant="temple"
+              disabled={isPayDisabled}
+              onClick={() => {}}
+              className={isPayDisabled ? '!cursor-not-allowed' : ''}>
+              {'Proceed to Pay'}
+            </Button>
+          </div>
+        </Modal>
+      ) : null}
     </section>
   );
 };

@@ -5,9 +5,13 @@ export type FormField =
       type: 'input';
       label: string;
       required?: boolean;
-      inputType?: 'text' | 'email' | 'tel';
+      inputType?: 'text' | 'email' | 'tel' | 'numeric';
       placeholder?: string;
       className?: string;
+      pattern?: string;
+      isDisabled?: boolean;
+      isNumberAllowed?: boolean;
+      allowDecimal?: boolean;
     }
   | {
       id: string;
@@ -34,6 +38,7 @@ export type FormField =
       required?: boolean;
       placeholder?: string;
       className?: string;
+      isDisabled?: boolean;
     }
   | {
       id: string;

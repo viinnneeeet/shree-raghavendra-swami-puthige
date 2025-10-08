@@ -13,7 +13,7 @@ const api = axios.create({
 // Request interceptor (e.g. attach auth token)
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('temple_admin_token');
     if (token) {
       config.headers.Authorization = token;
     }
@@ -29,6 +29,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Optional: redirect to login or refresh token
       console.warn('Unauthorized, redirecting to login...');
+      window.location.href = '/admin/login';
     }
     return Promise.reject(error);
   }

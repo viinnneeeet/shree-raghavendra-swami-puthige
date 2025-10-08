@@ -45,61 +45,7 @@ import { sevaFields } from './constants';
 import { showToast } from '@/components/ShowToast';
 import SevaTable from '../components/SevaTable';
 
-const getAvailabilityBadge = (availability: string) => {
-  const badgeMap = {
-    available: (
-      <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-        Available
-      </Badge>
-    ),
-    limited: (
-      <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-        Limited
-      </Badge>
-    ),
-    unavailable: <Badge variant="destructive">Unavailable</Badge>,
-  };
-  return (
-    badgeMap[availability as keyof typeof badgeMap] || (
-      <Badge variant="secondary">{availability}</Badge>
-    )
-  );
-};
-
-const getCategoryBadge = (category: string) => {
-  const categoryMap = {
-    pooja: (
-      <Badge variant="outline" className="text-purple-600 border-purple-200">
-        Pooja
-      </Badge>
-    ),
-    annadana: (
-      <Badge variant="outline" className="text-orange-600 border-orange-200">
-        Annadana
-      </Badge>
-    ),
-    decoration: (
-      <Badge variant="outline" className="text-pink-600 border-pink-200">
-        Decoration
-      </Badge>
-    ),
-    maintenance: (
-      <Badge variant="outline" className="text-blue-600 border-blue-200">
-        Maintenance
-      </Badge>
-    ),
-  };
-  return (
-    categoryMap[category as keyof typeof categoryMap] || (
-      <Badge variant="outline">{category}</Badge>
-    )
-  );
-};
-
 const Sevas = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterCategory, setFilterCategory] = useState<string>('all');
-  const [filterAvailability, setFilterAvailability] = useState<string>('all');
   const [isEdit, setIsEdit] = useState(false);
   const [isSevaAddOpen, setIsSevaAddOpen] = useState(false);
   const [formData, setFormData] = useState<SevaState>({
@@ -112,14 +58,18 @@ const Sevas = () => {
     availability: '',
     benefitsValue: '',
   });
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // tweak per your layout
-  const { data: sevaDetails } = useQuery({
-    queryKey: ['sevas'],
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [search, setSeacrch] = useState('');
+  const [filters, setFilters] = useState<Record<string, string>>({});
+  const { data = {}, isFetching } = useQuery({
+    queryKey: ['sevas', { page, limit, filters, search }],
     queryFn: fetchSevaDetails,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 0.1, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
+
+  const { sevasList = [], pagination } = data;
 
   useEffect(() => {
     if (formData?.benefits?.length && isEdit) {
@@ -154,32 +104,12 @@ const Sevas = () => {
     onError: (error) => handleApiError(error, 'Failed to update seva details'),
   });
 
-  const filteredSevas = useMemo(() => {
-    return sevaDetails?.length
-      ? sevaDetails?.filter((seva) => {
-          const matchesSearch =
-            seva?.title?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
-            seva?.description
-              .toLowerCase()
-              ?.includes(searchTerm?.toLowerCase());
-          const matchesCategory =
-            filterCategory === 'all' || seva?.category === filterCategory;
-          const matchesAvailability =
-            filterAvailability === 'all' ||
-            seva.availability === filterAvailability;
-
-          return matchesSearch && matchesCategory && matchesAvailability;
-        })
-      : [];
-  }, [filterAvailability, filterCategory, searchTerm, sevaDetails]);
-
   const getAvailabilityCounts = () => {
     return {
-      available: sevaDetails?.filter((s) => s?.availability === 'available')
+      available: sevasList?.filter((s) => s?.availability === 'available')
         ?.length,
-      limited: sevaDetails?.filter((s) => s?.availability === 'limited')
-        ?.length,
-      unavailable: sevaDetails?.filter((s) => s?.availability === 'unavailable')
+      limited: sevasList?.filter((s) => s?.availability === 'limited')?.length,
+      unavailable: sevasList?.filter((s) => s?.availability === 'unavailable')
         ?.length,
     };
   };
@@ -232,6 +162,13 @@ const Sevas = () => {
       isActive: true,
     };
     updateSevaMutation.mutate(payload);
+  };
+
+  const handleFilter = (key, value) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
   };
 
   const disabled = !isFormValid(sevaFields, formData);
@@ -312,9 +249,9 @@ const Sevas = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">
-              {sevaDetails?.length
+              {sevasList?.length
                 ? formatAmount(
-                    sevaDetails?.reduce((sum, seva) => sum + +seva?.amount, 0)
+                    sevasList?.reduce((sum, seva) => sum + +seva?.amount, 0)
                   )
                 : ''}
             </div>
@@ -333,13 +270,17 @@ const Sevas = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
                 placeholder="Search sevas..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                value={search || ''}
+                onChange={(e) => setSeacrch(e.target.value?.trimStart())}
                 className="pl-10"
               />
             </div>
 
-            <Select value={filterCategory} onValueChange={setFilterCategory}>
+            <Select
+              value={filters?.category}
+              onValueChange={(value) =>
+                handleFilter('category', value === 'all' ? '' : value)
+              }>
               <SelectTrigger>
                 <SelectValue placeholder="Filter by category" />
               </SelectTrigger>
@@ -353,8 +294,10 @@ const Sevas = () => {
             </Select>
 
             <Select
-              value={filterAvailability}
-              onValueChange={setFilterAvailability}>
+              value={filters?.availability}
+              onValueChange={(value) =>
+                handleFilter('availability', value === 'all' ? '' : value)
+              }>
               <SelectTrigger>
                 <SelectValue placeholder="Filter by availability" />
               </SelectTrigger>
@@ -367,7 +310,7 @@ const Sevas = () => {
             </Select>
 
             <div className="text-sm text-muted-foreground flex items-center">
-              Showing {filteredSevas.length} of {sevaDetails?.length} sevas
+              Showing {sevasList.length} of {pagination?.total} sevas
             </div>
           </div>
         </CardContent>
@@ -383,10 +326,16 @@ const Sevas = () => {
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
-            <SevaTable filteredSevas={filteredSevas} handleEdit={handleEdit} />
+            <SevaTable
+              filteredSevas={sevasList}
+              handleEdit={handleEdit}
+              isLoading={isFetching}
+              pagination={pagination}
+              onPageChange={(page: number) => setPage(page)}
+            />
           </div>
 
-          {filteredSevas.length === 0 && (
+          {sevasList.length === 0 && !isFetching && (
             <div className="text-center py-8">
               <Heart className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
               <p className="text-muted-foreground">

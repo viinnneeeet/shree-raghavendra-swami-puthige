@@ -13,13 +13,14 @@ import SkeletonCard from '@/components/ui/SkeletonCard';
 const EventsCalendar = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear] = useState(new Date().getFullYear());
-  const { data: eventsData, isFetching: eventsIsFetching } = useQuery({
+  const { data = {}, isFetching: eventsIsFetching } = useQuery({
     queryKey: ['events'],
     queryFn: fetchEvents,
-    staleTime: 1000 * 60 * 0.2, // 5 minutes
+    staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
 
+  const { eventsList = [], pagination = {} } = data;
   const months = [
     'January',
     'February',
@@ -36,8 +37,8 @@ const EventsCalendar = () => {
   ];
 
   const getEventsForMonth = (month: number) => {
-    return eventsData?.length
-      ? eventsData?.filter((event: TempleEvent) => {
+    return eventsList?.length
+      ? eventsList?.filter((event: TempleEvent) => {
           const eventDate = new Date(event.date);
           return eventDate.getMonth() === month;
         })
@@ -96,7 +97,7 @@ const EventsCalendar = () => {
 
           {eventsIsFetching ? (
             <div className="grid lg:grid-cols-2 gap-6">
-              {Array.from({ length: 3 }).map((_, i) => (
+              {Array.from({ length: 2 }).map((_, i) => (
                 <SkeletonCard key={i} />
               ))}
             </div>

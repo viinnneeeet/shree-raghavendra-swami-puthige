@@ -21,6 +21,7 @@ import {
   Image,
   Shield,
   LogOut,
+  HeartHandshake,
 } from 'lucide-react';
 import { useAdmin } from '@/contexts/AdminContext';
 import { Button } from '@/components/ui/button';
@@ -56,6 +57,11 @@ const navigationItems = [
     url: '/admin/gallery',
     icon: Image,
   },
+  {
+    title: 'Donations',
+    url: '/admin/donations',
+    icon: HeartHandshake,
+  },
 ];
 
 export function AdminSidebar() {
@@ -72,8 +78,12 @@ export function AdminSidebar() {
             <Shield className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <h2 className="font-heading text-lg font-semibold text-sidebar-foreground">Temple Admin</h2>
-            <p className="text-xs text-sidebar-foreground/70">Management Portal</p>
+            <h2 className="font-heading text-lg font-semibold text-sidebar-foreground">
+              Temple Admin
+            </h2>
+            <p className="text-xs text-sidebar-foreground/70">
+              Management Portal
+            </p>
           </div>
         </div>
       </SidebarHeader>
@@ -94,8 +104,7 @@ export function AdminSidebar() {
                             ? 'bg-sidebar-accent text-sidebar-accent-foreground'
                             : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
                         }`
-                      }
-                    >
+                      }>
                       <item.icon className="w-4 h-4" />
                       <span className="font-medium">{item.title}</span>
                     </NavLink>
@@ -115,10 +124,10 @@ export function AdminSidebar() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-sidebar-foreground truncate">
-                {user?.email}
+                {user?.name}
               </p>
               <p className="text-xs text-sidebar-foreground/70 capitalize">
-                {user?.role}
+                {user?.email}
               </p>
             </div>
           </div>
@@ -126,8 +135,7 @@ export function AdminSidebar() {
             onClick={logout}
             variant="outline"
             size="sm"
-            className="w-full justify-start gap-2 text-destructive border-destructive/20 hover:bg-destructive/10"
-          >
+            className="w-full justify-start gap-2 text-destructive border-destructive/20 hover:bg-destructive/10">
             <LogOut className="w-4 h-4" />
             Logout
           </Button>

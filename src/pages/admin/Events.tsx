@@ -41,6 +41,7 @@ import { queryClient } from '@/lib/react-query-client';
 import { formatDate, handleApiError } from '@/utils/common-function';
 import { showToast } from '@/components/ShowToast';
 import { BADGE_MAP, BadgeConfig, CATEGORY_MAP } from './constants';
+import SkeletonCard from '@/components/ui/SkeletonCard';
 
 const renderBadge = (key: string, map: Record<string, BadgeConfig>) => {
   const cfg = map[key];
@@ -71,12 +72,14 @@ const Events = () => {
     participants: '',
   });
   const [modalState, setModalState] = useState({ open: false, edit: false });
-  const { data: eventsData = [], isLoading: eventsIsLoading } = useQuery({
+  const { data = {}, isFetching } = useQuery({
     queryKey: ['events'],
     queryFn: fetchEvents,
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true,
   });
+
+  const { eventsList = [], pagination = {} } = data;
 
   const saveEventMutation = useMutation({
     mutationFn: saveEventsDetails,
@@ -167,8 +170,8 @@ const Events = () => {
   };
 
   const filteredEvents = useMemo(() => {
-    return eventsData?.length
-      ? eventsData?.filter((e) => {
+    return eventsList?.length
+      ? eventsList?.filter((e) => {
           const { search, status, category } = filters;
           const matchSearch = [e.title, e.description].some((t) =>
             t.toLowerCase().includes(search.toLowerCase())
@@ -180,7 +183,7 @@ const Events = () => {
           return matchSearch && matchStatus && matchCategory;
         })
       : [];
-  }, [eventsData]);
+  }, [eventsList]);
 
   const disabled = !isFormValid(eventFields, formData);
 
@@ -249,7 +252,7 @@ const Events = () => {
           </Select>
 
           <div className="text-sm text-muted-foreground flex items-center">
-            Showing {filteredEvents?.length} of {eventsData.length} events
+            Showing {filteredEvents?.length} of {eventsList.length} events
           </div>
         </CardContent>
       </Card>
@@ -259,7 +262,9 @@ const Events = () => {
         className={`grid gap-6 ${
           filteredEvents?.length ? ' lg:grid-cols-3' : 'lg:grid-cols-1'
         }`}>
-        {filteredEvents.length ? (
+        {isFetching ? (
+          Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
+        ) : filteredEvents.length ? (
           filteredEvents.map((event) => (
             <Card key={event.id} className="overflow-hidden">
               <div className="aspect-video relative">

@@ -8,32 +8,51 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
+const Skeleton = ({ className }) => (
+  <div className={cn('animate-pulse bg-muted rounded-md', className)} />
+);
 
 export default function ReusableTable({
   columns = [],
   data = [],
-  rowsPerPage = 5,
-  actions, // optional render function
+  actions,
+  isLoading = false,
+  pagination, // { total, currentPage, totalPages, perPage }
+  onPageChange, // 👈 function to call when changing page
 }) {
-  const [currentPage, setCurrentPage] = useState(1);
+  // fallback to client-side if pagination not provided
+  const clientMode = !pagination;
 
-  // pagination calculations
-  const totalPages = Math.ceil(data.length / rowsPerPage);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = pagination?.perPage || 5;
+  const totalPages =
+    pagination?.totalPages || Math.ceil(data.length / rowsPerPage);
+
   const paginatedData = useMemo(() => {
-    const start = (currentPage - 1) * rowsPerPage;
-    return data.slice(start, start + rowsPerPage);
-  }, [data, currentPage, rowsPerPage]);
+    if (clientMode) {
+      const start = (currentPage - 1) * rowsPerPage;
+      return data.slice(start, start + rowsPerPage);
+    }
+    return data; // server mode: data already paginated
+  }, [data, currentPage, rowsPerPage, clientMode]);
 
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+    if (page >= 1 && page <= totalPages) {
+      if (clientMode) setCurrentPage(page);
+      else onPageChange?.(page); // trigger API refetch
+    }
   };
 
-  // Generate smart pagination range with ellipses
   const getPaginationRange = () => {
     const delta = 2;
     const range = [];
-    const left = Math.max(2, currentPage - delta);
-    const right = Math.min(totalPages - 1, currentPage + delta);
+    const left = Math.max(2, (pagination?.currentPage || currentPage) - delta);
+    const right = Math.min(
+      totalPages - 1,
+      (pagination?.currentPage || currentPage) + delta
+    );
 
     range.push(1);
     if (left > 2) range.push('...');
@@ -45,9 +64,12 @@ export default function ReusableTable({
   };
 
   const paginationRange = useMemo(getPaginationRange, [
+    pagination?.currentPage,
     currentPage,
     totalPages,
   ]);
+
+  const activePage = pagination?.currentPage || currentPage;
 
   return (
     <div className="space-y-4">
@@ -62,7 +84,25 @@ export default function ReusableTable({
         </TableHeader>
 
         <TableBody>
-          {paginatedData.length ? (
+          {isLoading ? (
+            Array.from({ length: rowsPerPage }).map((_, i) => (
+              <TableRow key={`skeleton-${i}`}>
+                {columns.map((col, j) => (
+                  <TableCell key={`${col.key}-${j}`}>
+                    <Skeleton className="h-4 w-3/4" />
+                  </TableCell>
+                ))}
+                {actions && (
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <Skeleton className="h-8 w-16" />
+                      <Skeleton className="h-8 w-16" />
+                    </div>
+                  </TableCell>
+                )}
+              </TableRow>
+            ))
+          ) : paginatedData.length ? (
             paginatedData.map((row, rowIndex) => (
               <TableRow key={row.id || rowIndex}>
                 {columns.map((col) => (
@@ -70,11 +110,7 @@ export default function ReusableTable({
                     {col.render ? col.render(row[col.key], row) : row[col.key]}
                   </TableCell>
                 ))}
-                {actions && (
-                  <TableCell>
-                    <div className="flex gap-2">{actions(row)}</div>
-                  </TableCell>
-                )}
+                {actions && <TableCell>{actions(row)}</TableCell>}
               </TableRow>
             ))
           ) : (
@@ -89,18 +125,18 @@ export default function ReusableTable({
         </TableBody>
       </Table>
 
-      {/* Pagination */}
-      {totalPages > 1 ? (
+      {/* Pagination controls */}
+      {!isLoading && totalPages > 1 && (
         <div className="flex justify-end items-center pt-4 gap-2 flex-wrap">
           <Button
             variant="outline"
             size="sm"
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}>
+            onClick={() => handlePageChange(activePage - 1)}
+            disabled={activePage === 1}>
             Previous
           </Button>
 
-          {paginationRange?.map((page, index) =>
+          {paginationRange.map((page, index) =>
             page === '...' ? (
               <span
                 key={`ellipsis-${index}`}
@@ -110,7 +146,7 @@ export default function ReusableTable({
             ) : (
               <Button
                 key={page}
-                variant={page === currentPage ? 'default' : 'outline'}
+                variant={page === activePage ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => handlePageChange(page)}>
                 {page}
@@ -121,12 +157,12 @@ export default function ReusableTable({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}>
+            onClick={() => handlePageChange(activePage + 1)}
+            disabled={activePage === totalPages}>
             Next
           </Button>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

@@ -11,31 +11,32 @@ import SkeletonCard from '@/components/ui/SkeletonCard';
 
 const GalleryPage = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [filters, setFilters] = useState<Record<string, string>>({});
 
-  const { data: galleryImages, isFetching: galleryIsFetching } = useQuery({
-    queryKey: ['gallery'],
+  const { data = {}, isFetching: galleryIsFetching } = useQuery({
+    queryKey: ['gallery', { page, limit, filters }],
     queryFn: fetchGallery,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 0.1, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
+  const { galleryList = [], pagination = {} } = data;
+
+  const handleFilters = (key: string, value: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
   const categories = [
-    'All',
     'Spiritual',
     'Festivals',
     'Service',
     'Temple',
     'Education',
   ];
-
-  const filteredImages =
-    selectedCategory === 'All'
-      ? galleryImages
-      : galleryImages?.filter(
-          (img) =>
-            img.category?.toLowerCase() === selectedCategory?.toLowerCase()
-        );
 
   return (
     <section className="py-20 bg-gradient-earth">
@@ -61,14 +62,19 @@ const GalleryPage = () => {
                 <Badge
                   key={category}
                   variant={
-                    selectedCategory === category ? 'default' : 'outline'
+                    filters?.category === category ? 'default' : 'outline'
                   }
                   className={`cursor-pointer px-4 py-2 md:text-4xl lg:text-base ${
-                    selectedCategory === category
+                    filters?.category === category
                       ? 'bg-temple-gold text-white'
                       : 'border-temple-gold/30 hover:bg-temple-gold/10'
                   }`}
-                  onClick={() => setSelectedCategory(category)}>
+                  onClick={() =>
+                    handleFilters(
+                      'category',
+                      category === 'All' ? '' : category
+                    )
+                  }>
                   {category}
                 </Badge>
               ))}
@@ -80,8 +86,8 @@ const GalleryPage = () => {
         <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-6">
           {galleryIsFetching ? (
             Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
-          ) : filteredImages?.length ? (
-            filteredImages?.map((image, index) => (
+          ) : galleryList?.length ? (
+            galleryList?.map((image, index) => (
               <GalleryCard
                 image={image}
                 index={index}

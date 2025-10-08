@@ -114,3 +114,58 @@ export const eventFormFields = (
     row: 5,
   },
 ];
+
+export const donationFormFields: FormField[] = [
+  {
+    id: 'fullName',
+    type: 'input',
+    label: 'Full Name',
+    placeholder: 'Enter your full name',
+    required: true,
+  },
+  {
+    id: 'email',
+    type: 'input',
+    label: 'Email Address',
+    placeholder: 'Enter your email',
+    required: true,
+  },
+  {
+    id: 'phone',
+    type: 'input',
+    label: 'Mobile Number',
+    placeholder: 'Enter your mobile number',
+    required: true,
+    inputType: 'tel',
+    pattern: '[0-9]{10}',
+    isNumberAllowed: true,
+    allowDecimal: false,
+  },
+  {
+    id: 'seva',
+    type: 'input',
+    label: 'Select Seva',
+    placeholder: 'Choose a seva',
+    required: true,
+    isDisabled: true,
+  },
+  {
+    id: 'amount',
+    type: 'input',
+    label: 'Donation Amount (₹)',
+    placeholder: 'Enter donation amount',
+    required: true,
+    inputType: 'numeric',
+    isDisabled: true,
+    isNumberAllowed: true,
+    allowDecimal: false,
+  },
+  {
+    id: 'notes',
+    type: 'textarea',
+    label: 'Additional Notes',
+    placeholder: 'Any specific requests or details',
+    required: false,
+    row: 4,
+  },
+];

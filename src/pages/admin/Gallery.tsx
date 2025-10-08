@@ -23,6 +23,7 @@ import {
 import { handlePresignedUrl } from '@/api/presigned-url';
 import { handleApiError } from '@/utils/common-function';
 import { showToast } from '@/components/ShowToast';
+import SkeletonCard from '@/components/ui/SkeletonCard';
 
 const Gallery = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,15 +38,19 @@ const Gallery = () => {
     title: '',
     image_url: '',
   });
-
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [filters, setFilters] = useState({});
   const queryClient = useQueryClient();
 
   // ✅ Fetch gallery images
-  const { data: galleryImages = [] } = useQuery({
-    queryKey: ['gallery'],
+  const { data = {}, isFetching } = useQuery({
+    queryKey: ['gallery', { page, limit, filters }],
     queryFn: fetchGallery,
     staleTime: 1000 * 60 * 5,
   });
+
+  const { galleryList = [], pagination = {} } = data;
 
   // ✅ Save and update mutations
   const saveGalleryMutation = useMutation({
@@ -111,7 +116,7 @@ const Gallery = () => {
   // ✅ Derived data with useMemo
   const filteredImages = useMemo(() => {
     const term = searchTerm.toLowerCase();
-    return galleryImages.filter((img) => {
+    return galleryList?.filter((img) => {
       const matchesSearch =
         img.title.toLowerCase().includes(term) ||
         img.description?.toLowerCase().includes(term);
@@ -119,17 +124,17 @@ const Gallery = () => {
         filterCategory === 'all' || img.category === filterCategory;
       return matchesSearch && matchesCategory;
     });
-  }, [galleryImages, searchTerm, filterCategory]);
+  }, [galleryList, searchTerm, filterCategory]);
 
   const categoryCounts = useMemo(() => {
     const categories = ['festivals', 'rituals', 'temple', 'community'];
     return Object.fromEntries(
       categories.map((c) => [
         c,
-        galleryImages.filter((i) => i.category === c).length,
+        galleryList?.filter((i) => i.category === c).length,
       ])
     );
-  }, [galleryImages]);
+  }, [galleryList]);
 
   // ✅ Handlers
   const handleClose = useCallback(() => {
@@ -200,7 +205,7 @@ const Gallery = () => {
         {[
           {
             title: 'Total Images',
-            count: galleryImages.length,
+            count: galleryList.length,
             color: 'text-primary',
           },
           {
@@ -262,51 +267,53 @@ const Gallery = () => {
           </Select>
 
           <div className="text-sm text-muted-foreground self-center">
-            Showing {filteredImages.length} of {galleryImages.length}
+            Showing {filteredImages.length} of {galleryList?.length}
           </div>
         </CardContent>
       </Card>
 
       {/* Gallery Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {filteredImages.map((image) => (
-          <Card key={image.id} className="group overflow-hidden">
-            <div className="relative aspect-square">
-              <img
-                src={image.image_url}
-                alt={image.title}
-                className="w-full h-full object-cover transition-transform group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
-                <Button size="sm" variant="secondary">
-                  <Eye className="w-4 h-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={() => {
-                    setFormData(image);
-                    setIsEdit(true);
-                    setIsUploadOpen(true);
-                  }}>
-                  <Edit className="w-4 h-4" />
-                </Button>
-                <Button size="sm" variant="destructive">
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-              <div className="absolute top-2 left-2">
-                {getCategoryBadge(image.category)}
-              </div>
-            </div>
-            <CardContent className="p-3">
-              <h3 className="font-semibold truncate">{image.title}</h3>
-              <p className="text-sm text-muted-foreground line-clamp-2">
-                {image.description}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
+        {isFetching
+          ? Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
+          : filteredImages?.map((image) => (
+              <Card key={image.id} className="group overflow-hidden">
+                <div className="relative aspect-square">
+                  <img
+                    src={image.image_url}
+                    alt={image.title}
+                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
+                    <Button size="sm" variant="secondary">
+                      <Eye className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => {
+                        setFormData(image);
+                        setIsEdit(true);
+                        setIsUploadOpen(true);
+                      }}>
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button size="sm" variant="destructive">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="absolute top-2 left-2">
+                    {getCategoryBadge(image.category)}
+                  </div>
+                </div>
+                <CardContent className="p-3">
+                  <h3 className="font-semibold truncate">{image.title}</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {image.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
       </div>
 
       {filteredImages.length === 0 && (

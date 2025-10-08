@@ -9,13 +9,18 @@ import SkeletonCard from './ui/SkeletonCard';
 
 const GallerySection = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [filters, setFilters] = useState({});
   const navigate = useNavigate();
-  const { data: galleryImages, isFetching: galleryIsFetching } = useQuery({
-    queryKey: ['gallery'],
+  const { data = {}, isFetching: galleryIsFetching } = useQuery({
+    queryKey: ['gallery', { page, limit, filters }],
     queryFn: fetchGallery,
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
+  const { galleryList: galleryImages = [] } = data;
+
   return (
     <section id="gallery" className="py-20 bg-gradient-earth">
       <div className="container mx-auto px-4">
