@@ -117,13 +117,15 @@ const SevasOfferings = () => {
           open={isDonateOpen}
           onOpenChange={handleClose}
           title={`Donate for ${selectedSeva?.title}`}>
-          <FormFields
-            fields={donationFormFields}
-            formData={formData}
-            setFormData={setFormData}
-            wrapperClass="space-y-6"
-          />
-          <div className="mt-4 flex justify-between">
+          <div className="lg:mt-4 md:mt-16">
+            <FormFields
+              fields={donationFormFields}
+              formData={formData}
+              setFormData={setFormData}
+              wrapperClass="lg:space-y-6 md:space-y-12"
+            />
+          </div>
+          <div className="lg:mt-4 md:mt-12 flex justify-between">
             <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>

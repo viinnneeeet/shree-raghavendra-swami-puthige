@@ -18,7 +18,7 @@ const GalleryPage = () => {
   const { data = {}, isFetching: galleryIsFetching } = useQuery({
     queryKey: ['gallery', { page, limit, filters }],
     queryFn: fetchGallery,
-    staleTime: 1000 * 60 * 0.1, // 5 minutes
+    staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
   const { galleryList = [], pagination = {} } = data;

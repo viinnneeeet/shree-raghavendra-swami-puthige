@@ -42,6 +42,7 @@ import { formatDate, handleApiError } from '@/utils/common-function';
 import { showToast } from '@/components/ShowToast';
 import { BADGE_MAP, BadgeConfig, CATEGORY_MAP } from './constants';
 import SkeletonCard from '@/components/ui/SkeletonCard';
+import { useDebounce } from '@/hooks/use-debounce';
 
 const renderBadge = (key: string, map: Record<string, BadgeConfig>) => {
   const cfg = map[key];
@@ -57,8 +58,8 @@ const renderBadge = (key: string, map: Record<string, BadgeConfig>) => {
 const Events = () => {
   const [filters, setFilters] = useState({
     search: '',
-    status: 'all',
-    category: 'all',
+    status: '',
+    category: '',
   });
   const [formData, setFormData] = useState<EventState>({
     date: '',
@@ -71,9 +72,13 @@ const Events = () => {
     type: null,
     participants: '',
   });
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 1000);
   const [modalState, setModalState] = useState({ open: false, edit: false });
   const { data = {}, isFetching } = useQuery({
-    queryKey: ['events'],
+    queryKey: ['events', { page, limit, filters, search: debouncedSearch }],
     queryFn: fetchEvents,
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true,
@@ -130,7 +135,7 @@ const Events = () => {
     if (!formData?.src) return;
 
     const fileName = formData.src.name;
-    const payload = { file: formData.src, filePath: `gallery/${fileName}` };
+    const payload = { file: formData.src, filePath: `events/${fileName}` };
     uploadMutation.mutate(payload);
   }, [formData?.src]);
 
@@ -169,22 +174,6 @@ const Events = () => {
     }
   };
 
-  const filteredEvents = useMemo(() => {
-    return eventsList?.length
-      ? eventsList?.filter((e) => {
-          const { search, status, category } = filters;
-          const matchSearch = [e.title, e.description].some((t) =>
-            t.toLowerCase().includes(search.toLowerCase())
-          );
-          const matchStatus =
-            status === 'all' || e.status?.toLowerCase() === status;
-          const matchCategory =
-            category === 'all' || e.category?.toLowerCase() === category;
-          return matchSearch && matchStatus && matchCategory;
-        })
-      : [];
-  }, [eventsList]);
-
   const disabled = !isFormValid(eventFields, formData);
 
   return (
@@ -211,10 +200,8 @@ const Events = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
               placeholder="Search events..."
-              value={filters.search}
-              onChange={(e) =>
-                setFilters((f) => ({ ...f, search: e.target.value }))
-              }
+              value={search || ''}
+              onChange={(e) => setSearch(e?.target?.value?.trimStart())}
               className="pl-10"
             />
           </div>
@@ -252,7 +239,7 @@ const Events = () => {
           </Select>
 
           <div className="text-sm text-muted-foreground flex items-center">
-            Showing {filteredEvents?.length} of {eventsList.length} events
+            Showing {eventsList?.length} of {eventsList.length} events
           </div>
         </CardContent>
       </Card>
@@ -260,12 +247,12 @@ const Events = () => {
       {/* Events Grid */}
       <div
         className={`grid gap-6 ${
-          filteredEvents?.length ? ' lg:grid-cols-3' : 'lg:grid-cols-1'
+          eventsList?.length ? ' lg:grid-cols-3' : 'lg:grid-cols-1'
         }`}>
         {isFetching ? (
           Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
-        ) : filteredEvents.length ? (
-          filteredEvents.map((event) => (
+        ) : eventsList.length ? (
+          eventsList.map((event) => (
             <Card key={event.id} className="overflow-hidden">
               <div className="aspect-video relative">
                 <img

@@ -67,7 +67,6 @@ const navigationItems = [
 export function AdminSidebar() {
   const location = useLocation();
   const { logout, user } = useAdmin();
-
   const isActive = (path: string) => location.pathname === path;
 
   return (

@@ -2,12 +2,16 @@ import api from '@/lib/axios';
 import { route } from '@/services/apiEndpoints';
 
 export const fetchEvents = async ({ queryKey }) => {
-  const [_key, { page = 1, limit = 10, filters = {} } = {}] = queryKey;
+  const [
+    _key,
+    { page = 1, limit = 10, filters = {}, search = undefined } = {},
+  ] = queryKey;
   const cleanParams = Object.fromEntries(
     Object.entries({
       page,
       limit,
       ...filters,
+      search,
     }).filter(
       ([_, value]) => value !== undefined && value !== null && value !== ''
     )

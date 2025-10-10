@@ -31,7 +31,6 @@ import {
   saveSevaDetails,
   updateSevaDetails,
 } from '@/api/sevas';
-import { toast } from '@/hooks/use-toast';
 import { queryClient } from '@/lib/react-query-client';
 import { SevaPayload, SevaState } from '@/types/seva';
 import Modal from '@/components/ui/Modal';
@@ -44,6 +43,7 @@ import {
 import { sevaFields } from './constants';
 import { showToast } from '@/components/ShowToast';
 import SevaTable from '../components/SevaTable';
+import { useDebounce } from '@/hooks/use-debounce';
 
 const Sevas = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -59,13 +59,16 @@ const Sevas = () => {
     benefitsValue: '',
   });
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(5);
   const [search, setSeacrch] = useState('');
   const [filters, setFilters] = useState<Record<string, string>>({});
+
+  const debouncedSearch = useDebounce(search, 1000);
+
   const { data = {}, isFetching } = useQuery({
-    queryKey: ['sevas', { page, limit, filters, search }],
+    queryKey: ['sevas', { page, limit, filters, search: debouncedSearch }],
     queryFn: fetchSevaDetails,
-    staleTime: 1000 * 60 * 0.1, // 5 minutes
+    staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
 
@@ -331,7 +334,10 @@ const Sevas = () => {
               handleEdit={handleEdit}
               isLoading={isFetching}
               pagination={pagination}
-              onPageChange={(page: number) => setPage(page)}
+              onPageChange={(page: number, limit: number) => {
+                setPage(page);
+                setLimit(limit);
+              }}
             />
           </div>
 

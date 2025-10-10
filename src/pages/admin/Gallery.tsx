@@ -24,10 +24,10 @@ import { handlePresignedUrl } from '@/api/presigned-url';
 import { handleApiError } from '@/utils/common-function';
 import { showToast } from '@/components/ShowToast';
 import SkeletonCard from '@/components/ui/SkeletonCard';
+import { useDebounce } from '@/hooks/use-debounce';
 
 const Gallery = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterCategory, setFilterCategory] = useState('all');
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [formData, setFormData] = useState({
@@ -40,12 +40,12 @@ const Gallery = () => {
   });
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState<Record<string, string>>({});
   const queryClient = useQueryClient();
-
+  const debouncedSearch = useDebounce(searchTerm, 1000);
   // ✅ Fetch gallery images
   const { data = {}, isFetching } = useQuery({
-    queryKey: ['gallery', { page, limit, filters }],
+    queryKey: ['gallery', { page, limit, filters, search: debouncedSearch }],
     queryFn: fetchGallery,
     staleTime: 1000 * 60 * 5,
   });
@@ -112,19 +112,6 @@ const Gallery = () => {
   useEffect(() => {
     if (formData.src) handleImageUpload();
   }, [formData.src]);
-
-  // ✅ Derived data with useMemo
-  const filteredImages = useMemo(() => {
-    const term = searchTerm.toLowerCase();
-    return galleryList?.filter((img) => {
-      const matchesSearch =
-        img.title.toLowerCase().includes(term) ||
-        img.description?.toLowerCase().includes(term);
-      const matchesCategory =
-        filterCategory === 'all' || img.category === filterCategory;
-      return matchesSearch && matchesCategory;
-    });
-  }, [galleryList, searchTerm, filterCategory]);
 
   const categoryCounts = useMemo(() => {
     const categories = ['festivals', 'rituals', 'temple', 'community'];
@@ -253,7 +240,14 @@ const Gallery = () => {
             />
           </div>
 
-          <Select value={filterCategory} onValueChange={setFilterCategory}>
+          <Select
+            value={filters?.category || ''}
+            onValueChange={(value) =>
+              setFilters((prev) => ({
+                ...prev,
+                category: value === 'all' ? '' : value,
+              }))
+            }>
             <SelectTrigger>
               <SelectValue placeholder="Category" />
             </SelectTrigger>
@@ -267,7 +261,7 @@ const Gallery = () => {
           </Select>
 
           <div className="text-sm text-muted-foreground self-center">
-            Showing {filteredImages.length} of {galleryList?.length}
+            Showing {galleryList.length} of {pagination?.total}
           </div>
         </CardContent>
       </Card>
@@ -276,7 +270,7 @@ const Gallery = () => {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {isFetching
           ? Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
-          : filteredImages?.map((image) => (
+          : galleryList?.map((image) => (
               <Card key={image.id} className="group overflow-hidden">
                 <div className="relative aspect-square">
                   <img
@@ -316,7 +310,7 @@ const Gallery = () => {
             ))}
       </div>
 
-      {filteredImages.length === 0 && (
+      {galleryList?.length === 0 && !isFetching && (
         <Card>
           <CardContent className="text-center py-8">
             <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
