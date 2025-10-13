@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchSevaDetails } from '@/api/sevas';
 import SevaCard from './components/SevaCard';
 import { formatAmount, isFormValid } from '@/utils/common-function';
@@ -11,6 +11,10 @@ import Modal from '@/components/ui/Modal';
 import { FormFields } from '@/components/Forms/FormFields';
 import { useState } from 'react';
 import { donationFormFields } from './constants';
+import { genrateInvoiceDetails } from '@/api/invoice';
+import { showToast } from '@/components/ShowToast';
+import { queryClient } from '@/lib/react-query-client';
+import { handleApiError } from '@/utils/common-function';
 
 const SevasOfferings = () => {
   const { data = {}, isFetching: sevaIsFetching } = useQuery({
@@ -20,9 +24,21 @@ const SevasOfferings = () => {
     refetchOnWindowFocus: true, // refetch on window focus
   });
 
+  const genrateInvoiceMutation = useMutation({
+    mutationFn: genrateInvoiceDetails,
+    onSuccess: (res) => {
+      showToast('Success!', 'Invoice genrated successfully.', 'success');
+      setIsDonateOpen(false);
+      queryClient.invalidateQueries({ queryKey: ['invoice-genrate'] });
+      setFormData({});
+      window.open(res?.invoiceUrl, '_blank');
+    },
+    onError: (error) => handleApiError(error, 'Failed to save seva details'),
+  });
+
   const { sevasList = [], pagination = {} } = data;
   const [isDonateOpen, setIsDonateOpen] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState<Record<string, string>>({});
   const [selectedSeva, setSelectedSeva] = useState<Record<string, string>>({});
   const navigate = useNavigate();
 
@@ -38,6 +54,24 @@ const SevasOfferings = () => {
       seva: seva?.title,
       amount: formatAmount(seva?.amount),
     }));
+  };
+
+  const handleProceedToPay = () => {
+    const date = new Date()?.toISOString().split('T')[0];
+    const payload = {
+      user: {
+        name: formData?.fullName,
+        email: formData?.email,
+        phone: formData?.phone,
+      },
+      seva: {
+        title: selectedSeva?.title,
+        description: selectedSeva?.description,
+        amount: selectedSeva?.amount,
+        date: date,
+      },
+    };
+    genrateInvoiceMutation.mutate(payload);
   };
 
   const isPayDisabled = !isFormValid(donationFormFields, formData);
@@ -132,7 +166,7 @@ const SevasOfferings = () => {
             <Button
               variant="temple"
               disabled={isPayDisabled}
-              onClick={() => {}}
+              onClick={handleProceedToPay}
               className={isPayDisabled ? '!cursor-not-allowed' : ''}>
               {'Proceed to Pay'}
             </Button>

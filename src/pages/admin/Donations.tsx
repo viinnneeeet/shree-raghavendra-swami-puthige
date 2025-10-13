@@ -7,10 +7,32 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Heart, IndianRupee, Search } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import SevaTable from '../components/SevaTable';
+import { useDebounce } from '@/hooks/use-debounce';
+import { useQuery } from '@tanstack/react-query';
+import { fetchInvoiceDetails } from '@/api/invoice';
+import DonationsTable from '../components/DonationsTable';
 
 const Donations = () => {
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [search, setSearch] = useState('');
+  const [filters, setFilters] = useState({});
+  const debouncedSearch = useDebounce(search, 1000);
+
+  const { data = {}, isFetching } = useQuery({
+    queryKey: [
+      'invoice-details',
+      { page, limit, filters, search: debouncedSearch },
+    ],
+    queryFn: fetchInvoiceDetails,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true,
+  });
+
+  const { invoiceList = [], pagination = {} } = data;
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -121,11 +143,11 @@ const Donations = () => {
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
-            <SevaTable
-              filteredSevas={[]}
+            <DonationsTable
+              data={invoiceList}
               handleEdit={() => {}}
-              isLoading={true}
-              pagination={{}}
+              isLoading={isFetching}
+              pagination={pagination}
               onPageChange={() => {}}
             />
           </div>

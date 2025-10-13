@@ -7,6 +7,10 @@ export default function GlobalLoader() {
 
   const isLoading = isFetching > 0 || isMutating > 0;
   if (typeof window === 'undefined') return null; // SSR safe
-
-  return isLoading ? <Loader isLoading={true} /> : null;
+  if (!isLoading) return;
+  return (
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black bg-opacity-50">
+      <Loader isLoading={true} />
+    </div>
+  );
 }

@@ -10,4 +10,6 @@ export const route = {
   createSevaDetails: '/api/v1/sevas/create-seva',
   updateSevaDetails: '/api/v1/sevas/update-seva',
   login: '/api/v1/auth/login',
+  genrateInvoice: '/api/v1/invoice/genrate-invoice',
+  fetchInvoiceLists: '/api/v1/invoice/get-invoices',
 };
