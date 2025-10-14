@@ -5,7 +5,7 @@ import { secureStorage } from '@/utils/secureStorage';
 // Base API instance
 const api = axios.create({
   baseURL: RENDER_BASE_URL,
-  timeout: 10000, // 10s timeout
+  timeout: 30000, // 30s timeout
   headers: {
     'Content-Type': 'application/json',
   },
