@@ -20,7 +20,9 @@ const EventsSection = () => {
   });
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({
+    status: 'upcoming',
+  });
   const { toast } = useToast();
   const navigate = useNavigate();
   const { data = {}, isFetching } = useQuery({
@@ -32,23 +34,9 @@ const EventsSection = () => {
   const { eventsList = [], pagination } = data;
   useEffect(() => {
     if (eventsList?.length) {
-      const upcoming = getUpcomingEvents(eventsList);
-      setEvents(upcoming);
+      setEvents(eventsList);
     }
   }, [eventsList?.length]);
-
-  const getUpcomingEvents = (events: TempleEvent[], count = 4) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // reset time → compare only date
-    return events
-      .filter((event) => {
-        const eventDate = new Date(event?.date);
-        eventDate.setHours(0, 0, 0, 0);
-        return eventDate >= today;
-      })
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      .slice(0, count);
-  };
 
   const handleChange = (key: string, value: string) => {
     setState((prev) => ({

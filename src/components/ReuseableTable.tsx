@@ -153,7 +153,9 @@ export default function ReusableTable({
                 value={limit.toString()}
                 onValueChange={handleLimitChange}>
                 <SelectTrigger className="w-[90px] h-8 border-border/70 text-foreground">
-                  <SelectValue />
+                  <SelectValue placeholder="Select limit">
+                    {limit} rows
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {[5, 10, 20, 50].map((value) => (

@@ -199,6 +199,7 @@ export const sevaFields: FormField[] = [
       { label: 'Available', value: 'available' },
       { label: 'Unavailable', value: 'unavailable' },
       { label: 'Upcoming', value: 'upcoming' },
+      { label: 'Limited', value: 'limited' },
     ],
   },
   {
@@ -250,3 +251,15 @@ export const CATEGORY_MAP: Record<string, BadgeConfig> = {
     className: 'text-blue-600 border-blue-200',
   },
 };
+
+export const replyContactFields: FormField[] = [
+  {
+    id: 'response',
+    label: 'Reply Message',
+    type: 'textarea',
+    placeholder: 'Enter Reply Message',
+    className: 'col-12',
+    row: 5,
+    required: true,
+  },
+];

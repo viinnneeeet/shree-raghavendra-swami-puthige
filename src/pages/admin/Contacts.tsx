@@ -1,63 +1,121 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
 import { Search, Mail, Phone, Clock, Eye, MessageCircle } from 'lucide-react';
-import { dummyContactSubmissions } from '@/data/dummyData';
-import { ContactSubmission } from '@/types/admin';
+
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useDebounce } from '@/hooks/use-debounce';
+import { fetchContactDetails, replyContact } from '@/api/contact-us';
+import ContactsUsTable from '../components/ContactUsTable';
+import Modal from '@/components/ui/Modal';
+import { FormFields } from '@/components/Forms/FormFields';
+import { Button } from '@/components/ui/button';
+import { isFormValid } from '@/utils/common-function';
+import { replyContactFields } from './constants';
+import { showToast } from '@/components/ShowToast';
+import { queryClient } from '@/lib/react-query-client';
+import { handleApiError } from '@/utils/common-function';
 
 const Contacts = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState<string>('all');
-  const [contacts] = useState<ContactSubmission[]>(dummyContactSubmissions);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [search, setSearch] = useState('');
+  const [filters, setFilters] = useState<Record<string, string>>({});
+  const [formData, setFormData] = useState<Record<string, string>>({});
+  const [modalState, setModalState] = useState({ open: false, edit: false });
+  const debouncedSearch = useDebounce(search, 1000);
 
-  const filteredContacts = contacts.filter(contact => {
-    const matchesSearch = contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         contact.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         contact.subject.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || contact.status === filterStatus;
-    
-    return matchesSearch && matchesStatus;
+  const { data = {}, isFetching } = useQuery({
+    queryKey: [
+      'contact-us-list',
+      { page, limit, filters, search: debouncedSearch },
+    ],
+    queryFn: fetchContactDetails,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true,
   });
 
-  const getStatusBadge = (status: string) => {
-    const badgeMap = {
-      new: <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">New</Badge>,
-      'in-progress': <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">In Progress</Badge>,
-      resolved: <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Resolved</Badge>,
-    };
-    return badgeMap[status as keyof typeof badgeMap] || <Badge variant="secondary">{status}</Badge>;
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-IN', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+  const { data: allContactListData = {}, isFetching: allContactFetching } =
+    useQuery({
+      queryKey: ['contact-us'],
+      queryFn: fetchContactDetails,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      refetchOnWindowFocus: true, // refetch on window focus
     });
+
+  const replyContactMutation = useMutation({
+    mutationFn: replyContact,
+    onSuccess: () => {
+      showToast('Success!', 'Replied to the message.', 'success');
+      handleClose();
+      queryClient.invalidateQueries({ queryKey: ['contact-us'] });
+    },
+    onError: (error) =>
+      handleApiError(error, 'Failed to replied to the message.'),
+  });
+
+  const { contactsList = [], pagination = {} } = data;
+  const { contactsList: allContactList = [] } = allContactListData;
+
+  function getStatusCounts(data) {
+    return data?.reduce((acc, item) => {
+      const status = item.status?.toLowerCase() || 'unknown';
+      acc[status] = (acc[status] || 0) + 1;
+      return acc;
+    }, {});
+  }
+
+  const statusCounts = getStatusCounts(allContactList);
+
+  const handleFilter = (key, value) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
   };
 
-  const getStatusCounts = () => {
-    return {
-      new: contacts.filter(c => c.status === 'new').length,
-      inProgress: contacts.filter(c => c.status === 'in-progress').length,
-      resolved: contacts.filter(c => c.status === 'resolved').length,
+  const handleClose = () => {
+    setModalState({ open: false, edit: false });
+    handleReset();
+  };
+
+  const handleReset = () => {
+    setFormData({});
+  };
+
+  const handleSubmit = () => {
+    const payload = {
+      contactId: formData?.id,
+      response: formData?.response,
     };
+    replyContactMutation.mutate(payload);
   };
 
-  const statusCounts = getStatusCounts();
-
+  const disabled = !isFormValid(replyContactFields, formData);
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-heading font-bold text-foreground">Contact Submissions</h1>
-        <p className="text-muted-foreground">Review and respond to inquiries from devotees and visitors</p>
+        <h1 className="text-3xl font-heading font-bold text-foreground">
+          Contact Submissions
+        </h1>
+        <p className="text-muted-foreground">
+          Review and respond to inquiries from devotees and visitors
+        </p>
       </div>
 
       {/* Stats Cards */}
@@ -70,7 +128,9 @@ const Contacts = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{statusCounts.new}</div>
+            <div className="text-2xl font-bold text-blue-600">
+              {statusCounts.new ?? 0}
+            </div>
             <p className="text-sm text-muted-foreground">Pending review</p>
           </CardContent>
         </Card>
@@ -79,11 +139,13 @@ const Contacts = () => {
           <CardHeader className="pb-2">
             <CardTitle className="text-lg flex items-center gap-2">
               <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-              In Progress
+              Replied
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{statusCounts.inProgress}</div>
+            <div className="text-2xl font-bold text-yellow-600">
+              {statusCounts.replied ?? 0}
+            </div>
             <p className="text-sm text-muted-foreground">Being handled</p>
           </CardContent>
         </Card>
@@ -96,7 +158,9 @@ const Contacts = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{statusCounts.resolved}</div>
+            <div className="text-2xl font-bold text-green-600">
+              {statusCounts.resolved ?? 0}
+            </div>
             <p className="text-sm text-muted-foreground">Completed</p>
           </CardContent>
         </Card>
@@ -110,13 +174,17 @@ const Contacts = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
                 placeholder="Search by name, email, or subject..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                value={search || ''}
+                onChange={(e) => setSearch(e.target.value)}
                 className="pl-10"
               />
             </div>
 
-            <Select value={filterStatus} onValueChange={setFilterStatus}>
+            <Select
+              value={filters?.status}
+              onValueChange={(val) =>
+                handleFilter('status', val === 'all' ? '' : val)
+              }>
               <SelectTrigger>
                 <SelectValue placeholder="Filter by status" />
               </SelectTrigger>
@@ -129,7 +197,7 @@ const Contacts = () => {
             </Select>
 
             <div className="text-sm text-muted-foreground flex items-center">
-              Showing {filteredContacts.length} of {contacts.length} submissions
+              Showing {contactsList?.length} of {pagination?.total} submissions
             </div>
           </div>
         </CardContent>
@@ -140,81 +208,50 @@ const Contacts = () => {
         <CardHeader>
           <CardTitle>All Contact Submissions</CardTitle>
           <CardDescription>
-            Complete list of inquiries with their current status and response actions
+            Complete list of inquiries with their current status and response
+            actions
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Contact Details</TableHead>
-                  <TableHead>Subject</TableHead>
-                  <TableHead>Message</TableHead>
-                  <TableHead>Submitted</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredContacts.map((contact) => (
-                  <TableRow key={contact.id}>
-                    <TableCell>
-                      <div className="space-y-1">
-                        <div className="font-medium">{contact.name}</div>
-                        <div className="text-sm text-muted-foreground flex items-center gap-1">
-                          <Mail className="w-3 h-3" />
-                          {contact.email}
-                        </div>
-                        {contact.phone && (
-                          <div className="text-sm text-muted-foreground flex items-center gap-1">
-                            <Phone className="w-3 h-3" />
-                            {contact.phone}
-                          </div>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="font-medium">{contact.subject}</div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="max-w-xs">
-                        <p className="text-sm line-clamp-3">{contact.message}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {formatDate(contact.submittedAt)}
-                      </div>
-                    </TableCell>
-                    <TableCell>{getStatusBadge(contact.status)}</TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm">
-                          <Eye className="w-4 h-4 mr-1" />
-                          View
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <MessageCircle className="w-4 h-4 mr-1" />
-                          Reply
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <ContactsUsTable
+              data={contactsList}
+              handleReply={(contact) => {
+                setModalState({
+                  open: true,
+                  edit: false,
+                });
+                setFormData({ ...contact });
+              }}
+              handleView={() => {}}
+              isLoading={isFetching}
+              pagination={pagination}
+              onPageChange={(page: number, limit: number) => {
+                setPage(page);
+                setLimit(limit);
+              }}
+            />
           </div>
-
-          {filteredContacts.length === 0 && (
-            <div className="text-center py-8">
-              <Mail className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">No contact submissions found matching your search.</p>
-            </div>
-          )}
         </CardContent>
       </Card>
+      {modalState.open && (
+        <Modal open onOpenChange={handleClose} title={'Reply Contact'}>
+          <FormFields
+            fields={replyContactFields}
+            formData={formData}
+            setFormData={setFormData}
+            wrapperClass="grid grid-cols-1 gap-6"
+          />
+          <div className="mt-4 flex justify-between">
+            <Button variant="secondary" onClick={handleReset}>
+              Clear
+            </Button>
+            <Button variant="temple" disabled={disabled} onClick={handleSubmit}>
+              Save
+            </Button>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

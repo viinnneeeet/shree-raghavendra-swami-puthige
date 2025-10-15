@@ -45,7 +45,10 @@ const Gallery = () => {
   const debouncedSearch = useDebounce(searchTerm, 1000);
   // ✅ Fetch gallery images
   const { data = {}, isFetching } = useQuery({
-    queryKey: ['gallery', { page, limit, filters, search: debouncedSearch }],
+    queryKey: [
+      'gallery-list',
+      { page, limit, filters, search: debouncedSearch },
+    ],
     queryFn: fetchGallery,
     staleTime: 1000 * 60 * 5,
   });

@@ -8,12 +8,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Heart, IndianRupee, Search } from 'lucide-react';
 import React, { useState } from 'react';
-import SevaTable from '../components/SevaTable';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useQuery } from '@tanstack/react-query';
 import { fetchInvoiceDetails } from '@/api/invoice';
 import DonationsTable from '../components/DonationsTable';
-
+import { formatAmount } from '@/utils/common-function';
+import { fetchSevaDetails } from '@/api/sevas';
 const Donations = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
@@ -23,7 +23,7 @@ const Donations = () => {
 
   const { data = {}, isFetching } = useQuery({
     queryKey: [
-      'invoice-details',
+      'invoice-details-list',
       { page, limit, filters, search: debouncedSearch },
     ],
     queryFn: fetchInvoiceDetails,
@@ -31,7 +31,33 @@ const Donations = () => {
     refetchOnWindowFocus: true,
   });
 
+  const { data: allInvoiceListData = {} } = useQuery({
+    queryKey: ['invoice-details'],
+    queryFn: fetchInvoiceDetails,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true,
+  });
+
+  const { data: sevaData = {}, isFetching: isFetchingSeva } = useQuery({
+    queryKey: ['sevas'],
+    queryFn: fetchSevaDetails,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true, // refetch on window focus
+  });
+
   const { invoiceList = [], pagination = {} } = data;
+  const { invoiceList: allInvoiceList = [] } = allInvoiceListData;
+  const { sevasList = [] } = sevaData;
+
+  function getAvailabilityCounts(data) {
+    return data?.reduce((acc, item) => {
+      const status = item.availability?.toLowerCase() || 'unknown';
+      acc[status] = (acc[status] || 0) + 1;
+      return acc;
+    }, {});
+  }
+
+  const statusData = getAvailabilityCounts(sevasList?.length ? sevasList : []);
 
   return (
     <div className="space-y-6">
@@ -58,7 +84,7 @@ const Donations = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
-              {/* {availabilityCounts.available} */}
+              {statusData?.available ?? 0}
             </div>
             <p className="text-sm text-muted-foreground">Ready for booking</p>
           </CardContent>
@@ -73,7 +99,7 @@ const Donations = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-yellow-600">
-              {/* {availabilityCounts.limited} */}
+              {statusData?.limited ?? 0}
             </div>
             <p className="text-sm text-muted-foreground">Few slots remaining</p>
           </CardContent>
@@ -88,7 +114,7 @@ const Donations = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">
-              {/* {availabilityCounts.unavailable} */}
+              {statusData?.unavailable ?? 0}
             </div>
             <p className="text-sm text-muted-foreground">Currently closed</p>
           </CardContent>
@@ -103,11 +129,14 @@ const Donations = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">
-              {/* {sevasList?.length
+              {invoiceList?.length
                 ? formatAmount(
-                    sevasList?.reduce((sum, seva) => sum + +seva?.amount, 0)
+                    allInvoiceList?.reduce(
+                      (sum, seva) => sum + +seva?.sevaAmount,
+                      0
+                    )
                   )
-                : ''} */}
+                : ''}
             </div>
             <p className="text-sm text-muted-foreground">
               All offerings combined
@@ -148,7 +177,10 @@ const Donations = () => {
               handleEdit={() => {}}
               isLoading={isFetching}
               pagination={pagination}
-              onPageChange={() => {}}
+              onPageChange={(page: number, limit: number) => {
+                setPage(page);
+                setLimit(limit);
+              }}
             />
           </div>
         </CardContent>

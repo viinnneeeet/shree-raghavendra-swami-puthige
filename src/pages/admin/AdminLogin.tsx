@@ -90,6 +90,14 @@ const AdminLogin = () => {
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault(); // prevent form submit if inside a form
+                        if (email && password) {
+                          loginMutation.mutate({ email, password });
+                        }
+                      }
+                    }}
                     required
                     className="border-border focus:border-primary pr-10"
                   />

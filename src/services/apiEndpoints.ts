@@ -12,4 +12,7 @@ export const route = {
   login: '/api/v1/auth/login',
   genrateInvoice: '/api/v1/invoice/genrate-invoice',
   fetchInvoiceLists: '/api/v1/invoice/get-invoices',
+  getContactUsLists: '/api/v1/contact/get-contacts',
+  contactUsSubmit: '/api/v1/contact/submit-request',
+  replyContact: '/api/v1/contact/reply',
 };

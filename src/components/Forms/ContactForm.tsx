@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
-import { useToast } from '@/hooks/use-toast';
 import { Input } from '../ui/input';
+import { useMutation } from '@tanstack/react-query';
+import { showToast } from '../ShowToast';
+import { queryClient } from '@/lib/react-query-client';
+import { handleApiError } from '@/utils/common-function';
+import { submitContactDetails } from '@/api/contact-us';
 
 const ContactForm = () => {
   const initialState = {
@@ -13,7 +17,16 @@ const ContactForm = () => {
     message: '',
   };
   const [state, setState] = useState(initialState);
-  const { toast } = useToast();
+
+  const submitContactForm = useMutation({
+    mutationFn: submitContactDetails,
+    onSuccess: () => {
+      showToast('Success!', 'Submitted request successfully.', 'success');
+      queryClient.invalidateQueries({ queryKey: ['submit-contact'] });
+      setState(initialState);
+    },
+    onError: (error) => handleApiError(error, 'Failed to submit contact form'),
+  });
   const handleChange = (key: string, value: string) => {
     setState((prev) => ({
       ...prev,
@@ -22,12 +35,14 @@ const ContactForm = () => {
   };
 
   const handleSubmit = () => {
-    toast({
-      title: 'Contact Form Submitted',
-      description: 'Our team will reach out to you',
-      variant: 'success',
-    });
-    setState(initialState);
+    const payload = {
+      firstName: state?.firstName,
+      lastName: state?.lastName,
+      email: state?.email,
+      messages: state?.message,
+      phone: state?.phone || null,
+    };
+    submitContactForm.mutate(payload);
   };
   return (
     <div>

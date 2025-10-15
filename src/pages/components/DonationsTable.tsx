@@ -1,7 +1,7 @@
 import ReusableTable from '@/components/ReuseableTable';
 import { Button } from '@/components/ui/button';
 import { Eye, Edit } from 'lucide-react';
-import { formatAmount } from '@/utils/common-function';
+import { formatAmount, formatDateTime } from '@/utils/common-function';
 
 export default function DonationsTable({
   data,
@@ -10,7 +10,6 @@ export default function DonationsTable({
   pagination,
   onPageChange,
 }) {
-  console.log(data);
   const columns = [
     {
       key: 'userName',
@@ -35,15 +34,12 @@ export default function DonationsTable({
       ),
     },
     {
-      key: 'invoiceUrl',
-      label: 'Invoice',
-      render: (url) => (
-        <Button
-          onClick={() => {
-            window.open(url, '_blank');
-          }}>
-          Download PDF
-        </Button>
+      key: 'createdAt',
+      label: 'Created At',
+      render: (value) => (
+        <div className="max-w-sm text-sm line-clamp-2">
+          {formatDateTime(value)}
+        </div>
       ),
     },
     {

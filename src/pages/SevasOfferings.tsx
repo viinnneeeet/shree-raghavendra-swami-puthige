@@ -18,7 +18,10 @@ import { handleApiError } from '@/utils/common-function';
 
 const SevasOfferings = () => {
   const { data = {}, isFetching: sevaIsFetching } = useQuery({
-    queryKey: ['sevas'],
+    queryKey: [
+      'sevas',
+      { filters: { availability: ['available', 'limited'] } },
+    ],
     queryFn: fetchSevaDetails,
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus

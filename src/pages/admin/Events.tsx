@@ -59,7 +59,7 @@ const Events = () => {
   const [filters, setFilters] = useState({
     search: '',
     status: '',
-    category: '',
+    type: '',
   });
   const [formData, setFormData] = useState<EventState>({
     date: '',
@@ -78,9 +78,12 @@ const Events = () => {
   const debouncedSearch = useDebounce(search, 1000);
   const [modalState, setModalState] = useState({ open: false, edit: false });
   const { data = {}, isFetching } = useQuery({
-    queryKey: ['events', { page, limit, filters, search: debouncedSearch }],
+    queryKey: [
+      'events-list',
+      { page, limit, filters, search: debouncedSearch },
+    ],
     queryFn: fetchEvents,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 0.1, // 5 minutes
     refetchOnWindowFocus: true,
   });
 
@@ -213,7 +216,7 @@ const Events = () => {
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
-              {['all', 'upcoming', 'completed', 'cancelled'].map((s) => (
+              {['upcoming', 'completed', 'cancelled'].map((s) => (
                 <SelectItem key={s} value={s}>
                   {s.charAt(0).toUpperCase() + s.slice(1)}
                 </SelectItem>
@@ -222,24 +225,22 @@ const Events = () => {
           </Select>
 
           <Select
-            value={filters.category}
-            onValueChange={(v) => setFilters((f) => ({ ...f, category: v }))}>
+            value={filters.type}
+            onValueChange={(v) => setFilters((f) => ({ ...f, type: v }))}>
             <SelectTrigger>
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
-              {['all', 'pooja', 'festival', 'community', 'education'].map(
-                (c) => (
-                  <SelectItem key={c} value={c}>
-                    {c.charAt(0).toUpperCase() + c.slice(1)}
-                  </SelectItem>
-                )
-              )}
+              {['pooja', 'festival', 'community', 'education'].map((c) => (
+                <SelectItem key={c} value={c}>
+                  {c.charAt(0).toUpperCase() + c.slice(1)}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
           <div className="text-sm text-muted-foreground flex items-center">
-            Showing {eventsList?.length} of {eventsList.length} events
+            Showing {eventsList?.length} of {pagination?.total} events
           </div>
         </CardContent>
       </Card>

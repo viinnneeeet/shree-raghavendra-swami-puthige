@@ -62,3 +62,22 @@ export function formatTime(time24) {
 
   return `${formattedHours}:${minutes} ${ampm}`;
 }
+
+export function formatDateTime(isoString) {
+  if (!isoString) return '';
+
+  const date = new Date(isoString);
+
+  // Options for formatting
+  const options = {
+    year: 'numeric',
+    month: 'short', // "Oct"
+    day: '2-digit', // "14"
+    hour: '2-digit', // "15"
+    minute: '2-digit', // "13"
+    second: '2-digit', // "15"
+    hour12: false, // 24-hour format; set true for AM/PM
+  };
+
+  return date.toLocaleString('en-GB', options); // e.g., "14 Oct 2025, 15:13:15"
+}

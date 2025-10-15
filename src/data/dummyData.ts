@@ -38,38 +38,3 @@ export const dummyMembers: Member[] = [
     status: 'inactive',
   },
 ];
-
-export const dummyContactSubmissions: ContactSubmission[] = [
-  {
-    id: '1',
-    name: 'Sita Reddy',
-    email: 'sita.reddy@gmail.com',
-    phone: '+91 9876543220',
-    subject: 'Inquiry about Wedding Ceremony',
-    message:
-      "I would like to book the temple for my daughter's wedding ceremony in March. Could you please provide details about the booking process and charges?",
-    submittedAt: '2024-01-20T10:30:00Z',
-    status: 'new',
-  },
-  {
-    id: '2',
-    name: 'Rahul Nair',
-    email: 'rahul.nair@gmail.com',
-    subject: 'Volunteering Opportunity',
-    message:
-      'I am interested in volunteering for temple activities and events. Please let me know how I can contribute to the community.',
-    submittedAt: '2024-01-18T14:15:00Z',
-    status: 'in-progress',
-  },
-  {
-    id: '3',
-    name: 'Lakshmi Rao',
-    email: 'lakshmi.rao@gmail.com',
-    phone: '+91 9876543221',
-    subject: 'Pooja Booking',
-    message:
-      "I want to book a special pooja for my family's well-being. Please provide available dates and pricing.",
-    submittedAt: '2024-01-15T09:00:00Z',
-    status: 'resolved',
-  },
-];

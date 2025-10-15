@@ -13,10 +13,11 @@ import {
   TrendingUp,
   Eye,
 } from 'lucide-react';
-import { dummyMembers, dummyContactSubmissions } from '@/data/dummyData';
+import { dummyMembers } from '@/data/dummyData';
 import { fetchEvents } from '@/api/events';
 import { useQuery } from '@tanstack/react-query';
 import { fetchSevaDetails } from '@/api/sevas';
+import { fetchContactDetails } from '@/api/contact-us';
 
 const Dashboard = () => {
   const { data: eventData = {} } = useQuery({
@@ -32,8 +33,16 @@ const Dashboard = () => {
     refetchOnWindowFocus: true, // refetch on window focus
   });
 
+  const { data: contactUsData = {}, isFetching } = useQuery({
+    queryKey: ['contact-us'],
+    queryFn: fetchContactDetails,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true,
+  });
+
   const { eventsList = [], paginationEvent = {} } = eventData;
   const { sevasList = [], paginationSeva = {} } = sevaData;
+  const { contactsList = [], paginationContactUs = {} } = contactUsData;
 
   const stats = [
     {
@@ -58,7 +67,9 @@ const Dashboard = () => {
     },
     {
       title: 'Contact Submissions',
-      value: dummyContactSubmissions.filter((c) => c.status === 'new').length,
+      value: contactsList?.length
+        ? contactsList?.filter((c) => c?.status === 'new')?.length
+        : [],
       description: 'New inquiries',
       icon: MessageSquare,
       color: 'text-orange-600',

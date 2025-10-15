@@ -66,13 +66,22 @@ const Sevas = () => {
   const debouncedSearch = useDebounce(search, 1000);
 
   const { data = {}, isFetching } = useQuery({
-    queryKey: ['sevas', { page, limit, filters, search: debouncedSearch }],
+    queryKey: ['sevas-list', { page, limit, filters, search: debouncedSearch }],
+    queryFn: fetchSevaDetails,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true, // refetch on window focus
+  });
+
+  const { data: allSevasData = {}, isFetching: allsevaIsFetching } = useQuery({
+    queryKey: ['sevas'],
     queryFn: fetchSevaDetails,
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true, // refetch on window focus
   });
 
   const { sevasList = [], pagination } = data;
+
+  const { sevasList: allSevaList = [] } = allSevasData;
 
   useEffect(() => {
     if (formData?.benefits?.length && isEdit) {
@@ -90,6 +99,7 @@ const Sevas = () => {
       showToast('Success!', 'Seva details saved successfully.', 'success');
       setIsSevaAddOpen(false);
       handleReset();
+      queryClient.invalidateQueries({ queryKey: ['sevas-list'] });
       queryClient.invalidateQueries({ queryKey: ['sevas'] });
     },
     onError: (error) => handleApiError(error, 'Failed to save seva details'),
@@ -99,6 +109,7 @@ const Sevas = () => {
     mutationFn: updateSevaDetails,
     onSuccess: () => {
       showToast('Updated!', 'Seva details updated successfully.', 'success');
+      queryClient.invalidateQueries({ queryKey: ['sevas-list'] });
       queryClient.invalidateQueries({ queryKey: ['sevas'] });
       handleReset();
       setIsEdit(false);
@@ -107,17 +118,15 @@ const Sevas = () => {
     onError: (error) => handleApiError(error, 'Failed to update seva details'),
   });
 
-  const getAvailabilityCounts = () => {
-    return {
-      available: sevasList?.filter((s) => s?.availability === 'available')
-        ?.length,
-      limited: sevasList?.filter((s) => s?.availability === 'limited')?.length,
-      unavailable: sevasList?.filter((s) => s?.availability === 'unavailable')
-        ?.length,
-    };
-  };
+  function getAvailabilityCounts(data) {
+    return data?.reduce((acc, item) => {
+      const status = item.availability?.toLowerCase() || 'unknown';
+      acc[status] = (acc[status] || 0) + 1;
+      return acc;
+    }, {});
+  }
 
-  const availabilityCounts = getAvailabilityCounts();
+  const availabilityCounts = getAvailabilityCounts(allSevaList);
 
   const handleReset = () => {
     setFormData({
@@ -207,7 +216,7 @@ const Sevas = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
-              {availabilityCounts.available}
+              {availabilityCounts.available ?? 0}
             </div>
             <p className="text-sm text-muted-foreground">Ready for booking</p>
           </CardContent>
@@ -222,7 +231,7 @@ const Sevas = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-yellow-600">
-              {availabilityCounts.limited}
+              {availabilityCounts.limited ?? 0}
             </div>
             <p className="text-sm text-muted-foreground">Few slots remaining</p>
           </CardContent>
@@ -237,7 +246,7 @@ const Sevas = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">
-              {availabilityCounts.unavailable}
+              {availabilityCounts.unavailable ?? 0}
             </div>
             <p className="text-sm text-muted-foreground">Currently closed</p>
           </CardContent>
@@ -252,9 +261,9 @@ const Sevas = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">
-              {sevasList?.length
+              {allSevaList?.length
                 ? formatAmount(
-                    sevasList?.reduce((sum, seva) => sum + +seva?.amount, 0)
+                    allSevaList?.reduce((sum, seva) => sum + +seva?.amount, 0)
                   )
                 : ''}
             </div>
