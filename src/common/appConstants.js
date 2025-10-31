@@ -33,6 +33,7 @@ export const NAVIGATION_ITEMS = [
   { href: '/sevas-offerings', label: 'Sevas & Offerings' },
   { href: '/events-calendar', label: 'Events Calendar' },
   { href: '/gallery', label: 'Gallery' },
+  { href: '/members', label: 'Our Team' },
   { href: '/join-community', label: 'Join Community' },
 ];
 
