@@ -27,12 +27,13 @@ const SevasOfferings = lazy(() => import('./pages/SevasOfferings'));
 const EventsCalendar = lazy(() => import('./pages/EventsCalendar'));
 const GalleryPage = lazy(() => import('./pages/GalleryPage'));
 const JoinCommunity = lazy(() => import('./pages/JoinCommunity'));
+const Members = lazy(() => import('./pages/Members'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Admin Pages
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
 const Dashboard = lazy(() => import('./pages/admin/Dashboard'));
-const Members = lazy(() => import('./pages/admin/Members'));
+const AdminMembers = lazy(() => import('./pages/admin/Members'));
 const Events = lazy(() => import('./pages/admin/Events'));
 const Contacts = lazy(() => import('./pages/admin/Contacts'));
 const Sevas = lazy(() => import('./pages/admin/Sevas'));
@@ -72,6 +73,7 @@ const App = () => (
                     />
                     <Route path="/gallery" element={<GalleryPage />} />
                     <Route path="/join-community" element={<JoinCommunity />} />
+                    <Route path="/members" element={<Members />} />
                     <Route path="*" element={<NotFound />} />
                   </Route>
 
@@ -79,7 +81,7 @@ const App = () => (
                   <Route path="/admin/login" element={<AdminLogin />} />
                   <Route path="/admin" element={<AdminLayout />}>
                     <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="members" element={<Members />} />
+                    <Route path="members" element={<AdminMembers />} />
                     <Route path="events" element={<Events />} />
                     <Route path="contacts" element={<Contacts />} />
                     <Route path="sevas" element={<Sevas />} />
