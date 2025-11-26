@@ -1,6 +1,7 @@
 import axios from 'axios';
 const RENDER_BASE_URL = 'https://rest-shop.onrender.com';
 const LOCAL_HOST_BASE_URL = ' http://localhost:8626';
+const RAILWAY_BASE_URL = 'https://restshop-production.up.railway.app';
 import { secureStorage } from '@/utils/secureStorage';
 // Base API instance
 const api = axios.create({

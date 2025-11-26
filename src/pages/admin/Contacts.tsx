@@ -62,7 +62,7 @@ const Contacts = () => {
     onSuccess: () => {
       showToast('Success!', 'Replied to the message.', 'success');
       handleClose();
-      queryClient.invalidateQueries({ queryKey: ['contact-us'] });
+      queryClient.invalidateQueries({ queryKey: ['contact-us-list'] });
     },
     onError: (error) =>
       handleApiError(error, 'Failed to replied to the message.'),
