@@ -3,7 +3,7 @@ import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
 import Loader from '@/components/ui/Loader';
 import DevotionalAudio from '@/components/DevotionalAudio';
-import audio from '@/assets/audio/raghavendra-jap.mp3.mp3';
+
 import FlowerDrop from './components/FlowerDrop';
 // Lazy load heavy / secondary sections
 const ServicesSection = React.lazy(
@@ -27,10 +27,10 @@ const Index = () => {
       </Suspense>
 
       {/* Devotional Audio Player */}
-      <DevotionalAudio
+      {/* <DevotionalAudio
         audioSrc={audio} // You can replace this with your audio file
         title="Shree Raghavendra Swami Jap"
-      />
+      /> */}
       <FlowerDrop />
     </div>
   );
